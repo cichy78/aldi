@@ -1,0 +1,1082 @@
+[
+  {
+    "VST": 1,
+    "PLZ": "01744",
+    "Ort": "Reinholdshain",
+    "Strasse": "Gewerbering 5",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.8968339,
+    "lon": 13.6890615
+  },
+  {
+    "VST": 2,
+    "PLZ": "01069",
+    "Ort": "Dresden",
+    "Strasse": "Uhlandstraße 5",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0361184,
+    "lon": 13.7400542
+  },
+  {
+    "VST": 3,
+    "PLZ": "01307",
+    "Ort": "Dresden",
+    "Strasse": "Straßburger Platz 01",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0459528,
+    "lon": 13.7550485
+  },
+  {
+    "VST": 4,
+    "PLZ": "01796",
+    "Ort": "Pirna-Copitz",
+    "Strasse": "Rudolf-Renner Str. 41 a",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.9736354,
+    "lon": 13.9308964
+  },
+  {
+    "VST": 5,
+    "PLZ": "09648",
+    "Ort": "Mittweida",
+    "Strasse": "Chemnitzer Straße 28 E",
+    "Zeitbeschraenkung": "20:00 - 07:00",
+    "lat": 50.9783039,
+    "lon": 12.9810513
+  },
+  {
+    "VST": 6,
+    "PLZ": "09599",
+    "Ort": "Freiberg",
+    "Strasse": "Olbernhauer Str. 72",
+    "Zeitbeschraenkung": "22:00 - 06:00 + sonn- u. feiertags",
+    "lat": 50.904756,
+    "lon": 13.337216
+  },
+  {
+    "VST": 7,
+    "PLZ": "09618",
+    "Ort": "Brand-Erbisdorf",
+    "Strasse": "Großhartmannsdorfer Str. 9 a",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.8588861,
+    "lon": 13.3205151
+  },
+  {
+    "VST": 8,
+    "PLZ": "04720",
+    "Ort": "Döbeln",
+    "Strasse": "Grimmaische Straße 67",
+    "Zeitbeschraenkung": "20:00 - 07:00 + sonn- u. feiertags",
+    "lat": 51.1333953,
+    "lon": 13.096368
+  },
+  {
+    "VST": 9,
+    "PLZ": "01587",
+    "Ort": "Riesa",
+    "Strasse": "Riesapark 2",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.2969801,
+    "lon": 13.2687544
+  },
+  {
+    "VST": 10,
+    "PLZ": "01277",
+    "Ort": "Dresden (Striesen-Ost)",
+    "Strasse": "Glashütter Str. 87",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0391369,
+    "lon": 13.8035303
+  },
+  {
+    "VST": 11,
+    "PLZ": "01723",
+    "Ort": "Wilsdruff",
+    "Strasse": "Meißner Str. 30 b",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0557401,
+    "lon": 13.533245
+  },
+  {
+    "VST": 12,
+    "PLZ": "01257",
+    "Ort": "Dresden (Laubegast)",
+    "Strasse": "Pirnaer Landstr. 196",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.021661,
+    "lon": 13.8368593
+  },
+  {
+    "VST": 13,
+    "PLZ": "01809",
+    "Ort": "Heidenau (B172)",
+    "Strasse": "Siegfried-Rädel-Str. 3",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 53.3139784,
+    "lon": 9.6531686
+  },
+  {
+    "VST": 14,
+    "PLZ": "01156",
+    "Ort": "Dresden-Gompitz",
+    "Strasse": "Gompitzer Höhe 5a",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0397108,
+    "lon": 13.6302743
+  },
+  {
+    "VST": 16,
+    "PLZ": "09456",
+    "Ort": "Annaberg-Buchholz",
+    "Strasse": "Erzgebirgscenter, Gewerbering",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.5982793,
+    "lon": 13.0226635
+  },
+  {
+    "VST": 17,
+    "PLZ": "01324",
+    "Ort": "Dresden (Bühlau)",
+    "Strasse": "Bautzner Landstraße 149",
+    "Zeitbeschraenkung": "20:00 - 07:00 + sonn- u. feiertags",
+    "lat": 51.0621868,
+    "lon": 13.8508975
+  },
+  {
+    "VST": 18,
+    "PLZ": "09496",
+    "Ort": "Marienberg",
+    "Strasse": "Johann-Ehrenfried-Wagner Str.9",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.647695,
+    "lon": 13.1574768
+  },
+  {
+    "VST": 19,
+    "PLZ": "09456",
+    "Ort": "Annaberg-Buchholz",
+    "Strasse": "Oberwiesenthaler Weg 6",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.5650009,
+    "lon": 13.0114945
+  },
+  {
+    "VST": 20,
+    "PLZ": "01097",
+    "Ort": "Dresden",
+    "Strasse": "Antonstr. 2 A",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0642813,
+    "lon": 13.7461712
+  },
+  {
+    "VST": 21,
+    "PLZ": "01662",
+    "Ort": "Meißen",
+    "Strasse": "Fabrikstr. 14 a",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.1645211,
+    "lon": 13.4895245
+  },
+  {
+    "VST": 22,
+    "PLZ": "01619",
+    "Ort": "Zeithain",
+    "Strasse": "Teiniger Straße 5",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.3678092,
+    "lon": 13.3143048
+  },
+  {
+    "VST": 23,
+    "PLZ": "01705",
+    "Ort": "Freital",
+    "Strasse": "Dresdner Straße 252",
+    "Zeitbeschraenkung": "20:00 - 07:00",
+    "lat": 50.9918411,
+    "lon": 13.6420414
+  },
+  {
+    "VST": 24,
+    "PLZ": "01169",
+    "Ort": "Dresden (Gorbitz)",
+    "Strasse": "Kesselsdorfer Straße 160",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.040348,
+    "lon": 13.6672265
+  },
+  {
+    "VST": 25,
+    "PLZ": "01159",
+    "Ort": "Dresden",
+    "Strasse": "Löbtauer Str. 40",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0512445,
+    "lon": 13.7134679
+  },
+  {
+    "VST": 27,
+    "PLZ": "09569",
+    "Ort": "Oederan",
+    "Strasse": "Freiberger Str. 31",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.864966,
+    "lon": 13.1768385
+  },
+  {
+    "VST": 28,
+    "PLZ": "01187",
+    "Ort": "Dresden",
+    "Strasse": "Chemnitzer Str. 28",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0369005,
+    "lon": 13.7139328
+  },
+  {
+    "VST": 29,
+    "PLZ": "01640",
+    "Ort": "Coswig",
+    "Strasse": "Salzstraße 9",
+    "Zeitbeschraenkung": "22:00 - 06:00 + sonn- u. feiertags",
+    "lat": 51.1324871,
+    "lon": 13.5843321
+  },
+  {
+    "VST": 30,
+    "PLZ": "01257",
+    "Ort": "Dresden",
+    "Strasse": "Wilhelm-Liebknecht-Str. 2",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0117503,
+    "lon": 13.8100944
+  },
+  {
+    "VST": 31,
+    "PLZ": "01139",
+    "Ort": "Dresden (Mickten)",
+    "Strasse": "Lommatzscher Str. 1 c",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0801107,
+    "lon": 13.7130982
+  },
+  {
+    "VST": 32,
+    "PLZ": "01683",
+    "Ort": "Nossen",
+    "Strasse": "Fabrikstraße 3",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0627375,
+    "lon": 13.2978893
+  },
+  {
+    "VST": 33,
+    "PLZ": "09557",
+    "Ort": "Flöha",
+    "Strasse": "Augustusburger Straße 75",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.8499861,
+    "lon": 13.0767617
+  },
+  {
+    "VST": 34,
+    "PLZ": "01277",
+    "Ort": "Dresden (Seidnitz)",
+    "Strasse": "Enderstr. 59",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.0295016,
+    "lon": 13.8034887
+  },
+  {
+    "VST": 35,
+    "PLZ": "01129",
+    "Ort": "Dresden (Trachau)",
+    "Strasse": "Döbelner Straße 132",
+    "Zeitbeschraenkung": "20:00 - 07:00",
+    "lat": 51.0969278,
+    "lon": 13.7197852
+  },
+  {
+    "VST": 36,
+    "PLZ": "01445",
+    "Ort": "Radebeul-Ost",
+    "Strasse": "Meißner Str. 49",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0976006,
+    "lon": 13.6919896
+  },
+  {
+    "VST": 37,
+    "PLZ": "04746",
+    "Ort": "Hartha",
+    "Strasse": "Dresdener Straße 76",
+    "Zeitbeschraenkung": "22:00 - 06:00+ Sonn- und Feiertags",
+    "lat": 51.0910836,
+    "lon": 12.9756077
+  },
+  {
+    "VST": 38,
+    "PLZ": "01279",
+    "Ort": "Dresden (Seidnitz)",
+    "Strasse": "Löwenhainer Str. 2",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0288615,
+    "lon": 13.8123906
+  },
+  {
+    "VST": 39,
+    "PLZ": "01217",
+    "Ort": "Dresden (Räcknitz)",
+    "Strasse": "Bulgakowstr. 7",
+    "Zeitbeschraenkung": "20:00- 07:00+ Sonn- und Feiertags",
+    "lat": 51.0194293,
+    "lon": 13.7365763
+  },
+  {
+    "VST": 41,
+    "PLZ": "01239",
+    "Ort": "Dresden (Prohlis)",
+    "Strasse": "Fritz-Meinhardt-Straße 5",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.9997025,
+    "lon": 13.7927449
+  },
+  {
+    "VST": 42,
+    "PLZ": "01445",
+    "Ort": "Radebeul-West",
+    "Strasse": "Weinböhlaer Sr. 9",
+    "Zeitbeschraenkung": "keine",
+    "lat": null,
+    "lon": null
+  },
+  {
+    "VST": 43,
+    "PLZ": "09526",
+    "Ort": "Olbernhau",
+    "Strasse": "Dörfelstraße 4",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.6513493,
+    "lon": 13.3510328
+  },
+  {
+    "VST": 45,
+    "PLZ": "01069",
+    "Ort": "Dresden",
+    "Strasse": "Prager Straße 11",
+    "Zeitbeschraenkung": "22:00 - 06:00+ Sonn- und Feiertags",
+    "lat": 51.0444613,
+    "lon": 13.7348748
+  },
+  {
+    "VST": 46,
+    "PLZ": "01728",
+    "Ort": "Bannewitz",
+    "Strasse": "An der Zschauke 4",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.0004028,
+    "lon": 13.7204467
+  },
+  {
+    "VST": 47,
+    "PLZ": "01159",
+    "Ort": "Dresden (Löbtau)",
+    "Strasse": "Tharandter Straße 40",
+    "Zeitbeschraenkung": "20:00 - 07:00",
+    "lat": 51.0342236,
+    "lon": 13.7032565
+  },
+  {
+    "VST": 48,
+    "PLZ": "01157",
+    "Ort": "Dresden (Cotta)",
+    "Strasse": "Raimundstraße 1-3",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0571074,
+    "lon": 13.6875385
+  },
+  {
+    "VST": 49,
+    "PLZ": "09322",
+    "Ort": "Penig",
+    "Strasse": "Chemnitzerstraße 105",
+    "Zeitbeschraenkung": "20:00 - 07:00 + sonn- u. feiertags",
+    "lat": 50.9255213,
+    "lon": 12.7144061
+  },
+  {
+    "VST": 50,
+    "PLZ": "01067",
+    "Ort": "Dresden (Altmarktgalerie)",
+    "Strasse": "Webergasse 1",
+    "Zeitbeschraenkung": "20:00 - 6:00 + sonn- u. feiertags",
+    "lat": null,
+    "lon": null
+  },
+  {
+    "VST": 51,
+    "PLZ": "01317",
+    "Ort": "Dresden (Johannstadt)",
+    "Strasse": "Pfotenhauerstr. 7 b",
+    "Zeitbeschraenkung": "22:00 - 06:00 + sonn- u. feiertags",
+    "lat": 51.0581914,
+    "lon": 13.7747761
+  },
+  {
+    "VST": 52,
+    "PLZ": "01109",
+    "Ort": "Dresden (Klotzsche)",
+    "Strasse": "Travemünder Str. 1",
+    "Zeitbeschraenkung": "20:00 - 07:00",
+    "lat": 51.1194955,
+    "lon": 13.7698571
+  },
+  {
+    "VST": 53,
+    "PLZ": "09405",
+    "Ort": "Zschopau",
+    "Strasse": "Waldkirchener Str. 15",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.7490092,
+    "lon": 13.0742816
+  },
+  {
+    "VST": 54,
+    "PLZ": "09661",
+    "Ort": "Hainichen",
+    "Strasse": "Bahnhofstr. 18",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.9711079,
+    "lon": 13.1198969
+  },
+  {
+    "VST": 55,
+    "PLZ": "01471",
+    "Ort": "Radeburg",
+    "Strasse": "Großenhainer Straße 39 a",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.2172744,
+    "lon": 13.7174237
+  },
+  {
+    "VST": 56,
+    "PLZ": "01796",
+    "Ort": "Pirna",
+    "Strasse": "Rottwerndorfer Straße 41",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.9492889,
+    "lon": 13.9419428
+  },
+  {
+    "VST": 57,
+    "PLZ": "01237",
+    "Ort": "Dresden (Strehlen)",
+    "Strasse": "Reicker Straße 97",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0182617,
+    "lon": 13.7827552
+  },
+  {
+    "VST": 59,
+    "PLZ": "09599",
+    "Ort": "Freiberg",
+    "Strasse": "Dresdner Str. 31 d",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.9148364,
+    "lon": 13.36577
+  },
+  {
+    "VST": 60,
+    "PLZ": "09669",
+    "Ort": "Frankenberg",
+    "Strasse": "Badstr. 2 a",
+    "Zeitbeschraenkung": "22:00 - 06:00 - max. 1LKW zulässig",
+    "lat": 50.912862,
+    "lon": 13.0441526
+  },
+  {
+    "VST": 61,
+    "PLZ": "01796",
+    "Ort": "Pirna",
+    "Strasse": "Struppener Str. 2 a",
+    "Zeitbeschraenkung": "22:00 - 05:00",
+    "lat": 50.957,
+    "lon": 13.9526379
+  },
+  {
+    "VST": 62,
+    "PLZ": "09427",
+    "Ort": "Ehrenfriedersdorf",
+    "Strasse": "Chemnitzer Str. 52",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.6523602,
+    "lon": 12.9714238
+  },
+  {
+    "VST": 63,
+    "PLZ": "01662",
+    "Ort": "Meißen",
+    "Strasse": "Neumarkt 42",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.158371,
+    "lon": 13.4707118
+  },
+  {
+    "VST": 64,
+    "PLZ": "01259",
+    "Ort": "Dresden",
+    "Strasse": "Kleinzschachwitzer Ufer 3",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 51.0178562,
+    "lon": 13.8449115
+  },
+  {
+    "VST": 65,
+    "PLZ": "02727",
+    "Ort": "Neugersdorf",
+    "Strasse": "Rudolf-Breitscheid-Straße 2",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.9806667,
+    "lon": 14.6096141
+  },
+  {
+    "VST": 66,
+    "PLZ": "02906",
+    "Ort": "Niesky",
+    "Strasse": "Horkaer Straße 17",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.2932898,
+    "lon": 14.8282351
+  },
+  {
+    "VST": 67,
+    "PLZ": "02625",
+    "Ort": "Bautzen",
+    "Strasse": "Dresdener Str. 68",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.1801882,
+    "lon": 14.403766
+  },
+  {
+    "VST": 68,
+    "PLZ": "01558",
+    "Ort": "Großenhain",
+    "Strasse": "Dresdner Str. 33",
+    "Zeitbeschraenkung": "19:00 - 06:00 + sonn- u. feiertags",
+    "lat": 51.288905,
+    "lon": 13.5326263
+  },
+  {
+    "VST": 69,
+    "PLZ": "02763",
+    "Ort": "Zittau",
+    "Strasse": "Dresdner Str. 42",
+    "Zeitbeschraenkung": "22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 22:00)",
+    "lat": 50.8997887,
+    "lon": 14.7942157
+  },
+  {
+    "VST": 70,
+    "PLZ": "01454",
+    "Ort": "Radeberg",
+    "Strasse": "An der Ziegelei 2",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.1297565,
+    "lon": 13.916648
+  },
+  {
+    "VST": 71,
+    "PLZ": "02681",
+    "Ort": "Wilthen",
+    "Strasse": "Zittauer Str. 12",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.0946531,
+    "lon": 14.392507
+  },
+  {
+    "VST": 72,
+    "PLZ": "01900",
+    "Ort": "Großröhrsdorf",
+    "Strasse": "Pulsnitzer Str. 16",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.1535167,
+    "lon": 14.0202813
+  },
+  {
+    "VST": 73,
+    "PLZ": "01855",
+    "Ort": "Sebnitz",
+    "Strasse": "Schandauer Str. 86",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.9658627,
+    "lon": 14.2502547
+  },
+  {
+    "VST": 74,
+    "PLZ": "02708",
+    "Ort": "Löbau",
+    "Strasse": "Ahornallee 2",
+    "Zeitbeschraenkung": "22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)",
+    "lat": 51.0897189,
+    "lon": 14.6679969
+  },
+  {
+    "VST": 76,
+    "PLZ": "01936",
+    "Ort": "Königsbrück",
+    "Strasse": "Birkenweg 2",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.2570016,
+    "lon": 13.8905233
+  },
+  {
+    "VST": 77,
+    "PLZ": "01844",
+    "Ort": "Neustadt",
+    "Strasse": "Sebnitzer Str. 41",
+    "Zeitbeschraenkung": "22:00 - 06:00 + sonn- u. feiertags",
+    "lat": 51.0245898,
+    "lon": 14.231504
+  },
+  {
+    "VST": 78,
+    "PLZ": "02763",
+    "Ort": "Zittau",
+    "Strasse": "Leipziger Str. 35",
+    "Zeitbeschraenkung": "22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)",
+    "lat": 50.9007656,
+    "lon": 14.8183761
+  },
+  {
+    "VST": 79,
+    "PLZ": "02829",
+    "Ort": "Görlitz",
+    "Strasse": "Nieskyer Str. 100",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.1702618,
+    "lon": 14.9700474
+  },
+  {
+    "VST": 80,
+    "PLZ": "01877",
+    "Ort": "Bischofswerda",
+    "Strasse": "Bautzner Straße 78",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.1248482,
+    "lon": 14.2048231
+  },
+  {
+    "VST": 81,
+    "PLZ": "02736",
+    "Ort": "Oppach",
+    "Strasse": "Bautzener Str. 07 a",
+    "Zeitbeschraenkung": "20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)",
+    "lat": 51.0765448,
+    "lon": 14.4871365
+  },
+  {
+    "VST": 82,
+    "PLZ": "02826",
+    "Ort": "Görlitz",
+    "Strasse": "Emmerichstr. 33 - 35",
+    "Zeitbeschraenkung": "20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)",
+    "lat": 51.1461503,
+    "lon": 14.9872494
+  },
+  {
+    "VST": 83,
+    "PLZ": "01917",
+    "Ort": "Kamenz",
+    "Strasse": "Uferstr. 4",
+    "Zeitbeschraenkung": "20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)",
+    "lat": 51.2712784,
+    "lon": 14.103811
+  },
+  {
+    "VST": 84,
+    "PLZ": "02827",
+    "Ort": "Görlitz",
+    "Strasse": "Reichenbacher Str. 106",
+    "Zeitbeschraenkung": "22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 22:00)",
+    "lat": 51.1489446,
+    "lon": 14.947045
+  },
+  {
+    "VST": 85,
+    "PLZ": "02625",
+    "Ort": "Bautzen",
+    "Strasse": "Stieberstr. 53",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.1710578,
+    "lon": 14.4362345
+  },
+  {
+    "VST": 86,
+    "PLZ": "02826",
+    "Ort": "Görlitz",
+    "Strasse": "Pontestr. 10",
+    "Zeitbeschraenkung": "20:00 - 06:00 + sonn- u. feiertags",
+    "lat": 51.1582027,
+    "lon": 14.9835362
+  },
+  {
+    "VST": 87,
+    "PLZ": "02625",
+    "Ort": "Bautzen",
+    "Strasse": "Gesundbrunnenring 4",
+    "Zeitbeschraenkung": "20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)",
+    "lat": 51.1867917,
+    "lon": 14.4403117
+  },
+  {
+    "VST": 88,
+    "PLZ": "08340",
+    "Ort": "Schwarzenberg",
+    "Strasse": "Roter Mühlenweg 28",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.5500941,
+    "lon": 12.7744107
+  },
+  {
+    "VST": 89,
+    "PLZ": "09243",
+    "Ort": "Niederfrohna",
+    "Strasse": "Limbacher Str. 81",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.8694691,
+    "lon": 12.7515129
+  },
+  {
+    "VST": 90,
+    "PLZ": "09126",
+    "Ort": "Chemnitz",
+    "Strasse": "Zschopauer Str.244",
+    "Zeitbeschraenkung": "20:00 - 07:00",
+    "lat": 50.8130883,
+    "lon": 12.9570793
+  },
+  {
+    "VST": 91,
+    "PLZ": "08321",
+    "Ort": "Zschorlau",
+    "Strasse": "Am Kuchenhaus 12 (im EKZ)",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.5512184,
+    "lon": 12.6452312
+  },
+  {
+    "VST": 92,
+    "PLZ": "09125",
+    "Ort": "Chemnitz",
+    "Strasse": "Annaberger Straße 315",
+    "Zeitbeschraenkung": "20:00 - 07:00",
+    "lat": 50.7966534,
+    "lon": 12.9206112
+  },
+  {
+    "VST": 93,
+    "PLZ": "09376",
+    "Ort": "Oelsnitz",
+    "Strasse": "Hedwigschachtstr. 1",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.7279395,
+    "lon": 12.7003812
+  },
+  {
+    "VST": 94,
+    "PLZ": "08280",
+    "Ort": "Aue",
+    "Strasse": "Lößnitzer Str. 20-22",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.5909529,
+    "lon": 12.6990713
+  },
+  {
+    "VST": 95,
+    "PLZ": "09114",
+    "Ort": "Chemnitz",
+    "Strasse": "Bornaer Str. 148",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.8636689,
+    "lon": 12.9020843
+  },
+  {
+    "VST": 96,
+    "PLZ": "09356",
+    "Ort": "St. Egidien",
+    "Strasse": "Platanenstr. 4",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.77283,
+    "lon": 12.6235149
+  },
+  {
+    "VST": 97,
+    "PLZ": "09119",
+    "Ort": "Chemnitz",
+    "Strasse": "Dr.-Salvador-Allende-Str. 1",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.8093066,
+    "lon": 12.8915514
+  },
+  {
+    "VST": 98,
+    "PLZ": "08107",
+    "Ort": "Kirchberg",
+    "Strasse": "Lengenfelder Str. 41",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.6196195,
+    "lon": 12.5111272
+  },
+  {
+    "VST": 100,
+    "PLZ": "09390",
+    "Ort": "Gornsdorf",
+    "Strasse": "Meinersdorfer Str. 6",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.7173567,
+    "lon": 12.8854354
+  },
+  {
+    "VST": 101,
+    "PLZ": "08297",
+    "Ort": "Zwönitz",
+    "Strasse": "Wehrgasse 1b",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.6424611,
+    "lon": 12.8168156
+  },
+  {
+    "VST": 102,
+    "PLZ": "09217",
+    "Ort": "Burgstädt",
+    "Strasse": "Straße der Dt. Einheit 2 - 4",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.922209,
+    "lon": 12.8042616
+  },
+  {
+    "VST": 103,
+    "PLZ": "08289",
+    "Ort": "Schneeberg",
+    "Strasse": "Bruno-Dost-Str. 39",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.6018444,
+    "lon": 12.6255323
+  },
+  {
+    "VST": 104,
+    "PLZ": "09130",
+    "Ort": "Chemnitz",
+    "Strasse": "Heinrich-Schütz-Str. 55",
+    "Zeitbeschraenkung": "19:00 - 07:00",
+    "lat": 50.839869,
+    "lon": 12.9511841
+  },
+  {
+    "VST": 105,
+    "PLZ": "09122",
+    "Ort": "Chemnitz",
+    "Strasse": "Wladimir-Sagorski-Str. 22",
+    "Zeitbeschraenkung": "20:00 - 07:00",
+    "lat": 50.795454,
+    "lon": 12.8895989
+  },
+  {
+    "VST": 106,
+    "PLZ": "09116",
+    "Ort": "Chemnitz",
+    "Strasse": "Zwickauer Str. 247",
+    "Zeitbeschraenkung": "20:00 - 07:00",
+    "lat": 50.8193445,
+    "lon": 12.8767636
+  },
+  {
+    "VST": 107,
+    "PLZ": "09116",
+    "Ort": "Chemnitz",
+    "Strasse": "Waldenburger Str. 33",
+    "Zeitbeschraenkung": "22:00 - 06:00 + sonn- u. feiertags",
+    "lat": 50.8311472,
+    "lon": 12.8816325
+  },
+  {
+    "VST": 109,
+    "PLZ": "09337",
+    "Ort": "Hohenstein-E.thal",
+    "Strasse": "Dresdner Str. 151",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": null,
+    "lon": null
+  },
+  {
+    "VST": 110,
+    "PLZ": "09366",
+    "Ort": "Stollberg",
+    "Strasse": "Lutherstr. 15",
+    "Zeitbeschraenkung": "22:00 - 06:00 + sonn- u. feiertags",
+    "lat": 50.7100167,
+    "lon": 12.7777046
+  },
+  {
+    "VST": 111,
+    "PLZ": "09111",
+    "Ort": "Chemnitz",
+    "Strasse": "Theaterstr. 7",
+    "Zeitbeschraenkung": "keine",
+    "lat": 50.8350719,
+    "lon": 12.919254
+  },
+  {
+    "VST": 112,
+    "PLZ": "09385",
+    "Ort": "Lugau",
+    "Strasse": "Chemnitzer Str. 1",
+    "Zeitbeschraenkung": "22:00 - 06:00",
+    "lat": 50.7438327,
+    "lon": 12.7489281
+  },
+  {
+    "VST": 113,
+    "PLZ": "02943",
+    "Ort": "Weißwasser",
+    "Strasse": "Berliner Straße 106",
+    "Zeitbeschraenkung": "22:00 - 06:00+ Sonn- und Feiertags",
+    "lat": 51.5083602,
+    "lon": 14.619418
+  },
+  {
+    "VST": 114,
+    "PLZ": "03048",
+    "Ort": "Cottbus",
+    "Strasse": "Welzower Straße 26 A",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.7403217,
+    "lon": 14.3235167
+  },
+  {
+    "VST": 115,
+    "PLZ": "03130",
+    "Ort": "Forst",
+    "Strasse": "Cottbusser Straße 92",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.7438586,
+    "lon": 14.6455395
+  },
+  {
+    "VST": 116,
+    "PLZ": "03130",
+    "Ort": "Spremberg",
+    "Strasse": "Grünstraße 3",
+    "Zeitbeschraenkung": "22:00 - 06:00+ Sonn- und Feiertags",
+    "lat": 51.5627676,
+    "lon": 14.3721997
+  },
+  {
+    "VST": 117,
+    "PLZ": "02991",
+    "Ort": "Lauta",
+    "Strasse": "Friedensstraße 8",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.4411769,
+    "lon": 14.100161
+  },
+  {
+    "VST": 118,
+    "PLZ": "03042",
+    "Ort": "Cottbus",
+    "Strasse": "Georg Schssinger Straße 3",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.7625483,
+    "lon": 14.3764462
+  },
+  {
+    "VST": 119,
+    "PLZ": "03099",
+    "Ort": "Kolkwitz",
+    "Strasse": "Berliner Straße 113 D",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.751615,
+    "lon": 14.2826245
+  },
+  {
+    "VST": 120,
+    "PLZ": "02977",
+    "Ort": "Hoyerswerda",
+    "Strasse": "Teschenstraße 1",
+    "Zeitbeschraenkung": "22:00 - 06:00+ Sonn- und Feiertags (Frische bis 19:00)",
+    "lat": 51.4399267,
+    "lon": 14.2468641
+  },
+  {
+    "VST": 121,
+    "PLZ": "03051",
+    "Ort": "Cottbus",
+    "Strasse": "Sachsendorfer Straße 5",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.7156717,
+    "lon": 14.3173256
+  },
+  {
+    "VST": 122,
+    "PLZ": "03044",
+    "Ort": "Cottbus",
+    "Strasse": "Limberger Straße 1",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.78154,
+    "lon": 14.3179701
+  },
+  {
+    "VST": 123,
+    "PLZ": "01968",
+    "Ort": "Senftenberg",
+    "Strasse": "Bahnhofsstraße 38/40",
+    "Zeitbeschraenkung": "22:00 - 06:00+ Sonn- und Feiertags",
+    "lat": 51.5207439,
+    "lon": 14.0234195
+  },
+  {
+    "VST": 124,
+    "PLZ": "02977",
+    "Ort": "Hoyerswerda",
+    "Strasse": "Albert- Einstein Straße 1 A",
+    "Zeitbeschraenkung": "22:00 - 06:00+ Sonn- und Feiertags",
+    "lat": 51.4388966,
+    "lon": 14.2621368
+  },
+  {
+    "VST": 125,
+    "PLZ": "03046",
+    "Ort": "Cottbus",
+    "Strasse": "Karl-Liebknecht- Straße 81",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.7567221,
+    "lon": 14.3127901
+  },
+  {
+    "VST": 126,
+    "PLZ": "02977",
+    "Ort": "Hoyerswerda",
+    "Strasse": "Ziolkowskistraße 18",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.4297631,
+    "lon": 14.271223
+  },
+  {
+    "VST": 127,
+    "PLZ": "03042",
+    "Ort": "Cottbus",
+    "Strasse": "Stadtring 8",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.765549,
+    "lon": 14.3577498
+  },
+  {
+    "VST": 128,
+    "PLZ": "01983",
+    "Ort": "Großräschen",
+    "Strasse": "IFA-Park 2",
+    "Zeitbeschraenkung": "keine",
+    "lat": 51.5906808,
+    "lon": 14.0124139
+  }
+]
