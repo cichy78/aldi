@@ -1,1255 +1,645 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#003da5">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="ALDI VST Wilsdruff – Filialnavigation und Disposition">
-  <title>ALDI VST · Wilsdruff</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
-  <style>
-
-:root, body.theme-aero {
-  --bg-gradient: linear-gradient(160deg, #003da5 0%, #0055c4 40%, #1a7ae0 100%);
-  --window-bg: rgba(255,255,255,0.82); --window-border: rgba(255,255,255,0.45);
-  --glass: blur(14px) saturate(170%);
-  --title-bar: linear-gradient(180deg, #0055c4 0%, #003da5 100%); --title-text: #fff;
-  --accent: #003da5; --btn-bg: linear-gradient(180deg, #f0f6ff 0%, #c8dcf0 50%, #a8c8e8 100%);
-  --btn-border: #5a8aba; --btn-text: #0a3a6a; --input-bg: rgba(255,255,255,0.95);
-  --card-bg: rgba(255,255,255,0.9); --text: #1a2a3a;
-  --shadow: 0 8px 32px rgba(0,30,80,0.35); --radius: 10px;
-  --font: "Segoe UI", system-ui, sans-serif; --fav: #e6a817; --aldi-orange: #ff6600;
-}
-body.theme-xp {
-  --bg-gradient: linear-gradient(160deg, #3a6a2a 0%, #5a9a4a 40%, #7aba6a 100%);
-  --window-bg: #ece9d8; --window-border: #0055ea; --glass: none;
-  --title-bar: linear-gradient(180deg, #0a5aea 0%, #0a2a9a 100%); --title-text: #fff;
-  --accent: #0a5aea; --btn-bg: linear-gradient(180deg,#fff 0%,#ece9d8 50%,#d4d0c8 100%);
-  --btn-border: #003c74; --btn-text: #000; --input-bg: #fff; --card-bg: #fff;
-  --text: #000; --shadow: 2px 2px 4px rgba(0,0,0,0.4); --radius: 3px;
-  --font: "Tahoma", "MS Sans Serif", sans-serif; --fav: #c48a00;
-}
-body.theme-mac {
-  --bg-gradient: linear-gradient(160deg, #5b7cfa 0%, #8b9cf7 40%, #e8eafc 100%);
-  --window-bg: rgba(246,246,248,0.85); --window-border: rgba(0,0,0,0.1);
-  --glass: blur(20px) saturate(160%);
-  --title-bar: linear-gradient(180deg, #f5f5f7 0%, #e8e8ed 100%); --title-text: #1d1d1f;
-  --accent: #007aff; --btn-bg: linear-gradient(180deg,#fff 0%,#f0f0f5 100%);
-  --btn-border: #c7c7cc; --btn-text: #1d1d1f; --input-bg: #fff; --card-bg: rgba(255,255,255,0.92);
-  --text: #1d1d1f; --shadow: 0 12px 40px rgba(0,0,0,0.15); --radius: 12px;
-  --font: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif; --fav: #ff9f0a;
-}
-body.theme-dark {
-  --bg-gradient: linear-gradient(160deg, #0d1117 0%, #161b22 50%, #1a2332 100%);
-  --window-bg: rgba(22,27,34,0.94); --window-border: rgba(255,255,255,0.08);
-  --glass: blur(16px); --title-bar: linear-gradient(180deg,#21262d,#161b22); --title-text: #e6edf3;
-  --accent: #58a6ff; --btn-bg: linear-gradient(180deg,#30363d,#21262d);
-  --btn-border: #30363d; --btn-text: #e6edf3; --input-bg: #0d1117; --card-bg: rgba(33,38,45,0.95);
-  --text: #c9d1d9; --shadow: 0 8px 32px rgba(0,0,0,0.55); --radius: 10px;
-  --font: "Segoe UI", system-ui, sans-serif; --fav: #e3b341;
-}
-body.theme-solar {
-  --bg-gradient: linear-gradient(160deg, #3d1c02 0%, #c4621a 50%, #e8a838 100%);
-  --window-bg: rgba(255,248,235,0.9); --window-border: rgba(180,100,30,0.3);
-  --glass: blur(14px); --title-bar: linear-gradient(180deg,#e07a20,#9a3d08); --title-text: #fffaf0;
-  --accent: #c45a10; --btn-bg: linear-gradient(180deg,#fff8e8,#e8c890);
-  --btn-border: #c48a40; --btn-text: #4a2808; --input-bg: #fffaf5; --card-bg: rgba(255,250,240,0.94);
-  --text: #3a2208; --shadow: 0 10px 36px rgba(80,30,0,0.35); --radius: 10px;
-  --font: "Segoe UI", sans-serif; --fav: #e8a010;
-}
-body.theme-forest {
-  --bg-gradient: linear-gradient(160deg, #0b3d2e 0%, #1a6b4a 45%, #2d9b6a 100%);
-  --window-bg: rgba(240,252,245,0.9); --window-border: rgba(30,100,60,0.25);
-  --glass: blur(14px); --title-bar: linear-gradient(180deg,#1a8a5a,#0d5a3a); --title-text: #fff;
-  --accent: #0d7a4a; --btn-bg: linear-gradient(180deg,#e8fff0,#b8e8c8);
-  --btn-border: #4a9a6a; --btn-text: #0a3a22; --input-bg: #f5fff8; --card-bg: rgba(255,255,255,0.92);
-  --text: #0a2a18; --shadow: 0 8px 28px rgba(0,40,20,0.3); --radius: 10px;
-  --font: "Segoe UI", sans-serif; --fav: #d4a017;
-}
-body.theme-rose {
-  --bg-gradient: linear-gradient(160deg, #4a1040 0%, #8b2a6b 40%, #d46ba0 100%);
-  --window-bg: rgba(255,245,250,0.9); --window-border: rgba(160,60,120,0.25);
-  --glass: blur(14px); --title-bar: linear-gradient(180deg,#c04090,#802060); --title-text: #fff;
-  --accent: #a03070; --btn-bg: linear-gradient(180deg,#fff0f6,#f0c0d8);
-  --btn-border: #c070a0; --btn-text: #4a1030; --input-bg: #fff8fc; --card-bg: rgba(255,255,255,0.92);
-  --text: #2a1020; --shadow: 0 8px 28px rgba(60,10,40,0.3); --radius: 12px;
-  --font: "Segoe UI", sans-serif; --fav: #e8a020;
-}
-body.theme-ocean {
-  --bg-gradient: linear-gradient(160deg, #023e5a 0%, #0a6a8a 40%, #20b0c8 100%);
-  --window-bg: rgba(240,250,255,0.9); --window-border: rgba(20,100,130,0.25);
-  --glass: blur(14px); --title-bar: linear-gradient(180deg,#0a90b0,#046080); --title-text: #fff;
-  --accent: #0878a0; --btn-bg: linear-gradient(180deg,#e8f8ff,#b0e0f0);
-  --btn-border: #50a0b8; --btn-text: #043848; --input-bg: #f5fcff; --card-bg: rgba(255,255,255,0.92);
-  --text: #0a2838; --shadow: 0 8px 28px rgba(0,40,60,0.3); --radius: 10px;
-  --font: "Segoe UI", sans-serif; --fav: #e8b020;
-}
-body.theme-midnight {
-  --bg-gradient: linear-gradient(160deg, #0a0a1a 0%, #1a1040 50%, #2a1860 100%);
-  --window-bg: rgba(18,14,36,0.94); --window-border: rgba(140,100,255,0.2);
-  --glass: blur(16px); --title-bar: linear-gradient(180deg,#2a1a5a,#1a1040); --title-text: #e8e0ff;
-  --accent: #a78bfa; --btn-bg: linear-gradient(180deg,#2a2050,#1a1440);
-  --btn-border: #4a3a80; --btn-text: #e8e0ff; --input-bg: #120e24; --card-bg: rgba(28,22,50,0.95);
-  --text: #d0c8f0; --shadow: 0 8px 32px rgba(0,0,0,0.5); --radius: 12px;
-  --font: "Segoe UI", system-ui, sans-serif; --fav: #f0c040;
-}
-body.theme-classic {
-  --bg-gradient: linear-gradient(160deg, #2c2c2c 0%, #4a4a4a 50%, #6a6a6a 100%);
-  --window-bg: #f0f0f0; --window-border: #808080; --glass: none;
-  --title-bar: linear-gradient(180deg,#6a6a6a,#404040); --title-text: #fff;
-  --accent: #404040; --btn-bg: linear-gradient(180deg,#fff,#d0d0d0);
-  --btn-border: #808080; --btn-text: #202020; --input-bg: #fff; --card-bg: #fff;
-  --text: #202020; --shadow: 3px 3px 0 rgba(0,0,0,0.25); --radius: 2px;
-  --font: "Segoe UI", Tahoma, sans-serif; --fav: #c08000;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#003da5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>ALDI VST · Wilsdruff</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root {
+  --bg: linear-gradient(160deg,#003da5,#0055c4 50%,#1a7ae0);
+  --card: rgba(255,255,255,.92);
+  --text: #1a2a3a;
+  --accent: #003da5;
+  --border: #5a8aba;
+  --radius: 10px;
+  --font: system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: var(--font); background: var(--bg-gradient); min-height: 100vh;
-  color: var(--text); display: flex; flex-direction: column; align-items: center;
-  padding: 12px; overflow-x: hidden;
+  font-family: var(--font);
+  background: var(--bg);
+  min-height: 100vh;
+  color: var(--text);
+  padding: 12px;
+  padding-bottom: 24px;
 }
+/* SPLASH */
 #splash {
   position: fixed; inset: 0; z-index: 9999;
-  background: linear-gradient(160deg, #002a70 0%, #003da5 40%, #0055c4 100%);
+  background: linear-gradient(160deg,#002a70,#003da5 40%,#0055c4);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transition: opacity 0.55s ease, visibility 0.55s;
+  transition: opacity .4s, visibility .4s;
 }
 #splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-.splash-logo { text-align: center; animation: logoIn 1s cubic-bezier(0.22,1,0.36,1) both; }
 .splash-aldi {
-  font-size: clamp(3.5rem, 14vw, 5.5rem); font-weight: 900; letter-spacing: 0.08em;
-  color: #fff; text-shadow: 0 4px 24px rgba(0,0,0,0.35); line-height: 1;
+  font-size: clamp(3rem,12vw,4.5rem); font-weight: 900; color: #fff;
+  letter-spacing: .08em; text-shadow: 0 4px 20px rgba(0,0,0,.3);
 }
-.splash-aldi span { display: inline-block; animation: letterPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
-.splash-aldi span:nth-child(1) { animation-delay: 0.1s; }
-.splash-aldi span:nth-child(2) { animation-delay: 0.2s; }
-.splash-aldi span:nth-child(3) { animation-delay: 0.3s; }
-.splash-aldi span:nth-child(4) { animation-delay: 0.4s; }
-.splash-sub {
-  margin-top: 12px; font-size: 1.15rem; color: #ffcc80; font-weight: 600;
-  letter-spacing: 0.2em; text-transform: uppercase; animation: fadeUp 0.8s 0.7s both;
+.splash-sub { color: #ffcc80; font-weight: 700; letter-spacing: .25em; margin-top: 10px; }
+.splash-loc { color: rgba(255,255,255,.75); margin-top: 6px; }
+#startBtn {
+  margin-top: 28px; padding: 14px 48px; font-size: 1.2rem; font-weight: 700;
+  border: 0; border-radius: 40px; cursor: pointer;
+  background: linear-gradient(180deg,#ff8800,#ff6600); color: #fff;
+  box-shadow: 0 6px 24px rgba(255,102,0,.45);
 }
-.splash-loc {
-  margin-top: 6px; font-size: 0.95rem; color: rgba(255,255,255,0.75); animation: fadeUp 0.8s 0.9s both;
+#startBtn:active { transform: scale(.97); }
+.splash-hint { margin-top: 14px; color: rgba(255,255,255,.6); font-size: .85rem; }
+
+/* APP */
+#app { display: none; max-width: 860px; margin: 0 auto; }
+#app.show { display: block; }
+.win {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0,30,80,.3);
+  overflow: hidden;
 }
-.splash-ring {
-  width: 120px; height: 120px; border-radius: 50%;
-  border: 3px solid rgba(255,255,255,0.15); border-top-color: #ff6600;
-  animation: spin 1s linear infinite, fadeUp 0.5s 0.5s both; margin: 28px auto 0;
+.bar {
+  background: linear-gradient(180deg,#0055c4,#003da5);
+  color: #fff; padding: 10px 14px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
 }
-#splashBtn {
-  margin-top: 28px; padding: 14px 48px; font-size: 1.15rem; font-weight: 700;
-  border: none; border-radius: 40px; cursor: pointer;
-  background: linear-gradient(180deg, #ff8800, #ff6600); color: #fff;
-  box-shadow: 0 6px 24px rgba(255,102,0,0.45);
-  opacity: 1; transform: translateY(0); transition: filter 0.15s, transform 0.15s;
-  animation: fadeUp 0.6s 0.8s both;
+.bar strong { font-size: 1rem; }
+.bar em { font-style: normal; color: #ff8800; }
+.bar select {
+  background: rgba(0,0,0,.2); color: #fff; border: 1px solid rgba(255,255,255,.3);
+  border-radius: 6px; padding: 4px 8px; font-size: 12px;
 }
-#splashBtn:hover { filter: brightness(1.1); }
-#splashBtn:active { transform: scale(0.97); }
-.splash-tap-hint {
-  margin-top: 16px; font-size: 0.85rem; color: rgba(255,255,255,0.65);
-  animation: fadeUp 0.6s 1.2s both;
-}
-@keyframes logoIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
-@keyframes letterPop { from { opacity: 0; transform: translateY(30px) scale(0.5); } to { opacity: 1; transform: none; } }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-@keyframes spin { to { transform: rotate(360deg); } }
-#app { width: 100%; max-width: 860px; display: none; }
-#app.show { display: block; animation: fadeUp 0.4s ease; }
-.window {
-  background: var(--window-bg); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass);
-  border: 1px solid var(--window-border); border-radius: var(--radius);
-  box-shadow: var(--shadow); overflow: hidden; margin-bottom: 10px;
-}
-.title-bar {
-  background: var(--title-bar); color: var(--title-text);
-  padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;
-  font-size: 13px; font-weight: 600; gap: 8px; flex-wrap: wrap;
-}
-.title-bar .title { display: flex; align-items: center; gap: 8px; }
-.title-bar .brand { font-weight: 800; letter-spacing: 0.04em; font-size: 14px; }
-.title-bar .brand em { font-style: normal; color: #ff8800; }
-.title-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.theme-select, .lang-select {
-  background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.3);
-  color: inherit; padding: 3px 8px; border-radius: 6px; font-size: 11px; cursor: pointer;
-}
-body.theme-mac .theme-select, body.theme-mac .lang-select {
-  background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.12); color: #1d1d1f;
-}
-body.theme-dark .theme-select, body.theme-dark .lang-select,
-body.theme-midnight .theme-select, body.theme-midnight .lang-select {
-  background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15);
-}
-.content { padding: 16px 18px; }
-h1 { font-size: 1.25rem; margin-bottom: 2px; color: var(--accent); }
-.subtitle { font-size: 0.82rem; opacity: 0.7; margin-bottom: 12px; }
-.tabs {
-  display: flex; gap: 3px; margin-bottom: 14px; flex-wrap: wrap;
-  border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 8px;
-}
+.content { padding: 16px; }
+h1 { font-size: 1.2rem; color: var(--accent); margin-bottom: 4px; }
+.sub { font-size: .82rem; opacity: .7; margin-bottom: 12px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; border-bottom: 1px solid #ddd; padding-bottom: 8px; }
 .tab {
-  padding: 7px 11px; font-size: 0.82rem; font-weight: 600;
-  border: 1px solid transparent; border-radius: var(--radius) var(--radius) 0 0;
-  background: transparent; color: var(--text); cursor: pointer; opacity: 0.7;
+  padding: 8px 12px; border: 0; background: transparent; cursor: pointer;
+  font-weight: 600; font-size: .85rem; border-radius: 8px 8px 0 0; color: var(--text); opacity: .7;
 }
-.tab:hover { opacity: 1; background: rgba(0,0,0,0.05); }
-.tab.active {
-  opacity: 1; background: var(--card-bg); border-color: var(--btn-border);
-  border-bottom-color: transparent; color: var(--accent);
+.tab.active { opacity: 1; background: #e8f0ff; color: var(--accent); }
+.panel { display: none; }
+.panel.active { display: block; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+input[type=text], input[type=number], select {
+  flex: 1; min-width: 120px; padding: 10px 12px; font-size: 1rem;
+  border: 1px solid var(--border); border-radius: var(--radius); background: #fff;
 }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; animation: fadeUp 0.2s ease; }
-.search-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-.search-row input, .search-row select {
-  flex: 1; min-width: 110px; padding: 9px 12px; font-size: 1rem;
-  border: 1px solid var(--btn-border); border-radius: var(--radius);
-  background: var(--input-bg); color: var(--text); outline: none;
-}
-.filter-row {
-  display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; font-size: 0.85rem;
-}
-.filter-row label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
 .btn {
-  padding: 9px 14px; font-size: 0.9rem; font-weight: 600;
-  border: 1px solid var(--btn-border); border-radius: var(--radius);
-  background: var(--btn-bg); color: var(--btn-text); cursor: pointer; white-space: nowrap;
+  padding: 10px 14px; font-weight: 600; font-size: .9rem; border-radius: var(--radius);
+  border: 1px solid var(--border); background: #e8f0ff; color: #0a3a6a; cursor: pointer;
+  white-space: nowrap;
 }
-.btn:hover { filter: brightness(1.08); }
-.btn-primary { background: linear-gradient(180deg, #4a9aea 0%, #003da5 100%); color: #fff; border-color: #002a70; }
-.btn-nav { background: linear-gradient(180deg, #4aca6a 0%, #1a9a3a 100%); color: #fff; border-color: #0a5a1a; font-size: 1rem; padding: 11px 20px; }
-.btn-danger { background: linear-gradient(180deg, #ea6a4a 0%, #ba3a1a 100%); color: #fff; border-color: #7a1a0a; }
+.btn-primary { background: linear-gradient(180deg,#4a9aea,#003da5); color: #fff; border-color: #002a70; }
+.btn-nav { background: linear-gradient(180deg,#4aca6a,#1a9a3a); color: #fff; border-color: #0a5a1a; }
+.btn-danger { background: linear-gradient(180deg,#ea6a4a,#ba3a1a); color: #fff; border-color: #7a1a0a; }
 .btn-call {
-  background: linear-gradient(180deg, #4aca6a 0%, #1a9a3a 100%); color: #fff; border-color: #0a5a1a;
-  font-size: 1.1rem; padding: 14px 28px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+  background: linear-gradient(180deg,#4aca6a,#1a9a3a); color: #fff; border: 0;
+  padding: 14px 28px; font-size: 1.1rem; font-weight: 700; border-radius: var(--radius);
 }
-.btn-sm { padding: 5px 10px; font-size: 0.8rem; }
-.result {
-  display: none; background: var(--card-bg); border: 1px solid var(--btn-border);
-  border-radius: var(--radius); padding: 16px; margin-top: 8px;
+.card {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; margin-top: 8px;
 }
-.result.visible { display: block; animation: fadeUp 0.25s ease; }
-.result h2 { font-size: 1.15rem; margin-bottom: 10px; color: var(--accent); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.result .star { cursor: pointer; font-size: 1.3rem; color: #ccc; }
-.result .star.on { color: var(--fav); }
-.result .field { display: grid; grid-template-columns: 130px 1fr; gap: 4px 10px; margin-bottom: 6px; font-size: 0.93rem; }
-.result .field label { font-weight: 600; opacity: 0.75; }
-.result .actions { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
-.not-found {
-  display: none; padding: 12px; background: #fff3cd; border: 1px solid #ffc107;
-  border-radius: var(--radius); color: #856404; margin-top: 8px; font-size: 0.9rem;
+.card h2 { color: var(--accent); margin-bottom: 10px; font-size: 1.15rem; }
+.field { display: grid; grid-template-columns: 120px 1fr; gap: 4px 10px; margin-bottom: 6px; font-size: .93rem; }
+.field label { font-weight: 600; opacity: .75; }
+.actions { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+.list {
+  max-height: 280px; overflow-y: auto; border: 1px solid var(--border);
+  border-radius: var(--radius); background: #fff;
 }
-body.theme-dark .not-found, body.theme-midnight .not-found { background: #3d3420; border-color: #8a7020; color: #f0e0a0; }
-.not-found.visible { display: block; }
-.store-list, .recent-list, .fav-list {
-  max-height: 300px; overflow-y: auto; border: 1px solid var(--btn-border);
-  border-radius: var(--radius); background: var(--input-bg);
+.item {
+  padding: 10px 12px; border-bottom: 1px solid #eee; cursor: pointer;
+  display: flex; justify-content: space-between; gap: 8px; font-size: .88rem;
 }
-.store-item {
-  padding: 8px 12px; border-bottom: 1px solid rgba(0,0,0,0.06);
-  display: flex; justify-content: space-between; align-items: center;
-  cursor: pointer; font-size: 0.88rem; gap: 8px;
-}
-.store-item:hover { background: rgba(0,61,165,0.08); }
-.store-item .meta { opacity: 0.65; font-size: 0.78rem; }
-.store-item .badge {
-  font-size: 0.7rem; padding: 2px 6px; border-radius: 10px;
-  background: rgba(0,61,165,0.12); color: var(--accent); white-space: nowrap;
-}
-.store-item .badge.keine { background: rgba(40,160,60,0.15); color: #1a7a2a; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-.form-grid label { display: flex; flex-direction: column; gap: 3px; font-size: 0.82rem; font-weight: 600; }
-.form-grid input {
-  padding: 7px 10px; border: 1px solid var(--btn-border); border-radius: var(--radius);
-  background: var(--input-bg); font-size: 0.92rem; color: var(--text);
-}
-.form-grid .full { grid-column: 1 / -1; }
-#mapContainer {
-  height: 380px; border-radius: var(--radius); border: 1px solid var(--btn-border);
-  overflow: hidden; margin-top: 8px; background: #ddd;
-}
-.map-controls { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
-.dispo-card {
-  background: var(--card-bg); border: 1px solid var(--btn-border);
-  border-radius: var(--radius); padding: 20px; text-align: center;
-}
-.dispo-card h2 { color: var(--accent); margin-bottom: 8px; font-size: 1.3rem; }
-.dispo-card .phone {
-  font-size: 1.6rem; font-weight: 800; letter-spacing: 0.04em; margin: 16px 0; color: var(--accent);
-}
-.dispo-info { font-size: 0.9rem; opacity: 0.8; margin-bottom: 16px; line-height: 1.5; }
-.status { font-size: 0.85rem; padding: 8px 12px; border-radius: var(--radius); margin-top: 10px; display: none; }
-.status.ok { display: block; background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-.status.err { display: block; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-.section-title { font-size: 1rem; color: var(--accent); margin: 14px 0 8px; }
-.hint { font-size: 0.8rem; opacity: 0.65; margin-bottom: 10px; }
-.footer {
-  text-align: center; font-size: 0.75rem; opacity: 0.7; margin-top: 8px;
-  color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); line-height: 1.5;
-}
-.footer .author { font-weight: 600; opacity: 0.95; }
-.install-banner {
-  display: none; background: rgba(0,0,0,0.25); color: #fff; padding: 8px 14px;
-  border-radius: var(--radius); margin-bottom: 10px; font-size: 0.85rem;
-  align-items: center; justify-content: space-between; gap: 10px; width: 100%; max-width: 860px;
-}
-.install-banner.visible { display: flex; }
+.item:hover { background: #eef4ff; }
+.item .meta { opacity: .65; font-size: .78rem; }
+.msg { padding: 12px; background: #fff3cd; border-radius: var(--radius); margin-top: 8px; display: none; }
+.msg.show { display: block; }
+#map { height: 360px; border-radius: var(--radius); border: 1px solid var(--border); margin-top: 8px; }
+.dispo { text-align: center; }
+.dispo .addr { font-size: 1.05rem; font-weight: 600; line-height: 1.5; margin: 12px 0; }
+.dispo .phone { font-size: 1.5rem; font-weight: 800; color: var(--accent); margin: 14px 0; }
+.footer { text-align: center; color: #fff; font-size: .75rem; margin-top: 12px; text-shadow: 0 1px 2px rgba(0,0,0,.4); line-height: 1.5; }
+.form-g { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+.form-g label { display: flex; flex-direction: column; gap: 4px; font-size: .82rem; font-weight: 600; }
+.form-g .full { grid-column: 1 / -1; }
+.ok { background: #d4edda; color: #155724; padding: 8px 12px; border-radius: 8px; margin-top: 8px; display: none; }
+.ok.show { display: block; }
 @media (max-width: 540px) {
-  .form-grid { grid-template-columns: 1fr; }
-  .result .field { grid-template-columns: 1fr; }
-  .search-row { flex-direction: column; }
-  #mapContainer { height: 280px; }
+  .form-g { grid-template-columns: 1fr; }
+  .field { grid-template-columns: 1fr; }
+  #map { height: 260px; }
 }
-
-
-/* PIN overlay */
-#pinScreen {
-  position: fixed; inset: 0; z-index: 10000;
-  background: linear-gradient(160deg, #002a70, #003da5 50%, #0055c4);
-  display: none; flex-direction: column; align-items: center; justify-content: center;
-  padding: 24px; color: #fff;
-}
-#pinScreen.show { display: flex; }
-.pin-box {
-  background: rgba(255,255,255,0.12); backdrop-filter: blur(12px);
-  border-radius: 16px; padding: 28px 32px; text-align: center; max-width: 340px; width: 100%;
-  border: 1px solid rgba(255,255,255,0.2);
-}
-.pin-box h2 { margin-bottom: 8px; font-size: 1.3rem; }
-.pin-box p { opacity: 0.8; font-size: 0.9rem; margin-bottom: 18px; }
-.pin-box input {
-  width: 100%; padding: 12px; font-size: 1.5rem; letter-spacing: 0.4em;
-  text-align: center; border-radius: 10px; border: none; margin-bottom: 12px;
-}
-.pin-box .pin-err { color: #ffb0b0; font-size: 0.85rem; min-height: 1.2em; margin-bottom: 8px; }
-.pin-box button {
-  width: 100%; padding: 12px; font-size: 1rem; font-weight: 700; border: none;
-  border-radius: 10px; background: linear-gradient(180deg,#ff8800,#ff6600); color: #fff; cursor: pointer;
-}
-
-/* PDF options row */
-.pdf-opts { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 12px; align-items: center; }
-.pdf-opts select {
-  padding: 7px 10px; border-radius: var(--radius); border: 1px solid var(--btn-border);
-  background: var(--input-bg); color: var(--text); font-size: 0.9rem;
-}
-
 </style>
 </head>
-<body class="theme-aero">
+<body>
 
-  <div id="pinScreen">
-    <div class="pin-box">
-      <h2 id="pinTitle">PIN</h2>
-      <p id="pinDesc"></p>
-      <input type="password" id="pinInput" maxlength="8" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
-      <div class="pin-err" id="pinErr"></div>
-      <button type="button" id="pinSubmit">OK</button>
+<div id="splash">
+  <div class="splash-aldi">ALDI</div>
+  <div class="splash-sub">VST</div>
+  <div class="splash-loc">Wilsdruff</div>
+  <button type="button" id="startBtn">Start</button>
+  <p class="splash-hint">Kliknij Start lub poczekaj chwilę…</p>
+</div>
+
+<div id="app">
+  <div class="win">
+    <div class="bar">
+      <strong>ALDI <em>VST</em> · Wilsdruff</strong>
+      <select id="langSelect" aria-label="Language">
+        <option value="pl">PL</option>
+        <option value="de">DE</option>
+      </select>
     </div>
-  </div>
+    <div class="content">
+      <h1 id="tTitle">ALDI VST · Wilsdruff</h1>
+      <p class="sub" id="tSub">Szukaj · Nawigacja · Mapa · Dispo</p>
 
-
-  <div id="splash">
-    <div class="splash-logo">
-      <div class="splash-aldi"><span>A</span><span>L</span><span>D</span><span>I</span></div>
-      <div class="splash-sub">VST</div>
-      <div class="splash-loc">Wilsdruff</div>
-      <div class="splash-ring" id="splashRing"></div>
-      <button id="splashBtn" type="button">Start</button>
-      <p class="splash-tap-hint" id="splashHint">Kliknij Start</p>
-    </div>
-  </div>
-  <div id="installBanner" class="install-banner">
-    <span data-i18n="installHint">Zainstaluj aplikację na ekranie głównym</span>
-    <button class="btn btn-sm btn-primary" id="installBtn" data-i18n="install">Zainstaluj</button>
-  </div>
-  <div id="app">
-    <div class="window">
-      <div class="title-bar">
-        <div class="title">
-          <span class="brand">ALDI <em>VST</em></span>
-          <span style="opacity:0.75;font-weight:500;">· Wilsdruff</span>
-        </div>
-        <div class="title-controls">
-          <select class="lang-select" id="langSelect" onchange="setLang(this.value)">
-            <option value="pl">PL</option>
-            <option value="de">DE</option>
-          </select>
-          <select class="theme-select" id="themeSelect" onchange="setTheme(this.value)">
-            <option value="aero">Windows Aero</option>
-            <option value="xp">Windows XP</option>
-            <option value="mac">macOS</option>
-            <option value="dark">Dark</option>
-            <option value="solar">Solar</option>
-            <option value="forest">Forest</option>
-            <option value="rose">Rose</option>
-            <option value="ocean">Ocean</option>
-            <option value="midnight">Midnight</option>
-            <option value="classic">Classic</option>
-          </select>
-        </div>
+      <div class="tabs">
+        <button type="button" class="tab active" data-tab="search" id="tabSearch">Szukaj</button>
+        <button type="button" class="tab" data-tab="map" id="tabMap">Mapa</button>
+        <button type="button" class="tab" data-tab="favs" id="tabFavs">Ulubione</button>
+        <button type="button" class="tab" data-tab="dispo" id="tabDispo">Dispo</button>
+        <button type="button" class="tab" data-tab="manage" id="tabManage">Zarządzaj</button>
+        <button type="button" class="tab" data-tab="settings" id="tabSettings">Ustawienia</button>
       </div>
-      <div class="content">
-        <h1 data-i18n="appTitle">ALDI VST · Wilsdruff</h1>
-        <p class="subtitle" data-i18n="appSubtitle">Szukaj po VST, mieście, ulicy · Nawigacja · Mapa · Dispo</p>
-        <div class="tabs">
-          <button class="tab active" data-tab="search" onclick="switchTab('search')" data-i18n="tabSearch">🔍 Szukaj</button>
-          <button class="tab" data-tab="map" onclick="switchTab('map')" data-i18n="tabMap">🗺️ Mapa</button>
-          <button class="tab" data-tab="favs" onclick="switchTab('favs')" data-i18n="tabFavs">⭐ Ulubione</button>
-          <button class="tab" data-tab="dispo" onclick="switchTab('dispo')" data-i18n="tabDispo">📞 Dispo</button>
-          <button class="tab" data-tab="manage" onclick="switchTab('manage')" data-i18n="tabManage">📋 Zarządzaj</button>
-          <button class="tab" data-tab="settings" onclick="switchTab('settings')" data-i18n="tabSettings">⚙️ Ustawienia</button>
+
+      <div id="p-search" class="panel active">
+        <div class="row">
+          <input type="text" id="q" placeholder="VST, miasto, ulica..." autocomplete="off">
+          <button type="button" class="btn btn-primary" id="btnSearch">Szukaj</button>
         </div>
-        <div id="tab-search" class="tab-panel active">
-          <div class="search-row">
-            <input type="text" id="searchQuery" data-i18n-placeholder="searchPlaceholder" placeholder="VST, miasto, ulica..." autofocus>
-            <button class="btn btn-primary" onclick="doSearch()" data-i18n="search">Szukaj</button>
-          </div>
-          <div class="filter-row">
-            <label><input type="checkbox" id="filterKeine" onchange="doSearch()"> <span data-i18n="filterKeine">Tylko bez ograniczeń (keine)</span></label>
-            <label><input type="checkbox" id="filterSunday" onchange="doSearch()"> <span data-i18n="filterSunday">Z ograniczeniem niedzielnym</span></label>
-            <select id="filterOrt" onchange="doSearch()" style="max-width:160px;"><option value="">Wszystkie miasta</option></select>
-          </div>
-          <div id="notFound" class="not-found"></div>
-          <div id="result" class="result">
-            <h2><span>🏪</span> <span id="resVst">VST —</span><span class="star" id="favStar" onclick="toggleFav()">★</span></h2>
-            <div class="field"><label data-i18n="lblPlz">PLZ</label><span id="resPlz">—</span></div>
-            <div class="field"><label data-i18n="lblOrt">Miasto (Ort)</label><span id="resOrt">—</span></div>
-            <div class="field"><label data-i18n="lblStrasse">Ulica (Straße)</label><span id="resStrasse">—</span></div>
-            <div class="field"><label data-i18n="lblZeit">Ograniczenie czasu</label><span id="resZeit">—</span></div>
-            <div class="actions">
-              <button class="btn btn-nav" onclick="navigate()" data-i18n="navigate">🧭 Nawiguj (Google Maps)</button>
-              <button class="btn" onclick="editCurrent()" data-i18n="edit">✏️ Edytuj</button>
-              <button class="btn" onclick="showOnMap()" data-i18n="showOnMap">📍 Pokaż na mapie</button>
-            </div>
-          </div>
-          <div id="searchResultsList" class="store-list" style="display:none;margin-top:10px;"></div>
-          <h3 class="section-title" data-i18n="recentTitle">Ostatnio wyszukiwane</h3>
-          <div id="recentList" class="recent-list"></div>
-        </div>
-        <div id="tab-map" class="tab-panel">
-          <div class="map-controls">
-            <button class="btn btn-primary btn-sm" onclick="loadAllMarkers()" data-i18n="mapAll">Pokaż wszystkie sklepy</button>
-            <button class="btn btn-sm" onclick="loadFavMarkers()" data-i18n="mapFavs">Tylko ulubione</button>
-            <button class="btn btn-sm" onclick="fitMapBounds()" data-i18n="mapFit">Dopasuj widok</button>
-            <span class="hint" id="mapInfo" style="margin:0;"></span>
-          </div>
-          <div id="mapContainer"></div>
-        </div>
-        <div id="tab-favs" class="tab-panel">
-          <p class="hint" data-i18n="favsHint">Kliknij gwiazdkę przy sklepie, aby dodać do ulubionych.</p>
-          <div id="favList" class="fav-list"></div>
-        </div>
-        <div id="tab-dispo" class="tab-panel">
-          <div class="dispo-card">
-            <h2 data-i18n="dispoTitle">Disposition / Dispo</h2>
-            <p class="dispo-info" data-i18n="dispoInfo">Kontakt do dyspozytorni ALDI VST Wilsdruff. Dotknij numeru, aby zadzwonić.</p>
-            <div class="dispo-address" style="margin:12px 0;font-size:1.05rem;line-height:1.45;font-weight:600;">
-              ALDI<br>Hühndorfer Höhe 4<br>01723 Wilsdruff
-            </div>
-            <div style="margin-bottom:12px;">
-              <a class="btn btn-sm" href="https://www.google.com/maps/dir/?api=1&destination=H%C3%BChndorfer%20H%C3%B6he%204%2C%2001723%20Wilsdruff%2C%20Germany&travelmode=driving" target="_blank" rel="noopener" data-i18n="showOnMap">📍 Pokaż na mapie</a>
-            </div>
-            <div class="phone">035204 769320</div>
-            <a class="btn btn-call" href="tel:+4935204769320">📞 <span data-i18n="callNow">Zadzwoń teraz</span></a>
-            <p class="hint" style="margin-top:18px;" data-i18n="dispoHint">Numer: 035204 769320 · ALDI VST Wilsdruff</p>
+        <div id="msg" class="msg"></div>
+        <div id="result" class="card" style="display:none">
+          <h2 id="rVst">VST</h2>
+          <div class="field"><label>PLZ</label><span id="rPlz"></span></div>
+          <div class="field"><label>Ort</label><span id="rOrt"></span></div>
+          <div class="field"><label>Straße</label><span id="rStr"></span></div>
+          <div class="field"><label>Zeit</label><span id="rZeit"></span></div>
+          <div class="actions">
+            <button type="button" class="btn btn-nav" id="btnNav">Nawiguj</button>
+            <button type="button" class="btn" id="btnFav">Ulubione</button>
+            <button type="button" class="btn" id="btnMapOne">Na mapie</button>
           </div>
         </div>
-        <div id="tab-manage" class="tab-panel">
-          <div class="store-list" id="storeList"></div>
-          <h3 class="section-title" data-i18n="editTitle">Dodaj / Edytuj sklep</h3>
-          <div class="form-grid">
-            <label>VST <input type="number" id="editVst" min="1"></label>
-            <label>PLZ <input type="text" id="editPlz" maxlength="5"></label>
-            <label>Ort <input type="text" id="editOrt"></label>
-            <label>Straße <input type="text" id="editStrasse"></label>
-            <label class="full">Zeitbeschränkung <input type="text" id="editZeit"></label>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn btn-primary" onclick="saveStore()" data-i18n="save">Zapisz</button>
-            <button class="btn btn-danger" onclick="deleteStore()" data-i18n="delete">Usuń</button>
-            <button class="btn" onclick="clearForm()" data-i18n="clear">Wyczyść</button>
-          </div>
+        <div id="list" class="list" style="display:none;margin-top:10px"></div>
+      </div>
+
+      <div id="p-map" class="panel">
+        <div class="row">
+          <button type="button" class="btn btn-primary" id="btnMapAll">Wszystkie</button>
+          <button type="button" class="btn" id="btnMapFav">Ulubione</button>
         </div>
-        <div id="tab-settings" class="tab-panel">
-          <h3 class="section-title" data-i18n="exportTitle">Import / Eksport</h3>
-          <p class="hint" data-i18n="exportHint">JSON, CSV, XLSX (Excel) oraz PDF listy sklepów.</p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-            <button class="btn" onclick="exportJSON()">JSON</button>
-            <button class="btn" onclick="exportCSV()">CSV</button>
-            <button class="btn btn-primary" onclick="exportXLSX()">XLSX</button>
-            <button class="btn btn-primary" onclick="exportPDF()" data-i18n="exportPdf">📄 Eksport PDF</button>
-            <label class="btn" style="cursor:pointer;"><span data-i18n="import">Import</span>
-              <input type="file" id="importFile" accept=".json,.csv,.xlsx,.xls" style="display:none;" onchange="importFile(event)">
-            </label>
-            <button class="btn" onclick="resetData()" data-i18n="resetData">Przywróć dane początkowe</button>
-          </div>
-          <div id="statusMsg" class="status"></div>
-          <p class="hint" style="margin-top:12px;">
-            <span data-i18n="storeCount">Liczba sklepów</span>: <strong id="storeCount">0</strong> ·
-            <span data-i18n="favCount">Ulubione</span>: <strong id="favCount">0</strong>
+        <div id="map"></div>
+      </div>
+
+      <div id="p-favs" class="panel">
+        <div id="favList" class="list"></div>
+      </div>
+
+      <div id="p-dispo" class="panel">
+        <div class="card dispo">
+          <h2>Disposition / Dispo</h2>
+          <div class="addr">ALDI<br>Hühndorfer Höhe 4<br>01723 Wilsdruff</div>
+          <p style="margin-bottom:10px">
+            <a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=H%C3%BChndorfer%20H%C3%B6he%204%2C%2001723%20Wilsdruff&travelmode=driving" target="_blank" rel="noopener">Na mapie</a>
           </p>
-          <h3 class="section-title" data-i18n="pwaTitle">PWA / Instalacja</h3>
-          <p class="hint" data-i18n="pwaHint">Możesz zainstalować aplikację jak natywną.</p>
-          <button class="btn btn-primary" id="installBtn2" style="display:none;" onclick="promptInstall()" data-i18n="install">Zainstaluj</button>
+          <div class="phone">035204 769320</div>
+          <a class="btn-call" href="tel:+4935204769320">Zadzwoń teraz</a>
         </div>
       </div>
+
+      <div id="p-manage" class="panel">
+        <div id="allList" class="list"></div>
+        <h3 style="margin:14px 0 8px;color:var(--accent)">Dodaj / Edytuj</h3>
+        <div class="form-g">
+          <label>VST<input type="number" id="eVst"></label>
+          <label>PLZ<input type="text" id="ePlz" maxlength="5"></label>
+          <label>Ort<input type="text" id="eOrt"></label>
+          <label>Straße<input type="text" id="eStr"></label>
+          <label class="full">Zeitbeschränkung<input type="text" id="eZeit"></label>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-primary" id="btnSave">Zapisz</button>
+          <button type="button" class="btn btn-danger" id="btnDel">Usuń</button>
+        </div>
+      </div>
+
+      <div id="p-settings" class="panel">
+        <p class="sub" style="margin-bottom:10px">Import / Eksport danych</p>
+        <div class="row">
+          <button type="button" class="btn" id="btnJson">JSON</button>
+          <button type="button" class="btn" id="btnCsv">CSV</button>
+          <button type="button" class="btn btn-primary" id="btnXlsx">XLSX</button>
+          <button type="button" class="btn btn-primary" id="btnPdf">PDF</button>
+          <label class="btn" style="cursor:pointer">Import<input type="file" id="fileIn" accept=".json,.csv,.xlsx,.xls" hidden></label>
+          <button type="button" class="btn" id="btnReset">Reset danych</button>
+        </div>
+        <div id="status" class="ok"></div>
+        <p class="sub" style="margin-top:12px">Sklepy: <strong id="cnt">0</strong> · Ulubione: <strong id="fcnt">0</strong></p>
+      </div>
     </div>
-    <p class="footer">ALDI VST · Wilsdruff<br><span class="author">Autor: Cichocki Tomasz</span></p>
   </div>
+  <p class="footer">ALDI VST · Wilsdruff<br><strong>Autor: Cichocki Tomasz</strong></p>
+</div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
 <script>
-const I18N = {
-  pl: {
-    installHint:'Zainstaluj aplikację na ekranie głównym', install:'Zainstaluj',
-    appTitle:'ALDI VST · Wilsdruff', appSubtitle:'Szukaj po VST, mieście, ulicy · Nawigacja · Mapa · Dispo',
-    tabSearch:'🔍 Szukaj', tabMap:'🗺️ Mapa', tabFavs:'⭐ Ulubione', tabDispo:'📞 Dispo',
-    tabManage:'📋 Zarządzaj', tabSettings:'⚙️ Ustawienia',
-    searchPlaceholder:'VST, miasto, ulica...', search:'Szukaj',
-    filterKeine:'Tylko bez ograniczeń (keine)', filterSunday:'Z ograniczeniem niedzielnym',
-    allCities:'Wszystkie miasta', lblPlz:'PLZ', lblOrt:'Miasto (Ort)', lblStrasse:'Ulica (Straße)',
-    lblZeit:'Ograniczenie czasu', navigate:'🧭 Nawiguj (Google Maps)', edit:'✏️ Edytuj',
-    showOnMap:'📍 Pokaż na mapie', recentTitle:'Ostatnio wyszukiwane',
-    mapAll:'Pokaż wszystkie sklepy', mapFavs:'Tylko ulubione', mapFit:'Dopasuj widok',
-    favsHint:'Kliknij gwiazdkę przy sklepie, aby dodać do ulubionych.',
-    dispoTitle:'Disposition / Dispo',
-    dispoInfo:'Kontakt do dyspozytorni ALDI VST Wilsdruff. Dotknij numeru, aby zadzwonić.',
-    callNow:'Zadzwoń teraz', dispoHint:'ALDI, Hühndorfer Höhe 4, 01723 Wilsdruff · Tel. 035204 769320',
-    editTitle:'Dodaj / Edytuj sklep', save:'Zapisz', delete:'Usuń', clear:'Wyczyść',
-    exportTitle:'Import / Eksport', exportHint:'JSON, CSV, XLSX (Excel) oraz PDF listy sklepów.',
-    exportPdf:'📄 Eksport PDF', import:'Import', resetData:'Przywróć dane początkowe',
-    storeCount:'Liczba sklepów', favCount:'Ulubione', pwaTitle:'PWA / Instalacja',
-    pwaHint:'Możesz zainstalować aplikację jak natywną.',
-    noResults:'Brak wyników.', noResultsFor:'Brak wyników dla', noFilter:'Brak sklepów spełniających filtry.',
-    saved:'Zapisano VST', deleted:'Usunięto VST', confirmDelete:'Usunąć sklep VST',
-    confirmReset:'Przywrócić oryginalne dane? Zmiany zostaną utracone.',
-    resetOk:'Przywrócono', imported:'Zaimportowano', stores:'sklepów',
-    noHistory:'Brak historii', noFavs:'Brak ulubionych – kliknij ★ przy sklepie',
-    noCoords:'Brak współrzędnych dla tego sklepu', markers:'znaczników', all:'Wszystkie',
-    favs:'Ulubione', start:'Start', pdfTitle:'ALDI VST Wilsdruff – Lista sklepów',
-    pdfExported:'Wyeksportowano PDF.', needVst:'Podaj prawidłowy VST.', more:'więcej'
-  },
-  de: {
-    installHint:'App auf dem Startbildschirm installieren', install:'Installieren',
-    appTitle:'ALDI VST · Wilsdruff', appSubtitle:'Suche nach VST, Ort, Straße · Navigation · Karte · Dispo',
-    tabSearch:'🔍 Suche', tabMap:'🗺️ Karte', tabFavs:'⭐ Favoriten', tabDispo:'📞 Dispo',
-    tabManage:'📋 Verwalten', tabSettings:'⚙️ Einstellungen',
-    searchPlaceholder:'VST, Ort, Straße...', search:'Suchen',
-    filterKeine:'Nur ohne Einschränkung (keine)', filterSunday:'Mit Sonntagsbeschränkung',
-    allCities:'Alle Orte', lblPlz:'PLZ', lblOrt:'Ort', lblStrasse:'Straße',
-    lblZeit:'Zeitbeschränkung', navigate:'🧭 Navigieren (Google Maps)', edit:'✏️ Bearbeiten',
-    showOnMap:'📍 Auf Karte zeigen', recentTitle:'Zuletzt gesucht',
-    mapAll:'Alle Filialen anzeigen', mapFavs:'Nur Favoriten', mapFit:'Ansicht anpassen',
-    favsHint:'Stern bei der Filiale antippen, um zu Favoriten hinzuzufügen.',
-    dispoTitle:'Disposition / Dispo',
-    dispoInfo:'Kontakt zur Disposition ALDI VST Wilsdruff. Nummer antippen zum Anrufen.',
-    callNow:'Jetzt anrufen', dispoHint:'ALDI, Hühndorfer Höhe 4, 01723 Wilsdruff · Tel. 035204 769320',
-    editTitle:'Filiale hinzufügen / bearbeiten', save:'Speichern', delete:'Löschen', clear:'Leeren',
-    exportTitle:'Import / Export', exportHint:'JSON, CSV, XLSX (Excel) und PDF der Filialliste.',
-    exportPdf:'📄 PDF exportieren', import:'Import', resetData:'Ausgangsdaten wiederherstellen',
-    storeCount:'Anzahl Filialen', favCount:'Favoriten', pwaTitle:'PWA / Installation',
-    pwaHint:'App wie eine native App installieren.',
-    noResults:'Keine Ergebnisse.', noResultsFor:'Keine Ergebnisse für', noFilter:'Keine Filialen entsprechen den Filtern.',
-    saved:'Gespeichert VST', deleted:'Gelöscht VST', confirmDelete:'Filiale VST löschen',
-    confirmReset:'Ausgangsdaten wiederherstellen? Änderungen gehen verloren.',
-    resetOk:'Wiederhergestellt', imported:'Importiert', stores:'Filialen',
-    noHistory:'Keine Historie', noFavs:'Keine Favoriten – ★ bei der Filiale antippen',
-    noCoords:'Keine Koordinaten für diese Filiale', markers:'Marker', all:'Alle',
-    favs:'Favoriten', start:'Start', pdfTitle:'ALDI VST Wilsdruff – Filialliste',
-    pdfExported:'PDF exportiert.', needVst:'Bitte gültige VST eingeben.', more:'weitere'
-  }
+(function(){
+"use strict";
+
+var INITIAL = [{"VST":1,"PLZ":"01744","Ort":"Reinholdshain","Strasse":"Gewerbering 5","Zeitbeschraenkung":"keine","lat":50.8968339,"lon":13.6890615},{"VST":2,"PLZ":"01069","Ort":"Dresden","Strasse":"Uhlandstraße 5","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0361184,"lon":13.7400542},{"VST":3,"PLZ":"01307","Ort":"Dresden","Strasse":"Straßburger Platz 01","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0459528,"lon":13.7550485},{"VST":4,"PLZ":"01796","Ort":"Pirna-Copitz","Strasse":"Rudolf-Renner Str. 41 a","Zeitbeschraenkung":"22:00 - 06:00","lat":50.9736354,"lon":13.9308964},{"VST":5,"PLZ":"09648","Ort":"Mittweida","Strasse":"Chemnitzer Straße 28 E","Zeitbeschraenkung":"20:00 - 07:00","lat":50.9783039,"lon":12.9810513},{"VST":6,"PLZ":"09599","Ort":"Freiberg","Strasse":"Olbernhauer Str. 72","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":50.904756,"lon":13.337216},{"VST":7,"PLZ":"09618","Ort":"Brand-Erbisdorf","Strasse":"Großhartmannsdorfer Str. 9 a","Zeitbeschraenkung":"22:00 - 06:00","lat":50.8588861,"lon":13.3205151},{"VST":8,"PLZ":"04720","Ort":"Döbeln","Strasse":"Grimmaische Straße 67","Zeitbeschraenkung":"20:00 - 07:00 + sonn- u. feiertags","lat":51.1333953,"lon":13.096368},{"VST":9,"PLZ":"01587","Ort":"Riesa","Strasse":"Riesapark 2","Zeitbeschraenkung":"keine","lat":51.2969801,"lon":13.2687544},{"VST":10,"PLZ":"01277","Ort":"Dresden (Striesen-Ost)","Strasse":"Glashütter Str. 87","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0391369,"lon":13.8035303},{"VST":11,"PLZ":"01723","Ort":"Wilsdruff","Strasse":"Meißner Str. 30 b","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0557401,"lon":13.533245},{"VST":12,"PLZ":"01257","Ort":"Dresden (Laubegast)","Strasse":"Pirnaer Landstr. 196","Zeitbeschraenkung":"22:00 - 06:00","lat":51.021661,"lon":13.8368593},{"VST":13,"PLZ":"01809","Ort":"Heidenau (B172)","Strasse":"Siegfried-Rädel-Str. 3","Zeitbeschraenkung":"22:00 - 06:00","lat":53.3139784,"lon":9.6531686},{"VST":14,"PLZ":"01156","Ort":"Dresden-Gompitz","Strasse":"Gompitzer Höhe 5a","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0397108,"lon":13.6302743},{"VST":16,"PLZ":"09456","Ort":"Annaberg-Buchholz","Strasse":"Erzgebirgscenter, Gewerbering","Zeitbeschraenkung":"keine","lat":50.5982793,"lon":13.0226635},{"VST":17,"PLZ":"01324","Ort":"Dresden (Bühlau)","Strasse":"Bautzner Landstraße 149","Zeitbeschraenkung":"20:00 - 07:00 + sonn- u. feiertags","lat":51.0621868,"lon":13.8508975},{"VST":18,"PLZ":"09496","Ort":"Marienberg","Strasse":"Johann-Ehrenfried-Wagner Str.9","Zeitbeschraenkung":"keine","lat":50.647695,"lon":13.1574768},{"VST":19,"PLZ":"09456","Ort":"Annaberg-Buchholz","Strasse":"Oberwiesenthaler Weg 6","Zeitbeschraenkung":"keine","lat":50.5650009,"lon":13.0114945},{"VST":20,"PLZ":"01097","Ort":"Dresden","Strasse":"Antonstr. 2 A","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0642813,"lon":13.7461712},{"VST":21,"PLZ":"01662","Ort":"Meißen","Strasse":"Fabrikstr. 14 a","Zeitbeschraenkung":"22:00 - 06:00","lat":51.1645211,"lon":13.4895245},{"VST":22,"PLZ":"01619","Ort":"Zeithain","Strasse":"Teiniger Straße 5","Zeitbeschraenkung":"keine","lat":51.3678092,"lon":13.3143048},{"VST":23,"PLZ":"01705","Ort":"Freital","Strasse":"Dresdner Straße 252","Zeitbeschraenkung":"20:00 - 07:00","lat":50.9918411,"lon":13.6420414},{"VST":24,"PLZ":"01169","Ort":"Dresden (Gorbitz)","Strasse":"Kesselsdorfer Straße 160","Zeitbeschraenkung":"22:00 - 06:00","lat":51.040348,"lon":13.6672265},{"VST":25,"PLZ":"01159","Ort":"Dresden","Strasse":"Löbtauer Str. 40","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0512445,"lon":13.7134679},{"VST":27,"PLZ":"09569","Ort":"Oederan","Strasse":"Freiberger Str. 31","Zeitbeschraenkung":"keine","lat":50.864966,"lon":13.1768385},{"VST":28,"PLZ":"01187","Ort":"Dresden","Strasse":"Chemnitzer Str. 28","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0369005,"lon":13.7139328},{"VST":29,"PLZ":"01640","Ort":"Coswig","Strasse":"Salzstraße 9","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":51.1324871,"lon":13.5843321},{"VST":30,"PLZ":"01257","Ort":"Dresden","Strasse":"Wilhelm-Liebknecht-Str. 2","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0117503,"lon":13.8100944},{"VST":31,"PLZ":"01139","Ort":"Dresden (Mickten)","Strasse":"Lommatzscher Str. 1 c","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0801107,"lon":13.7130982},{"VST":32,"PLZ":"01683","Ort":"Nossen","Strasse":"Fabrikstraße 3","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0627375,"lon":13.2978893},{"VST":33,"PLZ":"09557","Ort":"Flöha","Strasse":"Augustusburger Straße 75","Zeitbeschraenkung":"22:00 - 06:00","lat":50.8499861,"lon":13.0767617},{"VST":34,"PLZ":"01277","Ort":"Dresden (Seidnitz)","Strasse":"Enderstr. 59","Zeitbeschraenkung":"keine","lat":51.0295016,"lon":13.8034887},{"VST":35,"PLZ":"01129","Ort":"Dresden (Trachau)","Strasse":"Döbelner Straße 132","Zeitbeschraenkung":"20:00 - 07:00","lat":51.0969278,"lon":13.7197852},{"VST":36,"PLZ":"01445","Ort":"Radebeul-Ost","Strasse":"Meißner Str. 49","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0976006,"lon":13.6919896},{"VST":37,"PLZ":"04746","Ort":"Hartha","Strasse":"Dresdener Straße 76","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.0910836,"lon":12.9756077},{"VST":38,"PLZ":"01279","Ort":"Dresden (Seidnitz)","Strasse":"Löwenhainer Str. 2","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0288615,"lon":13.8123906},{"VST":39,"PLZ":"01217","Ort":"Dresden (Räcknitz)","Strasse":"Bulgakowstr. 7","Zeitbeschraenkung":"20:00- 07:00+ Sonn- und Feiertags","lat":51.0194293,"lon":13.7365763},{"VST":41,"PLZ":"01239","Ort":"Dresden (Prohlis)","Strasse":"Fritz-Meinhardt-Straße 5","Zeitbeschraenkung":"keine","lat":50.9997025,"lon":13.7927449},{"VST":42,"PLZ":"01445","Ort":"Radebeul-West","Strasse":"Weinböhlaer Sr. 9","Zeitbeschraenkung":"keine","lat":null,"lon":null},{"VST":43,"PLZ":"09526","Ort":"Olbernhau","Strasse":"Dörfelstraße 4","Zeitbeschraenkung":"22:00 - 06:00","lat":50.6513493,"lon":13.3510328},{"VST":45,"PLZ":"01069","Ort":"Dresden","Strasse":"Prager Straße 11","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.0444613,"lon":13.7348748},{"VST":46,"PLZ":"01728","Ort":"Bannewitz","Strasse":"An der Zschauke 4","Zeitbeschraenkung":"keine","lat":51.0004028,"lon":13.7204467},{"VST":47,"PLZ":"01159","Ort":"Dresden (Löbtau)","Strasse":"Tharandter Straße 40","Zeitbeschraenkung":"20:00 - 07:00","lat":51.0342236,"lon":13.7032565},{"VST":48,"PLZ":"01157","Ort":"Dresden (Cotta)","Strasse":"Raimundstraße 1-3","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0571074,"lon":13.6875385},{"VST":49,"PLZ":"09322","Ort":"Penig","Strasse":"Chemnitzerstraße 105","Zeitbeschraenkung":"20:00 - 07:00 + sonn- u. feiertags","lat":50.9255213,"lon":12.7144061},{"VST":50,"PLZ":"01067","Ort":"Dresden (Altmarktgalerie)","Strasse":"Webergasse 1","Zeitbeschraenkung":"20:00 - 6:00 + sonn- u. feiertags","lat":null,"lon":null},{"VST":51,"PLZ":"01317","Ort":"Dresden (Johannstadt)","Strasse":"Pfotenhauerstr. 7 b","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":51.0581914,"lon":13.7747761},{"VST":52,"PLZ":"01109","Ort":"Dresden (Klotzsche)","Strasse":"Travemünder Str. 1","Zeitbeschraenkung":"20:00 - 07:00","lat":51.1194955,"lon":13.7698571},{"VST":53,"PLZ":"09405","Ort":"Zschopau","Strasse":"Waldkirchener Str. 15","Zeitbeschraenkung":"keine","lat":50.7490092,"lon":13.0742816},{"VST":54,"PLZ":"09661","Ort":"Hainichen","Strasse":"Bahnhofstr. 18","Zeitbeschraenkung":"keine","lat":50.9711079,"lon":13.1198969},{"VST":55,"PLZ":"01471","Ort":"Radeburg","Strasse":"Großenhainer Straße 39 a","Zeitbeschraenkung":"22:00 - 06:00","lat":51.2172744,"lon":13.7174237},{"VST":56,"PLZ":"01796","Ort":"Pirna","Strasse":"Rottwerndorfer Straße 41","Zeitbeschraenkung":"keine","lat":50.9492889,"lon":13.9419428},{"VST":57,"PLZ":"01237","Ort":"Dresden (Strehlen)","Strasse":"Reicker Straße 97","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0182617,"lon":13.7827552},{"VST":59,"PLZ":"09599","Ort":"Freiberg","Strasse":"Dresdner Str. 31 d","Zeitbeschraenkung":"keine","lat":50.9148364,"lon":13.36577},{"VST":60,"PLZ":"09669","Ort":"Frankenberg","Strasse":"Badstr. 2 a","Zeitbeschraenkung":"22:00 - 06:00 - max. 1LKW zulässig","lat":50.912862,"lon":13.0441526},{"VST":61,"PLZ":"01796","Ort":"Pirna","Strasse":"Struppener Str. 2 a","Zeitbeschraenkung":"22:00 - 05:00","lat":50.957,"lon":13.9526379},{"VST":62,"PLZ":"09427","Ort":"Ehrenfriedersdorf","Strasse":"Chemnitzer Str. 52","Zeitbeschraenkung":"22:00 - 06:00","lat":50.6523602,"lon":12.9714238},{"VST":63,"PLZ":"01662","Ort":"Meißen","Strasse":"Neumarkt 42","Zeitbeschraenkung":"keine","lat":51.158371,"lon":13.4707118},{"VST":64,"PLZ":"01259","Ort":"Dresden","Strasse":"Kleinzschachwitzer Ufer 3","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0178562,"lon":13.8449115},{"VST":65,"PLZ":"02727","Ort":"Neugersdorf","Strasse":"Rudolf-Breitscheid-Straße 2","Zeitbeschraenkung":"keine","lat":50.9806667,"lon":14.6096141},{"VST":66,"PLZ":"02906","Ort":"Niesky","Strasse":"Horkaer Straße 17","Zeitbeschraenkung":"keine","lat":51.2932898,"lon":14.8282351},{"VST":67,"PLZ":"02625","Ort":"Bautzen","Strasse":"Dresdener Str. 68","Zeitbeschraenkung":"keine","lat":51.1801882,"lon":14.403766},{"VST":68,"PLZ":"01558","Ort":"Großenhain","Strasse":"Dresdner Str. 33","Zeitbeschraenkung":"19:00 - 06:00 + sonn- u. feiertags","lat":51.288905,"lon":13.5326263},{"VST":69,"PLZ":"02763","Ort":"Zittau","Strasse":"Dresdner Str. 42","Zeitbeschraenkung":"22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 22:00)","lat":50.8997887,"lon":14.7942157},{"VST":70,"PLZ":"01454","Ort":"Radeberg","Strasse":"An der Ziegelei 2","Zeitbeschraenkung":"keine","lat":51.1297565,"lon":13.916648},{"VST":71,"PLZ":"02681","Ort":"Wilthen","Strasse":"Zittauer Str. 12","Zeitbeschraenkung":"keine","lat":51.0946531,"lon":14.392507},{"VST":72,"PLZ":"01900","Ort":"Großröhrsdorf","Strasse":"Pulsnitzer Str. 16","Zeitbeschraenkung":"keine","lat":51.1535167,"lon":14.0202813},{"VST":73,"PLZ":"01855","Ort":"Sebnitz","Strasse":"Schandauer Str. 86","Zeitbeschraenkung":"keine","lat":50.9658627,"lon":14.2502547},{"VST":74,"PLZ":"02708","Ort":"Löbau","Strasse":"Ahornallee 2","Zeitbeschraenkung":"22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":51.0897189,"lon":14.6679969},{"VST":76,"PLZ":"01936","Ort":"Königsbrück","Strasse":"Birkenweg 2","Zeitbeschraenkung":"keine","lat":51.2570016,"lon":13.8905233},{"VST":77,"PLZ":"01844","Ort":"Neustadt","Strasse":"Sebnitzer Str. 41","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":51.0245898,"lon":14.231504},{"VST":78,"PLZ":"02763","Ort":"Zittau","Strasse":"Leipziger Str. 35","Zeitbeschraenkung":"22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":50.9007656,"lon":14.8183761},{"VST":79,"PLZ":"02829","Ort":"Görlitz","Strasse":"Nieskyer Str. 100","Zeitbeschraenkung":"keine","lat":51.1702618,"lon":14.9700474},{"VST":80,"PLZ":"01877","Ort":"Bischofswerda","Strasse":"Bautzner Straße 78","Zeitbeschraenkung":"keine","lat":51.1248482,"lon":14.2048231},{"VST":81,"PLZ":"02736","Ort":"Oppach","Strasse":"Bautzener Str. 07 a","Zeitbeschraenkung":"20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":51.0765448,"lon":14.4871365},{"VST":82,"PLZ":"02826","Ort":"Görlitz","Strasse":"Emmerichstr. 33 - 35","Zeitbeschraenkung":"20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":51.1461503,"lon":14.9872494},{"VST":83,"PLZ":"01917","Ort":"Kamenz","Strasse":"Uferstr. 4","Zeitbeschraenkung":"20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":51.2712784,"lon":14.103811},{"VST":84,"PLZ":"02827","Ort":"Görlitz","Strasse":"Reichenbacher Str. 106","Zeitbeschraenkung":"22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 22:00)","lat":51.1489446,"lon":14.947045},{"VST":85,"PLZ":"02625","Ort":"Bautzen","Strasse":"Stieberstr. 53","Zeitbeschraenkung":"keine","lat":51.1710578,"lon":14.4362345},{"VST":86,"PLZ":"02826","Ort":"Görlitz","Strasse":"Pontestr. 10","Zeitbeschraenkung":"20:00 - 06:00 + sonn- u. feiertags","lat":51.1582027,"lon":14.9835362},{"VST":87,"PLZ":"02625","Ort":"Bautzen","Strasse":"Gesundbrunnenring 4","Zeitbeschraenkung":"20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":51.1867917,"lon":14.4403117},{"VST":88,"PLZ":"08340","Ort":"Schwarzenberg","Strasse":"Roter Mühlenweg 28","Zeitbeschraenkung":"keine","lat":50.5500941,"lon":12.7744107},{"VST":89,"PLZ":"09243","Ort":"Niederfrohna","Strasse":"Limbacher Str. 81","Zeitbeschraenkung":"keine","lat":50.8694691,"lon":12.7515129},{"VST":90,"PLZ":"09126","Ort":"Chemnitz","Strasse":"Zschopauer Str.244","Zeitbeschraenkung":"20:00 - 07:00","lat":50.8130883,"lon":12.9570793},{"VST":91,"PLZ":"08321","Ort":"Zschorlau","Strasse":"Am Kuchenhaus 12 (im EKZ)","Zeitbeschraenkung":"keine","lat":50.5512184,"lon":12.6452312},{"VST":92,"PLZ":"09125","Ort":"Chemnitz","Strasse":"Annaberger Straße 315","Zeitbeschraenkung":"20:00 - 07:00","lat":50.7966534,"lon":12.9206112},{"VST":93,"PLZ":"09376","Ort":"Oelsnitz","Strasse":"Hedwigschachtstr. 1","Zeitbeschraenkung":"keine","lat":50.7279395,"lon":12.7003812},{"VST":94,"PLZ":"08280","Ort":"Aue","Strasse":"Lößnitzer Str. 20-22","Zeitbeschraenkung":"22:00 - 06:00","lat":50.5909529,"lon":12.6990713},{"VST":95,"PLZ":"09114","Ort":"Chemnitz","Strasse":"Bornaer Str. 148","Zeitbeschraenkung":"22:00 - 06:00","lat":50.8636689,"lon":12.9020843},{"VST":96,"PLZ":"09356","Ort":"St. Egidien","Strasse":"Platanenstr. 4","Zeitbeschraenkung":"22:00 - 06:00","lat":50.77283,"lon":12.6235149},{"VST":97,"PLZ":"09119","Ort":"Chemnitz","Strasse":"Dr.-Salvador-Allende-Str. 1","Zeitbeschraenkung":"keine","lat":50.8093066,"lon":12.8915514},{"VST":98,"PLZ":"08107","Ort":"Kirchberg","Strasse":"Lengenfelder Str. 41","Zeitbeschraenkung":"22:00 - 06:00","lat":50.6196195,"lon":12.5111272},{"VST":100,"PLZ":"09390","Ort":"Gornsdorf","Strasse":"Meinersdorfer Str. 6","Zeitbeschraenkung":"22:00 - 06:00","lat":50.7173567,"lon":12.8854354},{"VST":101,"PLZ":"08297","Ort":"Zwönitz","Strasse":"Wehrgasse 1b","Zeitbeschraenkung":"22:00 - 06:00","lat":50.6424611,"lon":12.8168156},{"VST":102,"PLZ":"09217","Ort":"Burgstädt","Strasse":"Straße der Dt. Einheit 2 - 4","Zeitbeschraenkung":"22:00 - 06:00","lat":50.922209,"lon":12.8042616},{"VST":103,"PLZ":"08289","Ort":"Schneeberg","Strasse":"Bruno-Dost-Str. 39","Zeitbeschraenkung":"keine","lat":50.6018444,"lon":12.6255323},{"VST":104,"PLZ":"09130","Ort":"Chemnitz","Strasse":"Heinrich-Schütz-Str. 55","Zeitbeschraenkung":"19:00 - 07:00","lat":50.839869,"lon":12.9511841},{"VST":105,"PLZ":"09122","Ort":"Chemnitz","Strasse":"Wladimir-Sagorski-Str. 22","Zeitbeschraenkung":"20:00 - 07:00","lat":50.795454,"lon":12.8895989},{"VST":106,"PLZ":"09116","Ort":"Chemnitz","Strasse":"Zwickauer Str. 247","Zeitbeschraenkung":"20:00 - 07:00","lat":50.8193445,"lon":12.8767636},{"VST":107,"PLZ":"09116","Ort":"Chemnitz","Strasse":"Waldenburger Str. 33","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":50.8311472,"lon":12.8816325},{"VST":109,"PLZ":"09337","Ort":"Hohenstein-E.thal","Strasse":"Dresdner Str. 151","Zeitbeschraenkung":"22:00 - 06:00","lat":null,"lon":null},{"VST":110,"PLZ":"09366","Ort":"Stollberg","Strasse":"Lutherstr. 15","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":50.7100167,"lon":12.7777046},{"VST":111,"PLZ":"09111","Ort":"Chemnitz","Strasse":"Theaterstr. 7","Zeitbeschraenkung":"keine","lat":50.8350719,"lon":12.919254},{"VST":112,"PLZ":"09385","Ort":"Lugau","Strasse":"Chemnitzer Str. 1","Zeitbeschraenkung":"22:00 - 06:00","lat":50.7438327,"lon":12.7489281},{"VST":113,"PLZ":"02943","Ort":"Weißwasser","Strasse":"Berliner Straße 106","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.5083602,"lon":14.619418},{"VST":114,"PLZ":"03048","Ort":"Cottbus","Strasse":"Welzower Straße 26 A","Zeitbeschraenkung":"keine","lat":51.7403217,"lon":14.3235167},{"VST":115,"PLZ":"03130","Ort":"Forst","Strasse":"Cottbusser Straße 92","Zeitbeschraenkung":"keine","lat":51.7438586,"lon":14.6455395},{"VST":116,"PLZ":"03130","Ort":"Spremberg","Strasse":"Grünstraße 3","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.5627676,"lon":14.3721997},{"VST":117,"PLZ":"02991","Ort":"Lauta","Strasse":"Friedensstraße 8","Zeitbeschraenkung":"keine","lat":51.4411769,"lon":14.100161},{"VST":118,"PLZ":"03042","Ort":"Cottbus","Strasse":"Georg Schssinger Straße 3","Zeitbeschraenkung":"keine","lat":51.7625483,"lon":14.3764462},{"VST":119,"PLZ":"03099","Ort":"Kolkwitz","Strasse":"Berliner Straße 113 D","Zeitbeschraenkung":"keine","lat":51.751615,"lon":14.2826245},{"VST":120,"PLZ":"02977","Ort":"Hoyerswerda","Strasse":"Teschenstraße 1","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags (Frische bis 19:00)","lat":51.4399267,"lon":14.2468641},{"VST":121,"PLZ":"03051","Ort":"Cottbus","Strasse":"Sachsendorfer Straße 5","Zeitbeschraenkung":"keine","lat":51.7156717,"lon":14.3173256},{"VST":122,"PLZ":"03044","Ort":"Cottbus","Strasse":"Limberger Straße 1","Zeitbeschraenkung":"keine","lat":51.78154,"lon":14.3179701},{"VST":123,"PLZ":"01968","Ort":"Senftenberg","Strasse":"Bahnhofsstraße 38/40","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.5207439,"lon":14.0234195},{"VST":124,"PLZ":"02977","Ort":"Hoyerswerda","Strasse":"Albert- Einstein Straße 1 A","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.4388966,"lon":14.2621368},{"VST":125,"PLZ":"03046","Ort":"Cottbus","Strasse":"Karl-Liebknecht- Straße 81","Zeitbeschraenkung":"keine","lat":51.7567221,"lon":14.3127901},{"VST":126,"PLZ":"02977","Ort":"Hoyerswerda","Strasse":"Ziolkowskistraße 18","Zeitbeschraenkung":"keine","lat":51.4297631,"lon":14.271223},{"VST":127,"PLZ":"03042","Ort":"Cottbus","Strasse":"Stadtring 8","Zeitbeschraenkung":"keine","lat":51.765549,"lon":14.3577498},{"VST":128,"PLZ":"01983","Ort":"Großräschen","Strasse":"IFA-Park 2","Zeitbeschraenkung":"keine","lat":51.5906808,"lon":14.0124139}];
+var SK = "aldi_vst_stores_v4";
+var FK = "aldi_vst_favs_v4";
+var stores = [];
+var favs = [];
+var current = null;
+var map = null;
+var layer = null;
+var lang = localStorage.getItem("aldi_lang") || "pl";
+
+var T = {
+  pl: { search:"Szukaj", map:"Mapa", favs:"Ulubione", dispo:"Dispo", manage:"Zarządzaj", settings:"Ustawienia",
+        nav:"Nawiguj", fav:"Ulubione", onmap:"Na mapie", none:"Brak wyników", save:"Zapisano", del:"Usunięto" },
+  de: { search:"Suche", map:"Karte", favs:"Favoriten", dispo:"Dispo", manage:"Verwalten", settings:"Einstellungen",
+        nav:"Navigieren", fav:"Favoriten", onmap:"Karte", none:"Keine Ergebnisse", save:"Gespeichert", del:"Gelöscht" }
 };
-let lang = localStorage.getItem('sklep_lang') || 'pl';
-function t(key) { return (I18N[lang] && I18N[lang][key]) || I18N.pl[key] || key; }
-function setLang(code) {
-  lang = code === 'de' ? 'de' : 'pl';
-  localStorage.setItem('sklep_lang', lang);
-  document.documentElement.lang = lang;
-  document.getElementById('langSelect').value = lang;
-  applyI18n(); populateOrtFilter(); renderRecent(); renderFavs();
-  if (document.getElementById('storeList')) renderStoreList();
-}
-function applyI18n() {
-  document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.getAttribute('data-i18n'); if (t(k)) el.textContent = t(k); });
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { const k = el.getAttribute('data-i18n-placeholder'); if (t(k)) el.placeholder = t(k); });
-  const startBtn = document.getElementById('splashBtn');
-  if (startBtn) startBtn.textContent = t('start');
-}
-let stores = [], currentStore = null, favorites = [], recent = [];
-let map = null, markersLayer = null, deferredInstallPrompt = null;
-const STORAGE_KEY = 'aldi_vst_stores_v3', FAV_KEY = 'aldi_vst_favs_v1', RECENT_KEY = 'aldi_vst_recent_v1';
-const INITIAL_DATA = [{"VST":1,"PLZ":"01744","Ort":"Reinholdshain","Strasse":"Gewerbering 5","Zeitbeschraenkung":"keine","lat":50.8968339,"lon":13.6890615},{"VST":2,"PLZ":"01069","Ort":"Dresden","Strasse":"Uhlandstraße 5","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0361184,"lon":13.7400542},{"VST":3,"PLZ":"01307","Ort":"Dresden","Strasse":"Straßburger Platz 01","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0459528,"lon":13.7550485},{"VST":4,"PLZ":"01796","Ort":"Pirna-Copitz","Strasse":"Rudolf-Renner Str. 41 a","Zeitbeschraenkung":"22:00 - 06:00","lat":50.9736354,"lon":13.9308964},{"VST":5,"PLZ":"09648","Ort":"Mittweida","Strasse":"Chemnitzer Straße 28 E","Zeitbeschraenkung":"20:00 - 07:00","lat":50.9783039,"lon":12.9810513},{"VST":6,"PLZ":"09599","Ort":"Freiberg","Strasse":"Olbernhauer Str. 72","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":50.904756,"lon":13.337216},{"VST":7,"PLZ":"09618","Ort":"Brand-Erbisdorf","Strasse":"Großhartmannsdorfer Str. 9 a","Zeitbeschraenkung":"22:00 - 06:00","lat":50.8588861,"lon":13.3205151},{"VST":8,"PLZ":"04720","Ort":"Döbeln","Strasse":"Grimmaische Straße 67","Zeitbeschraenkung":"20:00 - 07:00 + sonn- u. feiertags","lat":51.1333953,"lon":13.096368},{"VST":9,"PLZ":"01587","Ort":"Riesa","Strasse":"Riesapark 2","Zeitbeschraenkung":"keine","lat":51.2969801,"lon":13.2687544},{"VST":10,"PLZ":"01277","Ort":"Dresden (Striesen-Ost)","Strasse":"Glashütter Str. 87","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0391369,"lon":13.8035303},{"VST":11,"PLZ":"01723","Ort":"Wilsdruff","Strasse":"Meißner Str. 30 b","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0557401,"lon":13.533245},{"VST":12,"PLZ":"01257","Ort":"Dresden (Laubegast)","Strasse":"Pirnaer Landstr. 196","Zeitbeschraenkung":"22:00 - 06:00","lat":51.021661,"lon":13.8368593},{"VST":13,"PLZ":"01809","Ort":"Heidenau (B172)","Strasse":"Siegfried-Rädel-Str. 3","Zeitbeschraenkung":"22:00 - 06:00","lat":53.3139784,"lon":9.6531686},{"VST":14,"PLZ":"01156","Ort":"Dresden-Gompitz","Strasse":"Gompitzer Höhe 5a","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0397108,"lon":13.6302743},{"VST":16,"PLZ":"09456","Ort":"Annaberg-Buchholz","Strasse":"Erzgebirgscenter, Gewerbering","Zeitbeschraenkung":"keine","lat":50.5982793,"lon":13.0226635},{"VST":17,"PLZ":"01324","Ort":"Dresden (Bühlau)","Strasse":"Bautzner Landstraße 149","Zeitbeschraenkung":"20:00 - 07:00 + sonn- u. feiertags","lat":51.0621868,"lon":13.8508975},{"VST":18,"PLZ":"09496","Ort":"Marienberg","Strasse":"Johann-Ehrenfried-Wagner Str.9","Zeitbeschraenkung":"keine","lat":50.647695,"lon":13.1574768},{"VST":19,"PLZ":"09456","Ort":"Annaberg-Buchholz","Strasse":"Oberwiesenthaler Weg 6","Zeitbeschraenkung":"keine","lat":50.5650009,"lon":13.0114945},{"VST":20,"PLZ":"01097","Ort":"Dresden","Strasse":"Antonstr. 2 A","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0642813,"lon":13.7461712},{"VST":21,"PLZ":"01662","Ort":"Meißen","Strasse":"Fabrikstr. 14 a","Zeitbeschraenkung":"22:00 - 06:00","lat":51.1645211,"lon":13.4895245},{"VST":22,"PLZ":"01619","Ort":"Zeithain","Strasse":"Teiniger Straße 5","Zeitbeschraenkung":"keine","lat":51.3678092,"lon":13.3143048},{"VST":23,"PLZ":"01705","Ort":"Freital","Strasse":"Dresdner Straße 252","Zeitbeschraenkung":"20:00 - 07:00","lat":50.9918411,"lon":13.6420414},{"VST":24,"PLZ":"01169","Ort":"Dresden (Gorbitz)","Strasse":"Kesselsdorfer Straße 160","Zeitbeschraenkung":"22:00 - 06:00","lat":51.040348,"lon":13.6672265},{"VST":25,"PLZ":"01159","Ort":"Dresden","Strasse":"Löbtauer Str. 40","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0512445,"lon":13.7134679},{"VST":27,"PLZ":"09569","Ort":"Oederan","Strasse":"Freiberger Str. 31","Zeitbeschraenkung":"keine","lat":50.864966,"lon":13.1768385},{"VST":28,"PLZ":"01187","Ort":"Dresden","Strasse":"Chemnitzer Str. 28","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0369005,"lon":13.7139328},{"VST":29,"PLZ":"01640","Ort":"Coswig","Strasse":"Salzstraße 9","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":51.1324871,"lon":13.5843321},{"VST":30,"PLZ":"01257","Ort":"Dresden","Strasse":"Wilhelm-Liebknecht-Str. 2","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0117503,"lon":13.8100944},{"VST":31,"PLZ":"01139","Ort":"Dresden (Mickten)","Strasse":"Lommatzscher Str. 1 c","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0801107,"lon":13.7130982},{"VST":32,"PLZ":"01683","Ort":"Nossen","Strasse":"Fabrikstraße 3","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0627375,"lon":13.2978893},{"VST":33,"PLZ":"09557","Ort":"Flöha","Strasse":"Augustusburger Straße 75","Zeitbeschraenkung":"22:00 - 06:00","lat":50.8499861,"lon":13.0767617},{"VST":34,"PLZ":"01277","Ort":"Dresden (Seidnitz)","Strasse":"Enderstr. 59","Zeitbeschraenkung":"keine","lat":51.0295016,"lon":13.8034887},{"VST":35,"PLZ":"01129","Ort":"Dresden (Trachau)","Strasse":"Döbelner Straße 132","Zeitbeschraenkung":"20:00 - 07:00","lat":51.0969278,"lon":13.7197852},{"VST":36,"PLZ":"01445","Ort":"Radebeul-Ost","Strasse":"Meißner Str. 49","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0976006,"lon":13.6919896},{"VST":37,"PLZ":"04746","Ort":"Hartha","Strasse":"Dresdener Straße 76","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.0910836,"lon":12.9756077},{"VST":38,"PLZ":"01279","Ort":"Dresden (Seidnitz)","Strasse":"Löwenhainer Str. 2","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0288615,"lon":13.8123906},{"VST":39,"PLZ":"01217","Ort":"Dresden (Räcknitz)","Strasse":"Bulgakowstr. 7","Zeitbeschraenkung":"20:00- 07:00+ Sonn- und Feiertags","lat":51.0194293,"lon":13.7365763},{"VST":41,"PLZ":"01239","Ort":"Dresden (Prohlis)","Strasse":"Fritz-Meinhardt-Straße 5","Zeitbeschraenkung":"keine","lat":50.9997025,"lon":13.7927449},{"VST":42,"PLZ":"01445","Ort":"Radebeul-West","Strasse":"Weinböhlaer Sr. 9","Zeitbeschraenkung":"keine","lat":null,"lon":null},{"VST":43,"PLZ":"09526","Ort":"Olbernhau","Strasse":"Dörfelstraße 4","Zeitbeschraenkung":"22:00 - 06:00","lat":50.6513493,"lon":13.3510328},{"VST":45,"PLZ":"01069","Ort":"Dresden","Strasse":"Prager Straße 11","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.0444613,"lon":13.7348748},{"VST":46,"PLZ":"01728","Ort":"Bannewitz","Strasse":"An der Zschauke 4","Zeitbeschraenkung":"keine","lat":51.0004028,"lon":13.7204467},{"VST":47,"PLZ":"01159","Ort":"Dresden (Löbtau)","Strasse":"Tharandter Straße 40","Zeitbeschraenkung":"20:00 - 07:00","lat":51.0342236,"lon":13.7032565},{"VST":48,"PLZ":"01157","Ort":"Dresden (Cotta)","Strasse":"Raimundstraße 1-3","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0571074,"lon":13.6875385},{"VST":49,"PLZ":"09322","Ort":"Penig","Strasse":"Chemnitzerstraße 105","Zeitbeschraenkung":"20:00 - 07:00 + sonn- u. feiertags","lat":50.9255213,"lon":12.7144061},{"VST":50,"PLZ":"01067","Ort":"Dresden (Altmarktgalerie)","Strasse":"Webergasse 1","Zeitbeschraenkung":"20:00 - 6:00 + sonn- u. feiertags","lat":null,"lon":null},{"VST":51,"PLZ":"01317","Ort":"Dresden (Johannstadt)","Strasse":"Pfotenhauerstr. 7 b","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":51.0581914,"lon":13.7747761},{"VST":52,"PLZ":"01109","Ort":"Dresden (Klotzsche)","Strasse":"Travemünder Str. 1","Zeitbeschraenkung":"20:00 - 07:00","lat":51.1194955,"lon":13.7698571},{"VST":53,"PLZ":"09405","Ort":"Zschopau","Strasse":"Waldkirchener Str. 15","Zeitbeschraenkung":"keine","lat":50.7490092,"lon":13.0742816},{"VST":54,"PLZ":"09661","Ort":"Hainichen","Strasse":"Bahnhofstr. 18","Zeitbeschraenkung":"keine","lat":50.9711079,"lon":13.1198969},{"VST":55,"PLZ":"01471","Ort":"Radeburg","Strasse":"Großenhainer Straße 39 a","Zeitbeschraenkung":"22:00 - 06:00","lat":51.2172744,"lon":13.7174237},{"VST":56,"PLZ":"01796","Ort":"Pirna","Strasse":"Rottwerndorfer Straße 41","Zeitbeschraenkung":"keine","lat":50.9492889,"lon":13.9419428},{"VST":57,"PLZ":"01237","Ort":"Dresden (Strehlen)","Strasse":"Reicker Straße 97","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0182617,"lon":13.7827552},{"VST":59,"PLZ":"09599","Ort":"Freiberg","Strasse":"Dresdner Str. 31 d","Zeitbeschraenkung":"keine","lat":50.9148364,"lon":13.36577},{"VST":60,"PLZ":"09669","Ort":"Frankenberg","Strasse":"Badstr. 2 a","Zeitbeschraenkung":"22:00 - 06:00 - max. 1LKW zulässig","lat":50.912862,"lon":13.0441526},{"VST":61,"PLZ":"01796","Ort":"Pirna","Strasse":"Struppener Str. 2 a","Zeitbeschraenkung":"22:00 - 05:00","lat":50.957,"lon":13.9526379},{"VST":62,"PLZ":"09427","Ort":"Ehrenfriedersdorf","Strasse":"Chemnitzer Str. 52","Zeitbeschraenkung":"22:00 - 06:00","lat":50.6523602,"lon":12.9714238},{"VST":63,"PLZ":"01662","Ort":"Meißen","Strasse":"Neumarkt 42","Zeitbeschraenkung":"keine","lat":51.158371,"lon":13.4707118},{"VST":64,"PLZ":"01259","Ort":"Dresden","Strasse":"Kleinzschachwitzer Ufer 3","Zeitbeschraenkung":"22:00 - 06:00","lat":51.0178562,"lon":13.8449115},{"VST":65,"PLZ":"02727","Ort":"Neugersdorf","Strasse":"Rudolf-Breitscheid-Straße 2","Zeitbeschraenkung":"keine","lat":50.9806667,"lon":14.6096141},{"VST":66,"PLZ":"02906","Ort":"Niesky","Strasse":"Horkaer Straße 17","Zeitbeschraenkung":"keine","lat":51.2932898,"lon":14.8282351},{"VST":67,"PLZ":"02625","Ort":"Bautzen","Strasse":"Dresdener Str. 68","Zeitbeschraenkung":"keine","lat":51.1801882,"lon":14.403766},{"VST":68,"PLZ":"01558","Ort":"Großenhain","Strasse":"Dresdner Str. 33","Zeitbeschraenkung":"19:00 - 06:00 + sonn- u. feiertags","lat":51.288905,"lon":13.5326263},{"VST":69,"PLZ":"02763","Ort":"Zittau","Strasse":"Dresdner Str. 42","Zeitbeschraenkung":"22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 22:00)","lat":50.8997887,"lon":14.7942157},{"VST":70,"PLZ":"01454","Ort":"Radeberg","Strasse":"An der Ziegelei 2","Zeitbeschraenkung":"keine","lat":51.1297565,"lon":13.916648},{"VST":71,"PLZ":"02681","Ort":"Wilthen","Strasse":"Zittauer Str. 12","Zeitbeschraenkung":"keine","lat":51.0946531,"lon":14.392507},{"VST":72,"PLZ":"01900","Ort":"Großröhrsdorf","Strasse":"Pulsnitzer Str. 16","Zeitbeschraenkung":"keine","lat":51.1535167,"lon":14.0202813},{"VST":73,"PLZ":"01855","Ort":"Sebnitz","Strasse":"Schandauer Str. 86","Zeitbeschraenkung":"keine","lat":50.9658627,"lon":14.2502547},{"VST":74,"PLZ":"02708","Ort":"Löbau","Strasse":"Ahornallee 2","Zeitbeschraenkung":"22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":51.0897189,"lon":14.6679969},{"VST":76,"PLZ":"01936","Ort":"Königsbrück","Strasse":"Birkenweg 2","Zeitbeschraenkung":"keine","lat":51.2570016,"lon":13.8905233},{"VST":77,"PLZ":"01844","Ort":"Neustadt","Strasse":"Sebnitzer Str. 41","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":51.0245898,"lon":14.231504},{"VST":78,"PLZ":"02763","Ort":"Zittau","Strasse":"Leipziger Str. 35","Zeitbeschraenkung":"22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":50.9007656,"lon":14.8183761},{"VST":79,"PLZ":"02829","Ort":"Görlitz","Strasse":"Nieskyer Str. 100","Zeitbeschraenkung":"keine","lat":51.1702618,"lon":14.9700474},{"VST":80,"PLZ":"01877","Ort":"Bischofswerda","Strasse":"Bautzner Straße 78","Zeitbeschraenkung":"keine","lat":51.1248482,"lon":14.2048231},{"VST":81,"PLZ":"02736","Ort":"Oppach","Strasse":"Bautzener Str. 07 a","Zeitbeschraenkung":"20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":51.0765448,"lon":14.4871365},{"VST":82,"PLZ":"02826","Ort":"Görlitz","Strasse":"Emmerichstr. 33 - 35","Zeitbeschraenkung":"20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":51.1461503,"lon":14.9872494},{"VST":83,"PLZ":"01917","Ort":"Kamenz","Strasse":"Uferstr. 4","Zeitbeschraenkung":"20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":51.2712784,"lon":14.103811},{"VST":84,"PLZ":"02827","Ort":"Görlitz","Strasse":"Reichenbacher Str. 106","Zeitbeschraenkung":"22:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 22:00)","lat":51.1489446,"lon":14.947045},{"VST":85,"PLZ":"02625","Ort":"Bautzen","Strasse":"Stieberstr. 53","Zeitbeschraenkung":"keine","lat":51.1710578,"lon":14.4362345},{"VST":86,"PLZ":"02826","Ort":"Görlitz","Strasse":"Pontestr. 10","Zeitbeschraenkung":"20:00 - 06:00 + sonn- u. feiertags","lat":51.1582027,"lon":14.9835362},{"VST":87,"PLZ":"02625","Ort":"Bautzen","Strasse":"Gesundbrunnenring 4","Zeitbeschraenkung":"20:00 - 06:00 (Sonntagsanlieferung 06:00 - 13:00 u. 15:00 - 20:00)","lat":51.1867917,"lon":14.4403117},{"VST":88,"PLZ":"08340","Ort":"Schwarzenberg","Strasse":"Roter Mühlenweg 28","Zeitbeschraenkung":"keine","lat":50.5500941,"lon":12.7744107},{"VST":89,"PLZ":"09243","Ort":"Niederfrohna","Strasse":"Limbacher Str. 81","Zeitbeschraenkung":"keine","lat":50.8694691,"lon":12.7515129},{"VST":90,"PLZ":"09126","Ort":"Chemnitz","Strasse":"Zschopauer Str.244","Zeitbeschraenkung":"20:00 - 07:00","lat":50.8130883,"lon":12.9570793},{"VST":91,"PLZ":"08321","Ort":"Zschorlau","Strasse":"Am Kuchenhaus 12 (im EKZ)","Zeitbeschraenkung":"keine","lat":50.5512184,"lon":12.6452312},{"VST":92,"PLZ":"09125","Ort":"Chemnitz","Strasse":"Annaberger Straße 315","Zeitbeschraenkung":"20:00 - 07:00","lat":50.7966534,"lon":12.9206112},{"VST":93,"PLZ":"09376","Ort":"Oelsnitz","Strasse":"Hedwigschachtstr. 1","Zeitbeschraenkung":"keine","lat":50.7279395,"lon":12.7003812},{"VST":94,"PLZ":"08280","Ort":"Aue","Strasse":"Lößnitzer Str. 20-22","Zeitbeschraenkung":"22:00 - 06:00","lat":50.5909529,"lon":12.6990713},{"VST":95,"PLZ":"09114","Ort":"Chemnitz","Strasse":"Bornaer Str. 148","Zeitbeschraenkung":"22:00 - 06:00","lat":50.8636689,"lon":12.9020843},{"VST":96,"PLZ":"09356","Ort":"St. Egidien","Strasse":"Platanenstr. 4","Zeitbeschraenkung":"22:00 - 06:00","lat":50.77283,"lon":12.6235149},{"VST":97,"PLZ":"09119","Ort":"Chemnitz","Strasse":"Dr.-Salvador-Allende-Str. 1","Zeitbeschraenkung":"keine","lat":50.8093066,"lon":12.8915514},{"VST":98,"PLZ":"08107","Ort":"Kirchberg","Strasse":"Lengenfelder Str. 41","Zeitbeschraenkung":"22:00 - 06:00","lat":50.6196195,"lon":12.5111272},{"VST":100,"PLZ":"09390","Ort":"Gornsdorf","Strasse":"Meinersdorfer Str. 6","Zeitbeschraenkung":"22:00 - 06:00","lat":50.7173567,"lon":12.8854354},{"VST":101,"PLZ":"08297","Ort":"Zwönitz","Strasse":"Wehrgasse 1b","Zeitbeschraenkung":"22:00 - 06:00","lat":50.6424611,"lon":12.8168156},{"VST":102,"PLZ":"09217","Ort":"Burgstädt","Strasse":"Straße der Dt. Einheit 2 - 4","Zeitbeschraenkung":"22:00 - 06:00","lat":50.922209,"lon":12.8042616},{"VST":103,"PLZ":"08289","Ort":"Schneeberg","Strasse":"Bruno-Dost-Str. 39","Zeitbeschraenkung":"keine","lat":50.6018444,"lon":12.6255323},{"VST":104,"PLZ":"09130","Ort":"Chemnitz","Strasse":"Heinrich-Schütz-Str. 55","Zeitbeschraenkung":"19:00 - 07:00","lat":50.839869,"lon":12.9511841},{"VST":105,"PLZ":"09122","Ort":"Chemnitz","Strasse":"Wladimir-Sagorski-Str. 22","Zeitbeschraenkung":"20:00 - 07:00","lat":50.795454,"lon":12.8895989},{"VST":106,"PLZ":"09116","Ort":"Chemnitz","Strasse":"Zwickauer Str. 247","Zeitbeschraenkung":"20:00 - 07:00","lat":50.8193445,"lon":12.8767636},{"VST":107,"PLZ":"09116","Ort":"Chemnitz","Strasse":"Waldenburger Str. 33","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":50.8311472,"lon":12.8816325},{"VST":109,"PLZ":"09337","Ort":"Hohenstein-E.thal","Strasse":"Dresdner Str. 151","Zeitbeschraenkung":"22:00 - 06:00","lat":null,"lon":null},{"VST":110,"PLZ":"09366","Ort":"Stollberg","Strasse":"Lutherstr. 15","Zeitbeschraenkung":"22:00 - 06:00 + sonn- u. feiertags","lat":50.7100167,"lon":12.7777046},{"VST":111,"PLZ":"09111","Ort":"Chemnitz","Strasse":"Theaterstr. 7","Zeitbeschraenkung":"keine","lat":50.8350719,"lon":12.919254},{"VST":112,"PLZ":"09385","Ort":"Lugau","Strasse":"Chemnitzer Str. 1","Zeitbeschraenkung":"22:00 - 06:00","lat":50.7438327,"lon":12.7489281},{"VST":113,"PLZ":"02943","Ort":"Weißwasser","Strasse":"Berliner Straße 106","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.5083602,"lon":14.619418},{"VST":114,"PLZ":"03048","Ort":"Cottbus","Strasse":"Welzower Straße 26 A","Zeitbeschraenkung":"keine","lat":51.7403217,"lon":14.3235167},{"VST":115,"PLZ":"03130","Ort":"Forst","Strasse":"Cottbusser Straße 92","Zeitbeschraenkung":"keine","lat":51.7438586,"lon":14.6455395},{"VST":116,"PLZ":"03130","Ort":"Spremberg","Strasse":"Grünstraße 3","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.5627676,"lon":14.3721997},{"VST":117,"PLZ":"02991","Ort":"Lauta","Strasse":"Friedensstraße 8","Zeitbeschraenkung":"keine","lat":51.4411769,"lon":14.100161},{"VST":118,"PLZ":"03042","Ort":"Cottbus","Strasse":"Georg Schssinger Straße 3","Zeitbeschraenkung":"keine","lat":51.7625483,"lon":14.3764462},{"VST":119,"PLZ":"03099","Ort":"Kolkwitz","Strasse":"Berliner Straße 113 D","Zeitbeschraenkung":"keine","lat":51.751615,"lon":14.2826245},{"VST":120,"PLZ":"02977","Ort":"Hoyerswerda","Strasse":"Teschenstraße 1","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags (Frische bis 19:00)","lat":51.4399267,"lon":14.2468641},{"VST":121,"PLZ":"03051","Ort":"Cottbus","Strasse":"Sachsendorfer Straße 5","Zeitbeschraenkung":"keine","lat":51.7156717,"lon":14.3173256},{"VST":122,"PLZ":"03044","Ort":"Cottbus","Strasse":"Limberger Straße 1","Zeitbeschraenkung":"keine","lat":51.78154,"lon":14.3179701},{"VST":123,"PLZ":"01968","Ort":"Senftenberg","Strasse":"Bahnhofsstraße 38/40","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.5207439,"lon":14.0234195},{"VST":124,"PLZ":"02977","Ort":"Hoyerswerda","Strasse":"Albert- Einstein Straße 1 A","Zeitbeschraenkung":"22:00 - 06:00+ Sonn- und Feiertags","lat":51.4388966,"lon":14.2621368},{"VST":125,"PLZ":"03046","Ort":"Cottbus","Strasse":"Karl-Liebknecht- Straße 81","Zeitbeschraenkung":"keine","lat":51.7567221,"lon":14.3127901},{"VST":126,"PLZ":"02977","Ort":"Hoyerswerda","Strasse":"Ziolkowskistraße 18","Zeitbeschraenkung":"keine","lat":51.4297631,"lon":14.271223},{"VST":127,"PLZ":"03042","Ort":"Cottbus","Strasse":"Stadtring 8","Zeitbeschraenkung":"keine","lat":51.765549,"lon":14.3577498},{"VST":128,"PLZ":"01983","Ort":"Großräschen","Strasse":"IFA-Park 2","Zeitbeschraenkung":"keine","lat":51.5906808,"lon":14.0124139}];
-function loadData() {
+function t(k){ return (T[lang]&&T[lang][k])||T.pl[k]||k; }
+
+function load(){
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    stores = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(INITIAL_DATA));
-    if (!raw) saveData();
-  } catch { stores = JSON.parse(JSON.stringify(INITIAL_DATA)); }
-  try { favorites = JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); } catch { favorites = []; }
-  try { recent = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); } catch { recent = []; }
-  updateCounts(); populateOrtFilter(); renderRecent(); renderFavs();
+    var r = localStorage.getItem(SK);
+    stores = r ? JSON.parse(r) : JSON.parse(JSON.stringify(INITIAL));
+    if (!r) save();
+  } catch(e){ stores = JSON.parse(JSON.stringify(INITIAL)); }
+  try { favs = JSON.parse(localStorage.getItem(FK)||"[]"); } catch(e){ favs = []; }
+  document.getElementById("cnt").textContent = stores.length;
+  document.getElementById("fcnt").textContent = favs.length;
 }
-function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(stores)); updateCounts(); }
-function saveFavs() { localStorage.setItem(FAV_KEY, JSON.stringify(favorites)); updateCounts(); renderFavs(); }
-function saveRecent() { localStorage.setItem(RECENT_KEY, JSON.stringify(recent.slice(0, 15))); renderRecent(); }
-function updateCounts() {
-  document.getElementById('storeCount').textContent = stores.length;
-  document.getElementById('favCount').textContent = favorites.length;
+function save(){
+  localStorage.setItem(SK, JSON.stringify(stores));
+  document.getElementById("cnt").textContent = stores.length;
 }
-function populateOrtFilter() {
-  const sel = document.getElementById('filterOrt');
-  const orts = [...new Set(stores.map(s => s.Ort).filter(Boolean))].sort();
-  sel.innerHTML = `<option value="">${t('allCities')}</option>` + orts.map(o => `<option value="${esc(o)}">${esc(o)}</option>`).join('');
+function saveFavs(){
+  localStorage.setItem(FK, JSON.stringify(favs));
+  document.getElementById("fcnt").textContent = favs.length;
 }
-function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
-function setTheme(name) {
-  const allowed = ['aero','xp','mac','dark','solar','forest','rose','ocean','midnight','classic'];
-  if (!allowed.includes(name)) name = 'aero';
-  document.body.className = 'theme-' + name;
-  localStorage.setItem('sklep_theme', name);
+
+function enterApp(){
+  document.getElementById("splash").classList.add("hide");
+  document.getElementById("app").classList.add("show");
+  try { sessionStorage.setItem("aldi_ok","1"); } catch(e){}
 }
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.tab === name));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
-  if (name === 'map') setTimeout(() => { if (!map) initMap(); else map.invalidateSize(); }, 50);
-  if (name === 'manage') renderStoreList();
-  if (name === 'favs') renderFavs();
-}
-function doSearch() {
-  const q = document.getElementById('searchQuery').value.trim().toLowerCase();
-  const onlyKeine = document.getElementById('filterKeine').checked;
-  const onlySunday = document.getElementById('filterSunday').checked;
-  const ortFilter = document.getElementById('filterOrt').value;
-  const resultEl = document.getElementById('result');
-  const notFoundEl = document.getElementById('notFound');
-  const listEl = document.getElementById('searchResultsList');
-  resultEl.classList.remove('visible'); notFoundEl.classList.remove('visible'); listEl.style.display = 'none';
-  currentStore = null;
-  let results = stores.filter(s => {
-    if (onlyKeine && !(s.Zeitbeschraenkung || '').toLowerCase().includes('keine')) return false;
-    if (onlySunday && !(s.Zeitbeschraenkung || '').toLowerCase().match(/sonn|feier/)) return false;
-    if (ortFilter && s.Ort !== ortFilter) return false;
-    if (!q) return true;
-    const vstStr = String(s.VST);
-    return vstStr === q || vstStr.startsWith(q) || (s.Ort || '').toLowerCase().includes(q) ||
-      (s.Strasse || '').toLowerCase().includes(q) || (s.PLZ || '').includes(q) ||
-      (s.Zeitbeschraenkung || '').toLowerCase().includes(q);
-  });
-  const exact = results.find(s => String(s.VST) === q);
-  if (exact) { showResult(exact); addRecent(exact.VST); return; }
-  if (results.length === 0) {
-    notFoundEl.textContent = q ? `${t('noResultsFor')} „${q}".` : t('noFilter');
-    notFoundEl.classList.add('visible'); return;
-  }
-  if (results.length === 1) { showResult(results[0]); addRecent(results[0].VST); return; }
-  results = results.sort((a, b) => a.VST - b.VST);
-  listEl.style.display = 'block';
-  listEl.innerHTML = results.slice(0, 80).map(s => storeItemHtml(s)).join('');
-  if (results.length > 80) listEl.innerHTML += `<div class="store-item" style="opacity:0.6;cursor:default;">… ${results.length - 80} ${t('more')}</div>`;
-}
-function storeItemHtml(s) {
-  const zeit = (s.Zeitbeschraenkung || '').toLowerCase();
-  const badgeCls = zeit.includes('keine') ? 'keine' : '';
-  const badge = s.Zeitbeschraenkung ? `<span class="badge ${badgeCls}">${esc(s.Zeitbeschraenkung).slice(0, 28)}</span>` : '';
-  const isFav = favorites.includes(s.VST) ? ' ★' : '';
-  return `<div class="store-item" onclick="selectStore(${s.VST})"><span><strong>VST ${s.VST}</strong>${isFav} – ${esc(s.Ort || '?')}</span><span class="meta">${esc(s.PLZ || '')} ${esc(s.Strasse || '')}</span>${badge}</div>`;
-}
-function showResult(s) {
-  currentStore = s;
-  document.getElementById('resVst').textContent = `VST ${s.VST}`;
-  document.getElementById('resPlz').textContent = s.PLZ || '—';
-  document.getElementById('resOrt').textContent = s.Ort || '—';
-  document.getElementById('resStrasse').textContent = s.Strasse || '—';
-  document.getElementById('resZeit').textContent = s.Zeitbeschraenkung || '—';
-  document.getElementById('favStar').classList.toggle('on', favorites.includes(s.VST));
-  document.getElementById('result').classList.add('visible');
-  document.getElementById('searchResultsList').style.display = 'none';
-}
-function selectStore(vst) {
-  const s = stores.find(x => x.VST === vst);
-  if (!s) return;
-  document.getElementById('searchQuery').value = String(vst);
-  showResult(s); addRecent(vst); switchTab('search'); fillForm(s);
-}
-document.getElementById('searchQuery').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
-function addRecent(vst) { recent = [vst, ...recent.filter(v => v !== vst)].slice(0, 15); saveRecent(); }
-function renderRecent() {
-  const el = document.getElementById('recentList');
-  if (!recent.length) { el.innerHTML = `<div class="store-item" style="opacity:0.5;cursor:default;">${t('noHistory')}</div>`; return; }
-  el.innerHTML = recent.map(vst => { const s = stores.find(x => x.VST === vst); return s ? storeItemHtml(s) : ''; }).join('');
-}
-function toggleFav() {
-  if (!currentStore) return;
-  const vst = currentStore.VST;
-  if (favorites.includes(vst)) favorites = favorites.filter(v => v !== vst); else favorites.push(vst);
-  saveFavs(); document.getElementById('favStar').classList.toggle('on', favorites.includes(vst));
-}
-function renderFavs() {
-  const el = document.getElementById('favList');
-  if (!favorites.length) { el.innerHTML = `<div class="store-item" style="opacity:0.5;cursor:default;">${t('noFavs')}</div>`; return; }
-  el.innerHTML = favorites.map(vst => { const s = stores.find(x => x.VST === vst); return s ? storeItemHtml(s) : ''; }).join('');
-}
-function navigate() {
-  if (!currentStore) return;
-  const addr = [currentStore.Strasse, currentStore.PLZ, currentStore.Ort, 'Germany'].filter(Boolean).join(', ');
-  window.open('https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(addr) + '&travelmode=driving', '_blank');
-}
-function getCoords(s) { return (s && s.lat != null && s.lon != null) ? [s.lat, s.lon] : null; }
-function initMap() {
-  map = L.map('mapContainer').setView([51.05, 13.74], 8);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap', maxZoom: 18 }).addTo(map);
-  markersLayer = L.layerGroup().addTo(map); loadAllMarkers();
-}
-function loadMarkers(list, label) {
-  if (!map) return;
-  markersLayer.clearLayers();
-  const bounds = []; let ok = 0;
-  list.forEach(s => {
-    const coords = getCoords(s); if (!coords) return;
-    const m = L.marker(coords).addTo(markersLayer);
-    m.bindPopup(`<b>VST ${s.VST}</b><br>${esc(s.Strasse)}<br>${esc(s.PLZ)} ${esc(s.Ort)}<br><small>${esc(s.Zeitbeschraenkung || '')}</small><br><button onclick="selectStore(${s.VST});navigate()" style="margin-top:4px;cursor:pointer;">${t('navigate')}</button>`);
-    bounds.push(coords); ok++;
-  });
-  if (bounds.length) map.fitBounds(bounds, { padding: [30, 30], maxZoom: 12 });
-  document.getElementById('mapInfo').textContent = `${label}: ${ok} ${t('markers')}`;
-}
-function loadAllMarkers() { loadMarkers([...stores].sort((a, b) => a.VST - b.VST), t('all')); }
-function loadFavMarkers() {
-  const list = favorites.map(v => stores.find(s => s.VST === v)).filter(Boolean);
-  if (!list.length) { document.getElementById('mapInfo').textContent = t('noFavs'); if (markersLayer) markersLayer.clearLayers(); return; }
-  loadMarkers(list, t('favs'));
-}
-function fitMapBounds() {
-  if (!map || !markersLayer.getLayers().length) return;
-  map.fitBounds(L.featureGroup(markersLayer.getLayers()).getBounds(), { padding: [30, 30] });
-}
-function showOnMap() {
-  if (!currentStore) return;
-  switchTab('map');
-  setTimeout(() => {
-    if (!map) initMap();
-    markersLayer.clearLayers();
-    const coords = getCoords(currentStore);
-    if (coords) {
-      L.marker(coords).addTo(markersLayer).bindPopup(`<b>VST ${currentStore.VST}</b><br>${esc(currentStore.Strasse)}<br>${esc(currentStore.PLZ)} ${esc(currentStore.Ort)}`).openPopup();
-      map.setView(coords, 15);
-      document.getElementById('mapInfo').textContent = `VST ${currentStore.VST}`;
-    } else document.getElementById('mapInfo').textContent = t('noCoords');
-  }, 60);
-}
-function renderStoreList() {
-  document.getElementById('storeList').innerHTML = [...stores].sort((a, b) => a.VST - b.VST).map(s => storeItemHtml(s)).join('');
-}
-function fillForm(s) {
-  document.getElementById('editVst').value = s.VST;
-  document.getElementById('editPlz').value = s.PLZ || '';
-  document.getElementById('editOrt').value = s.Ort || '';
-  document.getElementById('editStrasse').value = s.Strasse || '';
-  document.getElementById('editZeit').value = s.Zeitbeschraenkung || '';
-}
-function clearForm() { ['editVst','editPlz','editOrt','editStrasse','editZeit'].forEach(id => document.getElementById(id).value = ''); }
-function editCurrent() { if (!currentStore) return; fillForm(currentStore); switchTab('manage'); }
-function saveStore() {
-  const vst = parseInt(document.getElementById('editVst').value, 10);
-  if (!vst || isNaN(vst)) { showStatus(t('needVst'), true); return; }
-  const existing = stores.find(s => s.VST === vst);
-  const data = {
-    VST: vst, PLZ: document.getElementById('editPlz').value.trim(),
-    Ort: document.getElementById('editOrt').value.trim(),
-    Strasse: document.getElementById('editStrasse').value.trim(),
-    Zeitbeschraenkung: document.getElementById('editZeit').value.trim(),
-    lat: existing ? existing.lat : null, lon: existing ? existing.lon : null
-  };
-  const idx = stores.findIndex(s => s.VST === vst);
-  if (idx >= 0) stores[idx] = data; else stores.push(data);
-  saveData(); populateOrtFilter(); renderStoreList();
-  showStatus(`${t('saved')} ${vst}.`);
-  if (currentStore && currentStore.VST === vst) { currentStore = data; showResult(data); }
-}
-function deleteStore() {
-  const vst = parseInt(document.getElementById('editVst').value, 10);
-  if (!vst || isNaN(vst)) return;
-  if (!confirm(`${t('confirmDelete')} ${vst}?`)) return;
-  stores = stores.filter(s => s.VST !== vst);
-  favorites = favorites.filter(v => v !== vst);
-  saveData(); saveFavs(); populateOrtFilter(); renderStoreList(); clearForm();
-  document.getElementById('result').classList.remove('visible');
-  showStatus(`${t('deleted')} ${vst}.`);
-}
-function showStatus(msg, isErr = false) {
-  const el = document.getElementById('statusMsg');
-  el.textContent = msg; el.className = 'status ' + (isErr ? 'err' : 'ok');
-  setTimeout(() => { el.className = 'status'; }, 4500);
-}
-function downloadBlob(blob, filename) {
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); URL.revokeObjectURL(a.href);
-}
-function exportJSON() {
-  downloadBlob(new Blob([JSON.stringify(stores, null, 2)], { type: 'application/json' }), 'aldi_vst_sklepy.json');
-  showStatus('JSON OK');
-}
-function exportCSV() {
-  const header = 'VST;PLZ;Ort;Strasse;Zeitbeschraenkung;lat;lon';
-  const rows = stores.map(s => [s.VST, s.PLZ, s.Ort, s.Strasse, s.Zeitbeschraenkung, s.lat, s.lon].map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(';'));
-  downloadBlob(new Blob(['\uFEFF' + header + '\n' + rows.join('\n')], { type: 'text/csv;charset=utf-8' }), 'aldi_vst_sklepy.csv');
-  showStatus('CSV OK');
-}
-function exportXLSX() {
-  if (typeof XLSX === 'undefined') { showStatus('XLSX missing', true); return; }
-  const ws = XLSX.utils.json_to_sheet(stores.map(s => ({ VST: s.VST, PLZ: s.PLZ, Ort: s.Ort, 'Straße': s.Strasse, Zeitbeschränkung: s.Zeitbeschraenkung, lat: s.lat, lon: s.lon })));
-  const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Filialen');
-  XLSX.writeFile(wb, 'aldi_vst_sklepy.xlsx'); showStatus('XLSX OK');
-}
-function exportPDF() {
-  if (typeof window.jspdf === 'undefined') { showStatus('jsPDF missing', true); return; }
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-  doc.setFontSize(14); doc.text(t('pdfTitle'), 14, 14);
-  doc.setFontSize(9);
-  doc.text('Autor: Cichocki Tomasz · ' + new Date().toLocaleDateString(lang === 'de' ? 'de-DE' : 'pl-PL'), 14, 20);
-  const body = [...stores].sort((a,b)=>a.VST-b.VST).map(s => [s.VST, s.PLZ || '', s.Ort || '', s.Strasse || '', s.Zeitbeschraenkung || '']);
-  doc.autoTable({
-    startY: 24, head: [['VST', 'PLZ', 'Ort', 'Straße', 'Zeitbeschränkung']], body,
-    styles: { fontSize: 8, cellPadding: 1.5 }, headStyles: { fillColor: [0, 61, 165] },
-    alternateRowStyles: { fillColor: [240, 245, 255] }
-  });
-  doc.save('aldi_vst_lista.pdf'); showStatus(t('pdfExported'));
-}
-function importFile(ev) {
-  const file = ev.target.files[0]; if (!file) return;
-  const name = file.name.toLowerCase();
-  if (name.endsWith('.xlsx') || name.endsWith('.xls')) {
-    const reader = new FileReader();
-    reader.onload = e => {
-      try {
-        if (typeof XLSX === 'undefined') throw new Error('XLSX');
-        const wb = XLSX.read(e.target.result, { type: 'array' });
-        applyImported(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
-      } catch (err) { showStatus('XLSX: ' + err.message, true); }
-    };
-    reader.readAsArrayBuffer(file);
-  } else {
-    const reader = new FileReader();
-    reader.onload = e => {
-      try {
-        const text = e.target.result;
-        applyImported(name.endsWith('.json') ? JSON.parse(text) : parseCSV(text));
-      } catch (err) { showStatus(err.message, true); }
-    };
-    reader.readAsText(file, 'UTF-8');
-  }
-  ev.target.value = '';
-}
-function applyImported(data) {
-  if (!Array.isArray(data) || !data.length) throw new Error('Empty');
-  stores = data.map(row => ({
-    VST: parseInt(row.VST || row.vst, 10),
-    PLZ: String(row.PLZ || row.plz || '').replace(/\D/g, '').padStart(5, '0').slice(-5),
-    Ort: row.Ort || row.ort || '',
-    Strasse: row.Strasse || row.Straße || row.strasse || '',
-    Zeitbeschraenkung: row.Zeitbeschraenkung || row.Zeitbeschränkung || '',
-    lat: row.lat != null ? parseFloat(row.lat) : null,
-    lon: row.lon != null ? parseFloat(row.lon) : null
-  })).filter(r => r.VST && !isNaN(r.VST));
-  saveData(); populateOrtFilter(); renderStoreList();
-  showStatus(`${t('imported')} ${stores.length} ${t('stores')}.`);
-}
-function parseCSV(text) {
-  const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter(l => l.trim());
-  if (lines.length < 2) return [];
-  const sep = lines[0].includes(';') ? ';' : ',';
-  const headers = lines[0].split(sep).map(h => h.replace(/^"|"$/g, '').trim());
-  return lines.slice(1).map(line => {
-    const cols = line.split(sep).map(c => c.replace(/^"|"$/g, '').replace(/""/g, '"'));
-    const obj = {}; headers.forEach((h, i) => { obj[h] = cols[i] || ''; }); return obj;
-  });
-}
-function resetData() {
-  if (!confirm(t('confirmReset'))) return;
-  stores = JSON.parse(JSON.stringify(INITIAL_DATA));
-  saveData(); populateOrtFilter(); renderStoreList();
-  showStatus(`${t('resetOk')} ${stores.length} ${t('stores')}.`);
-}
-if ('serviceWorker' in navigator) {
-  const swUrl = new URL('sw.js', window.location.href).href;
-  navigator.serviceWorker.register(swUrl, { scope: new URL('./', window.location.href).pathname }).catch(() => {});
-}
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault(); deferredInstallPrompt = e;
-  document.getElementById('installBanner').classList.add('visible');
-  document.getElementById('installBtn2').style.display = 'inline-block';
+
+// Splash: always works
+document.getElementById("startBtn").onclick = function(e){
+  e.preventDefault();
+  enterApp();
+};
+document.getElementById("splash").addEventListener("click", function(e){
+  if (e.target.id === "startBtn" || e.target.closest("#startBtn")) return;
+  enterApp();
 });
-function promptInstall() {
-  if (!deferredInstallPrompt) return;
-  deferredInstallPrompt.prompt();
-  deferredInstallPrompt.userChoice.then(() => {
-    deferredInstallPrompt = null;
-    document.getElementById('installBanner').classList.remove('visible');
+setTimeout(enterApp, 2500);
+try {
+  if (sessionStorage.getItem("aldi_ok")==="1") enterApp();
+} catch(e){}
+
+// Tabs
+document.querySelectorAll(".tab").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    var name = btn.getAttribute("data-tab");
+    document.querySelectorAll(".tab").forEach(function(b){ b.classList.toggle("active", b===btn); });
+    document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("active"); });
+    var panel = document.getElementById("p-"+name);
+    if (panel) panel.classList.add("active");
+    if (name==="map") setTimeout(initMap, 50);
+    if (name==="favs") renderFavs();
+    if (name==="manage") renderAll();
   });
+});
+
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
+
+function itemHtml(s){
+  return '<div class="item" data-vst="'+s.VST+'"><span><strong>VST '+s.VST+'</strong> – '+esc(s.Ort||"?")+'</span><span class="meta">'+esc(s.PLZ||"")+" "+esc(s.Strasse||"")+'</span></div>';
 }
-document.getElementById('installBtn').addEventListener('click', promptInstall);
-(function initSplash() {
-  const btn = document.getElementById('splashBtn');
-  const ring = document.getElementById('splashRing');
-  const splash = document.getElementById('splash');
-  const app = document.getElementById('app');
 
-  function enterApp() {
-    if (sessionStorage.getItem('aldi_entering') === '1') return;
-    sessionStorage.setItem('aldi_entering', '1');
-    sessionStorage.setItem('aldi_splash_done', '1');
-    splash.classList.add('hide');
-    app.classList.add('show');
-    // optional PIN setup only once, non-blocking after enter
-    if (!pinIsSet && typeof pinIsSet === 'function') { /* defined later */ }
-  }
+function showResult(s){
+  current = s;
+  document.getElementById("result").style.display = "block";
+  document.getElementById("list").style.display = "none";
+  document.getElementById("msg").classList.remove("show");
+  document.getElementById("rVst").textContent = "VST "+s.VST;
+  document.getElementById("rPlz").textContent = s.PLZ || "—";
+  document.getElementById("rOrt").textContent = s.Ort || "—";
+  document.getElementById("rStr").textContent = s.Strasse || "—";
+  document.getElementById("rZeit").textContent = s.Zeitbeschraenkung || "—";
+  document.getElementById("btnFav").textContent = favs.indexOf(s.VST)>=0 ? "★ Ulubione" : "☆ Ulubione";
+}
 
-  window.__enterApp = function() {
-    sessionStorage.setItem('aldi_splash_done', '1');
-    splash.classList.add('hide');
-    app.classList.add('show');
-  };
-
-  setTimeout(() => { if (ring) ring.style.display = 'none'; }, 1500);
-
-  if (btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      window.__enterApp();
-    });
-  }
-  // whole splash tappable
-  splash.addEventListener('click', function(e) {
-    if (e.target.closest('#pinScreen')) return;
-    window.__enterApp();
+function doSearch(){
+  var q = document.getElementById("q").value.trim().toLowerCase();
+  var res = stores.filter(function(s){
+    if (!q) return true;
+    var v = String(s.VST);
+    return v===q || v.indexOf(q)===0 ||
+      (s.Ort||"").toLowerCase().indexOf(q)>=0 ||
+      (s.Strasse||"").toLowerCase().indexOf(q)>=0 ||
+      (s.PLZ||"").indexOf(q)>=0;
   });
-
-  // auto-enter after 3s
-  setTimeout(function() {
-    if (!app.classList.contains('show') && !document.getElementById('pinScreen')?.classList.contains('show')) {
-      window.__enterApp();
-    }
-  }, 3000);
-
-  if (sessionStorage.getItem('aldi_splash_done') === '1') {
-    window.__enterApp();
-  }
-})();
-(function init() {
-  const th = localStorage.getItem('sklep_theme') || 'aero';
-  document.getElementById('themeSelect').value = th; setTheme(th);
-  document.getElementById('langSelect').value = lang;
-  loadData(); applyI18n();
-})();
-
-
-// ===== EXTENDED FEATURES: PIN, FAB, PDF scopes, auto theme, import diff, offline tiles =====
-(function extendI18n() {
-  Object.assign(I18N.pl, {
-    pinSetup: 'Ustaw kod PIN (4–8 cyfr)',
-    pinEnter: 'Podaj kod PIN',
-    pinWrong: 'Błędny PIN',
-    pinOptional: 'Puste pole = bez PIN',
-    pinBtn: 'OK',
-    pdfScope: 'Zakres PDF',
-    pdfAll: 'Wszystkie sklepy',
-    pdfFavs: 'Tylko ulubione',
-    pdfCity: 'Wybrane miasto',
-    themeAuto: 'Auto (system)',
-    importChanges: 'Zmiany Zeitbeschränkung',
-    noPinChange: 'Brak zmian w ograniczeniach czasu.',
-    offlineHint: 'Kafelki mapy są zapisywane offline po pierwszym wyświetleniu.',
-    pinDisable: 'Wyłącz PIN',
-    pinChange: 'Zmień PIN'
-  });
-  Object.assign(I18N.de, {
-    pinSetup: 'PIN festlegen (4–8 Ziffern)',
-    pinEnter: 'PIN eingeben',
-    pinWrong: 'Falscher PIN',
-    pinOptional: 'Leer = kein PIN',
-    pinBtn: 'OK',
-    pdfScope: 'PDF-Bereich',
-    pdfAll: 'Alle Filialen',
-    pdfFavs: 'Nur Favoriten',
-    pdfCity: 'Gewählter Ort',
-    themeAuto: 'Auto (System)',
-    importChanges: 'Änderungen Zeitbeschränkung',
-    noPinChange: 'Keine Änderungen bei Zeitbeschränkungen.',
-    offlineHint: 'Kartenebenen werden nach dem ersten Anzeigen offline gespeichert.',
-    pinDisable: 'PIN deaktivieren',
-    pinChange: 'PIN ändern'
-  });
-})();
-
-const PIN_KEY = 'aldi_vst_pin_v1';
-
-function hashPin(s) {
-  // simple non-crypto hash for local gate only
-  let h = 5381;
-  for (let i = 0; i < s.length; i++) h = ((h << 5) + h) ^ s.charCodeAt(i);
-  return 'p' + (h >>> 0).toString(16);
-}
-
-function pinIsSet() {
-  return !!localStorage.getItem(PIN_KEY);
-}
-
-function showPinScreen(mode) {
-  // mode: 'setup' | 'unlock'
-  const scr = document.getElementById('pinScreen');
-  const title = document.getElementById('pinTitle');
-  const desc = document.getElementById('pinDesc');
-  const err = document.getElementById('pinErr');
-  const input = document.getElementById('pinInput');
-  const btn = document.getElementById('pinSubmit');
-  err.textContent = '';
-  input.value = '';
-  if (mode === 'setup') {
-    title.textContent = 'PIN';
-    desc.textContent = t('pinSetup') + ' — ' + t('pinOptional');
-  } else {
-    title.textContent = 'PIN';
-    desc.textContent = t('pinEnter');
-  }
-  btn.textContent = t('pinBtn');
-  scr.classList.add('show');
-  setTimeout(() => input.focus(), 100);
-
-  btn.onclick = () => {
-    const val = input.value.trim();
-    if (mode === 'setup') {
-      if (!val) {
-        // disable pin
-        localStorage.removeItem(PIN_KEY);
-        scr.classList.remove('show');
-        afterPinOk();
-        return;
-      }
-      if (!/^\d{4,8}$/.test(val)) {
-        err.textContent = t('pinSetup');
-        return;
-      }
-      localStorage.setItem(PIN_KEY, hashPin(val));
-      scr.classList.remove('show');
-      afterPinOk();
-    } else {
-      if (localStorage.getItem(PIN_KEY) === hashPin(val)) {
-        scr.classList.remove('show');
-        sessionStorage.setItem('aldi_pin_ok', '1');
-        afterPinOk();
-      } else {
-        err.textContent = t('pinWrong');
-        input.value = '';
-        input.focus();
-      }
-    }
-  };
-  input.onkeydown = (e) => { if (e.key === 'Enter') btn.click(); };
-}
-
-function afterPinOk() {
-  sessionStorage.setItem('aldi_splash_done', '1');
-  sessionStorage.setItem('aldi_pin_ok', '1');
-  const splash = document.getElementById('splash');
-  if (splash) splash.classList.add('hide');
-  const app = document.getElementById('app');
-  if (app) app.classList.add('show');
-}
-
-// Auto theme from system
-function applyAutoTheme() {
-  const saved = localStorage.getItem('sklep_theme') || 'aero';
-  if (saved !== 'auto') return;
-  const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  document.body.className = dark ? 'theme-dark' : 'theme-aero';
-}
-
-const _origSetTheme = setTheme;
-setTheme = function(name) {
-  if (name === 'auto') {
-    localStorage.setItem('sklep_theme', 'auto');
-    applyAutoTheme();
-    const sel = document.getElementById('themeSelect');
-    if (sel) sel.value = 'auto';
+  var exact = res.filter(function(s){ return String(s.VST)===q; })[0];
+  if (exact){ showResult(exact); return; }
+  if (!res.length){
+    document.getElementById("result").style.display = "none";
+    document.getElementById("list").style.display = "none";
+    document.getElementById("msg").textContent = t("none");
+    document.getElementById("msg").classList.add("show");
     return;
   }
-  _origSetTheme(name);
-};
-
-if (window.matchMedia) {
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    if (localStorage.getItem('sklep_theme') === 'auto') applyAutoTheme();
+  if (res.length===1){ showResult(res[0]); return; }
+  res.sort(function(a,b){ return a.VST-b.VST; });
+  document.getElementById("result").style.display = "none";
+  document.getElementById("msg").classList.remove("show");
+  var list = document.getElementById("list");
+  list.style.display = "block";
+  list.innerHTML = res.slice(0,100).map(itemHtml).join("");
+  list.querySelectorAll(".item").forEach(function(el){
+    el.onclick = function(){
+      var s = stores.filter(function(x){ return x.VST===parseInt(el.getAttribute("data-vst"),10); })[0];
+      if (s) showResult(s);
+    };
   });
 }
 
-// Patch exportPDF for scope
-const _origExportPDF = exportPDF;
-exportPDF = function() {
-  if (typeof window.jspdf === 'undefined') { showStatus('jsPDF missing', true); return; }
-  const scopeEl = document.getElementById('pdfScope');
-  const cityEl = document.getElementById('pdfCity');
-  let list = [...stores];
-  let scope = scopeEl ? scopeEl.value : 'all';
-  if (scope === 'favs') {
-    list = favorites.map(v => stores.find(s => s.VST === v)).filter(Boolean);
-  } else if (scope === 'city' && cityEl && cityEl.value) {
-    list = stores.filter(s => s.Ort === cityEl.value);
+document.getElementById("btnSearch").onclick = doSearch;
+document.getElementById("q").onkeydown = function(e){ if (e.key==="Enter") doSearch(); };
+
+document.getElementById("btnNav").onclick = function(){
+  if (!current) return;
+  var addr = [current.Strasse, current.PLZ, current.Ort, "Germany"].filter(Boolean).join(", ");
+  window.open("https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(addr)+"&travelmode=driving","_blank");
+};
+
+document.getElementById("btnFav").onclick = function(){
+  if (!current) return;
+  var i = favs.indexOf(current.VST);
+  if (i>=0) favs.splice(i,1); else favs.push(current.VST);
+  saveFavs();
+  document.getElementById("btnFav").textContent = favs.indexOf(current.VST)>=0 ? "★ Ulubione" : "☆ Ulubione";
+};
+
+function renderFavs(){
+  var el = document.getElementById("favList");
+  var list = favs.map(function(v){ return stores.filter(function(s){ return s.VST===v; })[0]; }).filter(Boolean);
+  if (!list.length){ el.innerHTML = '<div class="item" style="cursor:default;opacity:.6">—</div>'; return; }
+  el.innerHTML = list.map(itemHtml).join("");
+  el.querySelectorAll(".item").forEach(function(node){
+    node.onclick = function(){
+      var s = stores.filter(function(x){ return x.VST===parseInt(node.getAttribute("data-vst"),10); })[0];
+      if (s){
+        document.querySelector('.tab[data-tab="search"]').click();
+        showResult(s);
+      }
+    };
+  });
+}
+
+function renderAll(){
+  var el = document.getElementById("allList");
+  var list = stores.slice().sort(function(a,b){ return a.VST-b.VST; });
+  el.innerHTML = list.map(itemHtml).join("");
+  el.querySelectorAll(".item").forEach(function(node){
+    node.onclick = function(){
+      var s = stores.filter(function(x){ return x.VST===parseInt(node.getAttribute("data-vst"),10); })[0];
+      if (!s) return;
+      document.getElementById("eVst").value = s.VST;
+      document.getElementById("ePlz").value = s.PLZ||"";
+      document.getElementById("eOrt").value = s.Ort||"";
+      document.getElementById("eStr").value = s.Strasse||"";
+      document.getElementById("eZeit").value = s.Zeitbeschraenkung||"";
+      current = s;
+    };
+  });
+}
+
+document.getElementById("btnSave").onclick = function(){
+  var vst = parseInt(document.getElementById("eVst").value,10);
+  if (!vst) return;
+  var old = stores.filter(function(s){ return s.VST===vst; })[0];
+  var data = {
+    VST:vst,
+    PLZ:document.getElementById("ePlz").value.trim(),
+    Ort:document.getElementById("eOrt").value.trim(),
+    Strasse:document.getElementById("eStr").value.trim(),
+    Zeitbeschraenkung:document.getElementById("eZeit").value.trim(),
+    lat: old ? old.lat : null,
+    lon: old ? old.lon : null
+  };
+  var idx = stores.findIndex(function(s){ return s.VST===vst; });
+  if (idx>=0) stores[idx]=data; else stores.push(data);
+  save(); renderAll();
+  status(t("save")+" VST "+vst);
+};
+
+document.getElementById("btnDel").onclick = function(){
+  var vst = parseInt(document.getElementById("eVst").value,10);
+  if (!vst || !confirm("VST "+vst+"?")) return;
+  stores = stores.filter(function(s){ return s.VST!==vst; });
+  favs = favs.filter(function(v){ return v!==vst; });
+  save(); saveFavs(); renderAll();
+  status(t("del")+" VST "+vst);
+};
+
+function status(m){
+  var el = document.getElementById("status");
+  el.textContent = m; el.classList.add("show");
+  setTimeout(function(){ el.classList.remove("show"); }, 3000);
+}
+
+function initMap(){
+  if (typeof L === "undefined") return;
+  if (!map){
+    map = L.map("map").setView([51.05,13.74], 8);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{ maxZoom:18, attribution:"© OSM" }).addTo(map);
+    layer = L.layerGroup().addTo(map);
   }
-  list.sort((a,b) => a.VST - b.VST);
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-  doc.setFontSize(14); doc.text(t('pdfTitle'), 14, 14);
+  setTimeout(function(){ map.invalidateSize(); }, 100);
+  showMarkers(stores);
+}
+
+function showMarkers(list){
+  if (!layer) return;
+  layer.clearLayers();
+  var b = [];
+  list.forEach(function(s){
+    if (s.lat==null || s.lon==null) return;
+    var m = L.marker([s.lat,s.lon]).addTo(layer);
+    m.bindPopup("<b>VST "+s.VST+"</b><br>"+esc(s.Strasse)+"<br>"+esc(s.PLZ)+" "+esc(s.Ort));
+    b.push([s.lat,s.lon]);
+  });
+  if (b.length && map) map.fitBounds(b, { padding:[30,30], maxZoom:12 });
+}
+
+document.getElementById("btnMapAll").onclick = function(){ initMap(); showMarkers(stores); };
+document.getElementById("btnMapFav").onclick = function(){
+  initMap();
+  showMarkers(favs.map(function(v){ return stores.filter(function(s){ return s.VST===v; })[0]; }).filter(Boolean));
+};
+document.getElementById("btnMapOne").onclick = function(){
+  if (!current) return;
+  document.querySelector('.tab[data-tab="map"]').click();
+  setTimeout(function(){
+    initMap();
+    if (current.lat!=null){
+      layer.clearLayers();
+      L.marker([current.lat,current.lon]).addTo(layer).bindPopup("VST "+current.VST).openPopup();
+      map.setView([current.lat,current.lon], 15);
+    }
+  }, 100);
+};
+
+function dl(blob, name){
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+document.getElementById("btnJson").onclick = function(){
+  dl(new Blob([JSON.stringify(stores,null,2)],{type:"application/json"}), "aldi_vst.json");
+};
+document.getElementById("btnCsv").onclick = function(){
+  var h = "VST;PLZ;Ort;Strasse;Zeitbeschraenkung";
+  var rows = stores.map(function(s){
+    return [s.VST,s.PLZ,s.Ort,s.Strasse,s.Zeitbeschraenkung].map(function(v){ return '"'+String(v||"").replace(/"/g,'""')+'"'; }).join(";");
+  });
+  dl(new Blob(["\uFEFF"+h+"\n"+rows.join("\n")],{type:"text/csv"}), "aldi_vst.csv");
+};
+document.getElementById("btnXlsx").onclick = function(){
+  if (typeof XLSX === "undefined"){ status("XLSX niedostępne"); return; }
+  var ws = XLSX.utils.json_to_sheet(stores.map(function(s){
+    return { VST:s.VST, PLZ:s.PLZ, Ort:s.Ort, Strasse:s.Strasse, Zeitbeschraenkung:s.Zeitbeschraenkung };
+  }));
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Filialen");
+  XLSX.writeFile(wb, "aldi_vst.xlsx");
+};
+document.getElementById("btnPdf").onclick = function(){
+  if (!window.jspdf){ status("PDF niedostępne"); return; }
+  var doc = new window.jspdf.jsPDF({ orientation:"landscape", unit:"mm", format:"a4" });
+  doc.setFontSize(14);
+  doc.text("ALDI VST Wilsdruff – Lista", 14, 14);
   doc.setFontSize(9);
-  const scopeLabel = scope === 'favs' ? t('pdfFavs') : (scope === 'city' ? (cityEl.value || '') : t('pdfAll'));
-  doc.text('Autor: Cichocki Tomasz · ' + scopeLabel + ' · ' + new Date().toLocaleDateString(lang === 'de' ? 'de-DE' : 'pl-PL'), 14, 20);
-  const body = list.map(s => [s.VST, s.PLZ || '', s.Ort || '', s.Strasse || '', s.Zeitbeschraenkung || '']);
+  doc.text("Autor: Cichocki Tomasz", 14, 20);
+  var body = stores.slice().sort(function(a,b){ return a.VST-b.VST; }).map(function(s){
+    return [s.VST, s.PLZ||"", s.Ort||"", s.Strasse||"", s.Zeitbeschraenkung||""];
+  });
   doc.autoTable({
-    startY: 24, head: [['VST', 'PLZ', 'Ort', 'Straße', 'Zeitbeschränkung']], body,
-    styles: { fontSize: 8, cellPadding: 1.5 }, headStyles: { fillColor: [0, 61, 165] },
-    alternateRowStyles: { fillColor: [240, 245, 255] }
+    startY:24,
+    head:[["VST","PLZ","Ort","Straße","Zeitbeschränkung"]],
+    body: body,
+    styles:{ fontSize:8 },
+    headStyles:{ fillColor:[0,61,165] }
   });
-  doc.save('aldi_vst_lista.pdf');
-  showStatus(t('pdfExported') + ' (' + list.length + ')');
+  doc.save("aldi_vst.pdf");
+  status("PDF OK");
 };
 
-// Import diff for Zeitbeschränkung
-const _origApplyImported = applyImported;
-applyImported = function(data) {
-  const before = {};
-  stores.forEach(s => { before[s.VST] = s.Zeitbeschraenkung || ''; });
-  _origApplyImported(data);
-  const changes = [];
-  stores.forEach(s => {
-    const old = before[s.VST];
-    if (old !== undefined && old !== (s.Zeitbeschraenkung || '')) {
-      changes.push(`VST ${s.VST}: "${old}" → "${s.Zeitbeschraenkung || ''}"`);
-    }
+document.getElementById("fileIn").onchange = function(ev){
+  var f = ev.target.files[0]; if (!f) return;
+  var name = f.name.toLowerCase();
+  if (name.indexOf(".xlsx")>=0 || name.indexOf(".xls")>=0){
+    var r = new FileReader();
+    r.onload = function(e){
+      try {
+        var wb = XLSX.read(e.target.result,{type:"array"});
+        applyImport(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
+      } catch(err){ status("Błąd XLSX"); }
+    };
+    r.readAsArrayBuffer(f);
+  } else {
+    var r2 = new FileReader();
+    r2.onload = function(e){
+      try {
+        var text = e.target.result;
+        if (name.indexOf(".json")>=0) applyImport(JSON.parse(text));
+        else {
+          var lines = text.replace(/^\uFEFF/,"").split(/\r?\n/).filter(function(l){ return l.trim(); });
+          var sep = lines[0].indexOf(";")>=0 ? ";" : ",";
+          var headers = lines[0].split(sep).map(function(h){ return h.replace(/^"|"$/g,""); });
+          var arr = lines.slice(1).map(function(line){
+            var cols = line.split(sep).map(function(c){ return c.replace(/^"|"$/g,""); });
+            var o = {}; headers.forEach(function(h,i){ o[h]=cols[i]||""; }); return o;
+          });
+          applyImport(arr);
+        }
+      } catch(err){ status("Błąd importu"); }
+    };
+    r2.readAsText(f,"UTF-8");
+  }
+  ev.target.value = "";
+};
+
+function applyImport(data){
+  if (!data || !data.length) return;
+  stores = data.map(function(row){
+    return {
+      VST: parseInt(row.VST||row.vst,10),
+      PLZ: String(row.PLZ||row.plz||"").replace(/\D/g,"").padStart(5,"0").slice(-5),
+      Ort: row.Ort||row.ort||"",
+      Strasse: row.Strasse||row.Straße||row.strasse||"",
+      Zeitbeschraenkung: row.Zeitbeschraenkung||row.Zeitbeschränkung||"",
+      lat: row.lat!=null ? parseFloat(row.lat) : null,
+      lon: row.lon!=null ? parseFloat(row.lon) : null
+    };
+  }).filter(function(r){ return r.VST && !isNaN(r.VST); });
+  save();
+  status("Import: "+stores.length);
+}
+
+document.getElementById("btnReset").onclick = function(){
+  if (!confirm("Reset?")) return;
+  stores = JSON.parse(JSON.stringify(INITIAL));
+  save();
+  status("Reset: "+stores.length);
+};
+
+document.getElementById("langSelect").value = lang;
+document.getElementById("langSelect").onchange = function(){
+  lang = this.value;
+  localStorage.setItem("aldi_lang", lang);
+  document.getElementById("tabSearch").textContent = t("search");
+  document.getElementById("tabMap").textContent = t("map");
+  document.getElementById("tabFavs").textContent = t("favs");
+  document.getElementById("tabDispo").textContent = t("dispo");
+  document.getElementById("tabManage").textContent = t("manage");
+  document.getElementById("tabSettings").textContent = t("settings");
+  document.getElementById("btnSearch").textContent = t("search");
+  document.getElementById("btnNav").textContent = t("nav");
+};
+
+// SW for PWA
+if ("serviceWorker" in navigator){
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
   });
-  if (changes.length) {
-    const msg = t('importChanges') + ':\n' + changes.slice(0, 12).join('\n') + (changes.length > 12 ? '\n…' : '');
-    alert(msg);
-  }
-};
-
-// PDF UI injection into settings
-function ensurePdfUi() {
-  const panel = document.getElementById('tab-settings');
-  if (!panel || document.getElementById('pdfScope')) return;
-  const hint = panel.querySelector('[data-i18n="exportHint"]');
-  const div = document.createElement('div');
-  div.className = 'pdf-opts';
-  div.innerHTML = `
-    <label style="font-size:0.85rem;font-weight:600;">${t('pdfScope')}</label>
-    <select id="pdfScope">
-      <option value="all">${t('pdfAll')}</option>
-      <option value="favs">${t('pdfFavs')}</option>
-      <option value="city">${t('pdfCity')}</option>
-    </select>
-    <select id="pdfCity" style="display:none;"></select>
-  `;
-  if (hint && hint.parentNode) hint.parentNode.insertBefore(div, hint.nextSibling);
-  else panel.insertBefore(div, panel.firstChild);
-  const scope = document.getElementById('pdfScope');
-  const city = document.getElementById('pdfCity');
-  scope.onchange = () => {
-    city.style.display = scope.value === 'city' ? '' : 'none';
-    if (scope.value === 'city') {
-      const orts = [...new Set(stores.map(s => s.Ort).filter(Boolean))].sort();
-      city.innerHTML = orts.map(o => `<option value="${esc(o)}">${esc(o)}</option>`).join('');
-    }
-  };
 }
 
-// PIN settings buttons
-function ensurePinSettings() {
-  const panel = document.getElementById('tab-settings');
-  if (!panel || document.getElementById('pinSettingsBtn')) return;
-  const h = document.createElement('h3');
-  h.className = 'section-title';
-  h.textContent = 'PIN';
-  const row = document.createElement('div');
-  row.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;';
-  row.innerHTML = `
-    <button class="btn" id="pinSettingsBtn" type="button">${t('pinChange')}</button>
-    <button class="btn btn-danger" id="pinDisableBtn" type="button">${t('pinDisable')}</button>
-  `;
-  panel.appendChild(h);
-  panel.appendChild(row);
-  document.getElementById('pinSettingsBtn').onclick = () => showPinScreen('setup');
-  document.getElementById('pinDisableBtn').onclick = () => {
-    localStorage.removeItem(PIN_KEY);
-    showStatus(t('pinDisable'));
-  };
-}
-
-// Theme select: add Auto option
-(function addAutoThemeOption() {
-  const sel = document.getElementById('themeSelect');
-  if (!sel || [...sel.options].some(o => o.value === 'auto')) return;
-  const opt = document.createElement('option');
-  opt.value = 'auto';
-  opt.textContent = 'Auto (system)';
-  sel.insertBefore(opt, sel.firstChild);
+load();
+document.getElementById("langSelect").dispatchEvent(new Event("change"));
 })();
-
-// Offline map tiles via SW - already caches fetch; add note in map tab
-function ensureOfflineHint() {
-  const mapTab = document.getElementById('tab-map');
-  if (!mapTab || document.getElementById('offlineMapHint')) return;
-  const p = document.createElement('p');
-  p.id = 'offlineMapHint';
-  p.className = 'hint';
-  p.textContent = t('offlineHint');
-  mapTab.insertBefore(p, mapTab.firstChild);
-}
-
-// Patch switchTab to refresh dynamic UI
-const _origSwitchTab = switchTab;
-switchTab = function(name) {
-  _origSwitchTab(name);
-  if (name === 'settings') { ensurePdfUi(); ensurePinSettings(); }
-  if (name === 'map') ensureOfflineHint();
-};
-
-// Patch splash flow to show FAB
-const _splashBtn = document.getElementById('splashBtn');
-if (_splashBtn) {
-  const prev = _splashBtn.onclick;
-  _splashBtn.addEventListener('click', () => /* showFab removed */);
-}
-
-// Boot: PIN gate before splash interaction
-(function pinBoot() {
-  const unlocked = sessionStorage.getItem('aldi_pin_ok') === '1';
-  if (pinIsSet() && !unlocked) {
-    // PIN ustawiony – wymagaj odblokowania, potem pełna app
-    const splash = document.getElementById('splash');
-    if (splash) splash.classList.add('hide');
-    showPinScreen('unlock');
-  }
-})();
-
-// apply auto theme on load
-if (localStorage.getItem('sklep_theme') === 'auto') {
-  const sel = document.getElementById('themeSelect');
-  if (sel) sel.value = 'auto';
-  applyAutoTheme();
-}
-
 </script>
-
 </body>
 </html>
