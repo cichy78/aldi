@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache">
 <meta name="theme-color" content="#003da5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -295,25 +296,31 @@ function saveFavs(){
   document.getElementById("fcnt").textContent = favs.length;
 }
 
-function enterApp(){
-  document.getElementById("splash").classList.add("hide");
-  document.getElementById("app").classList.add("show");
-  try { sessionStorage.setItem("aldi_ok","1"); } catch(e){}
+// Splash: click Start / anywhere, or auto after 1.2s; remember across reloads
+function bindSplash(){
+  var btn = document.getElementById("startBtn");
+  var splash = document.getElementById("splash");
+  if (btn) btn.onclick = function(e){ e.preventDefault(); e.stopPropagation(); enterApp(); };
+  if (splash) {
+    splash.onclick = function(){ enterApp(); };
+    splash.ontouchend = function(e){ e.preventDefault(); enterApp(); };
+  }
+  setTimeout(enterApp, 1200);
+  try {
+    if (sessionStorage.getItem("aldi_ok")==="1" || localStorage.getItem("aldi_seen")==="1") enterApp();
+  } catch(e){}
 }
-
-// Splash: always works
-document.getElementById("startBtn").onclick = function(e){
-  e.preventDefault();
-  enterApp();
-};
-document.getElementById("splash").addEventListener("click", function(e){
-  if (e.target.id === "startBtn" || e.target.closest("#startBtn")) return;
-  enterApp();
-});
-setTimeout(enterApp, 2500);
-try {
-  if (sessionStorage.getItem("aldi_ok")==="1") enterApp();
-} catch(e){}
+function enterApp(){
+  var splash = document.getElementById("splash");
+  var app = document.getElementById("app");
+  if (splash) splash.classList.add("hide");
+  if (app) app.classList.add("show");
+  try {
+    sessionStorage.setItem("aldi_ok","1");
+    localStorage.setItem("aldi_seen","1");
+  } catch(e){}
+}
+bindSplash();
 
 // Tabs
 document.querySelectorAll(".tab").forEach(function(btn){
