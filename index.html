@@ -627,29 +627,22 @@ function saveFavs(){
   document.getElementById("fcnt").textContent = favs.length;
 }
 
-// Splash: click Start / anywhere, or auto after 1.2s; remember across reloads
-function bindSplash(){
-  var btn = document.getElementById("startBtn");
-  var splash = document.getElementById("splash");
-  if (btn) btn.onclick = function(e){ e.preventDefault(); e.stopPropagation(); enterApp(); };
-  /* only Start button enters app */
-document.getElementById("startBtn").onclick = function(e){
-  e.preventDefault();
-  e.stopPropagation();
-  enterApp();
-};
-
-  /* no auto-skip splash */
-  /* splash stays until Start */
-}
 function enterApp(){
   var splash = document.getElementById("splash");
   var app = document.getElementById("app");
   if (splash) splash.classList.add("hide");
   if (app) app.classList.add("show");
-} catch(e){}
 }
-bindSplash();
+(function bindSplash(){
+  var btn = document.getElementById("startBtn");
+  if (btn) {
+    btn.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      enterApp();
+    });
+  }
+})();
 
 // Tabs
 document.querySelectorAll(".tab").forEach(function(btn){
