@@ -59,15 +59,52 @@ body {
 #app.show { display: block; }
 .win {
   background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: 0 8px 32px rgba(0,30,80,.3);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.55);
+  box-shadow:
+    0 0 0 1px rgba(0,40,100,0.35),
+    0 12px 40px rgba(0,30,80,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.5);
   overflow: hidden;
 }
+/* Proste okno Aero — pasek tytułu VST */
 .bar {
-  background: linear-gradient(180deg,#0055c4,#003da5);
-  color: #fff; padding: 10px 14px;
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+  background: linear-gradient(180deg,
+    rgba(185,220,255,0.95) 0%,
+    rgba(90,160,230,0.95) 8%,
+    rgba(30,100,190,0.98) 45%,
+    rgba(20,80,170,1) 100%);
+  color: #fff;
+  padding: 7px 12px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 1px solid rgba(0,40,100,0.35);
+  text-shadow: 0 1px 2px rgba(0,40,100,0.45);
+  min-height: 34px;
 }
+.bar strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-style: normal;
+}
+.bar strong em {
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+.bar #langSelect {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.45);
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+}
+.bar #langSelect option { color: #1a2a3a; }
 .bar strong { font-size: 1rem; }
 .bar em { font-style: normal; color: #ff8800; }
 .bar select {
@@ -327,20 +364,20 @@ body.theme-mac .footer, body.theme-xp .footer, body.theme-classic .footer, body.
   <div class="splash-sub">VST</div>
   <div class="splash-loc">Wilsdruff</div>
   <button type="button" id="startBtn">Start</button>
-  <p class="splash-hint">Kliknij Start lub poczekaj chwilę…</p>
+  <p class="splash-hint">Kliknij przycisk Start, aby wejść</p>
 </div>
 
 <div id="app">
   <div class="win">
     <div class="bar">
-      <strong>ALDI <em>VST</em> · Wilsdruff</strong>
+      <strong>VST</strong>
       <select id="langSelect" aria-label="Language">
         <option value="pl">PL</option>
         <option value="de">DE</option>
       </select>
     </div>
     <div class="content">
-      <h1 id="tTitle">ALDI VST · Wilsdruff</h1>
+      <h1 id="tTitle">VST</h1>
       <p class="sub" id="tSub">Szukaj · Nawigacja · Mapa · Dispo</p>
 
       <div class="tabs">
@@ -387,19 +424,19 @@ body.theme-mac .footer, body.theme-xp .footer, body.theme-classic .footer, body.
 
       <div id="p-dispo" class="panel">
         <div class="card dispo">
-          <h2>Disposition / Dispo</h2>
+          <h2 id="dispoTitle">Disposition / Dispo</h2>
           <div class="addr">ALDI<br>Hühndorfer Höhe 4<br>01723 Wilsdruff</div>
           <p style="margin-bottom:10px">
-            <a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=H%C3%BChndorfer%20H%C3%B6he%204%2C%2001723%20Wilsdruff&travelmode=driving" target="_blank" rel="noopener">Na mapie</a>
+            <a class="btn" id="dispoOnMap" href="https://www.google.com/maps/dir/?api=1&destination=H%C3%BChndorfer%20H%C3%B6he%204%2C%2001723%20Wilsdruff&travelmode=driving" target="_blank" rel="noopener">Na mapie</a>
           </p>
           <div class="phone">035204 769320</div>
-          <a class="btn-call" href="tel:+4935204769320">Zadzwoń teraz</a>
+          <a class="btn-call" href="tel:+4935204769320"><span id="callNowLbl">Zadzwoń teraz</span></a>
         </div>
       </div>
 
       <div id="p-manage" class="panel">
         <div id="allList" class="list"></div>
-        <h3 style="margin:14px 0 8px;color:var(--accent)">Dodaj / Edytuj</h3>
+        <h3 id="editTitle" style="margin:14px 0 8px;color:var(--accent)">Dodaj / Edytuj</h3>
         <div class="form-g">
           <label>VST<input type="number" id="eVst"></label>
           <label>PLZ<input type="text" id="ePlz" maxlength="5"></label>
@@ -415,7 +452,7 @@ body.theme-mac .footer, body.theme-xp .footer, body.theme-classic .footer, body.
 
       <div id="p-settings" class="panel">
         
-        <p class="sub" style="margin-bottom:6px;font-weight:700">Motyw wyglądu / Theme</p>
+        <p class="sub" id="themeTitle" style="margin-bottom:6px;font-weight:700">Motyw wyglądu</p>
         <div class="theme-picker" id="themePicker">
           <label><input type="radio" name="thm" value="aero" checked> Aero / Vista</label>
           <label><input type="radio" name="thm" value="xp"> Windows XP</label>
@@ -428,17 +465,17 @@ body.theme-mac .footer, body.theme-xp .footer, body.theme-classic .footer, body.
           <label><input type="radio" name="thm" value="midnight"> Midnight</label>
           <label><input type="radio" name="thm" value="classic"> Classic Win</label>
         </div>
-<p class="sub" style="margin-bottom:10px">Import / Eksport danych</p>
+<p class="sub" id="importExportTitle" style="margin-bottom:10px">Import / Eksport danych</p>
         <div class="row">
           <button type="button" class="btn" id="btnJson">JSON</button>
           <button type="button" class="btn" id="btnCsv">CSV</button>
           <button type="button" class="btn btn-primary" id="btnXlsx">XLSX</button>
           <button type="button" class="btn btn-primary" id="btnPdf">PDF</button>
-          <label class="btn" style="cursor:pointer">Import<input type="file" id="fileIn" accept=".json,.csv,.xlsx,.xls" hidden></label>
+          <label class="btn" id="importLbl" style="cursor:pointer">Import<input type="file" id="fileIn" accept=".json,.csv,.xlsx,.xls" hidden></label>
           <button type="button" class="btn" id="btnReset">Reset danych</button>
         </div>
         <div id="status" class="ok"></div>
-        <p class="sub" style="margin-top:12px">Sklepy: <strong id="cnt">0</strong> · Ulubione: <strong id="fcnt">0</strong></p>
+        <p class="sub" id="cntLine" style="margin-top:12px">Sklepy: <strong id="cnt">0</strong> · Ulubione: <strong id="fcnt">0</strong></p>
       </div>
     </div>
   </div>
@@ -464,12 +501,112 @@ var layer = null;
 var lang = localStorage.getItem("aldi_lang") || "pl";
 
 var T = {
-  pl: { search:"Szukaj", map:"Mapa", favs:"Ulubione", dispo:"Dispo", manage:"Zarządzaj", settings:"Ustawienia",
-        nav:"Nawiguj", fav:"Ulubione", onmap:"Na mapie", none:"Brak wyników", save:"Zapisano", del:"Usunięto" },
-  de: { search:"Suche", map:"Karte", favs:"Favoriten", dispo:"Dispo", manage:"Verwalten", settings:"Einstellungen",
-        nav:"Navigieren", fav:"Favoriten", onmap:"Karte", none:"Keine Ergebnisse", save:"Gespeichert", del:"Gelöscht" }
+  pl: {
+    search:"Szukaj", map:"Mapa", favs:"Ulubione", dispo:"Dispo", manage:"Zarządzaj", settings:"Ustawienia",
+    nav:"Nawiguj", fav:"Ulubione", favOn:"★ Ulubione", favOff:"☆ Ulubione", onmap:"Na mapie",
+    none:"Brak wyników", saved:"Zapisano", deleted:"Usunięto",
+    subtitle:"Szukaj · Nawigacja · Mapa · Dispo",
+    placeholder:"VST, miasto, ulica...",
+    all:"Wszystkie", mapFav:"Ulubione",
+    callNow:"Zadzwoń teraz", dispoTitle:"Disposition / Dispo",
+    editTitle:"Dodaj / Edytuj", saveBtn:"Zapisz", delBtn:"Usuń",
+    themeTitle:"Motyw wyglądu", importExport:"Import / Eksport danych",
+    importBtn:"Import", resetBtn:"Reset danych",
+    storesCnt:"Sklepy", favsCnt:"Ulubione",
+    splashHint:"Kliknij przycisk Start, aby wejść",
+    start:"Start", author:"Autor: Cichocki Tomasz",
+    onMap:"Na mapie", zeit:"Zeit",
+    importOk:"Import", resetOk:"Reset",
+    pdfTitle:"ALDI VST Wilsdruff – Lista",
+    confirmReset:"Zresetować dane do oryginalnej listy?",
+    confirmDel:"Usunąć ten sklep?",
+    needVst:"Podaj numer VST",
+    noStores:"Brak sklepów",
+    noFavs:"Brak ulubionych",
+    errXlsx:"Błąd XLSX", errImport:"Błąd importu", errPdf:"PDF niedostępne", pdfOk:"PDF zapisany"
+  },
+  de: {
+    search:"Suche", map:"Karte", favs:"Favoriten", dispo:"Dispo", manage:"Verwalten", settings:"Einstellungen",
+    nav:"Navigieren", fav:"Favoriten", favOn:"★ Favoriten", favOff:"☆ Favoriten", onmap:"Auf Karte",
+    none:"Keine Ergebnisse", saved:"Gespeichert", deleted:"Gelöscht",
+    subtitle:"Suche · Navigation · Karte · Dispo",
+    placeholder:"VST, Ort, Straße...",
+    all:"Alle", mapFav:"Favoriten",
+    callNow:"Jetzt anrufen", dispoTitle:"Disposition / Dispo",
+    editTitle:"Hinzufügen / Bearbeiten", saveBtn:"Speichern", delBtn:"Löschen",
+    themeTitle:"Erscheinungsbild", importExport:"Daten importieren / exportieren",
+    importBtn:"Import", resetBtn:"Daten zurücksetzen",
+    storesCnt:"Filialen", favsCnt:"Favoriten",
+    splashHint:"Start tippen oder kurz warten…",
+    start:"Start", author:"Autor: Cichocki Tomasz",
+    onMap:"Auf Karte", zeit:"Zeit",
+    importOk:"Import", resetOk:"Zurückgesetzt",
+    pdfTitle:"ALDI VST Wilsdruff – Liste",
+    confirmReset:"Daten auf die Originaliste zurücksetzen?",
+    confirmDel:"Diese Filiale löschen?",
+    needVst:"VST-Nummer eingeben",
+    noStores:"Keine Filialen",
+    noFavs:"Keine Favoriten",
+    errXlsx:"XLSX-Fehler", errImport:"Importfehler", errPdf:"PDF nicht verfügbar", pdfOk:"PDF gespeichert"
+  }
 };
 function t(k){ return (T[lang]&&T[lang][k])||T.pl[k]||k; }
+
+function applyLang(){
+  var set = function(id, key){ var el=document.getElementById(id); if(el) el.textContent=t(key); };
+  set("tabSearch","search");
+  set("tabMap","map");
+  set("tabFavs","favs");
+  set("tabDispo","dispo");
+  set("tabManage","manage");
+  set("tabSettings","settings");
+  set("btnSearch","search");
+  set("btnNav","nav");
+  set("btnMapOne","onmap");
+  set("btnMapAll","all");
+  set("btnMapFav","mapFav");
+  set("btnSave","saveBtn");
+  set("btnDel","delBtn");
+  set("btnReset","resetBtn");
+  set("tSub","subtitle");
+  set("startBtn","start");
+  var q = document.getElementById("q");
+  if (q) q.placeholder = t("placeholder");
+  var sh = document.querySelector(".splash-hint");
+  if (sh) sh.textContent = t("splashHint");
+  var themeTitle = document.getElementById("themeTitle");
+  if (themeTitle) themeTitle.textContent = t("themeTitle");
+  var ie = document.getElementById("importExportTitle");
+  if (ie) ie.textContent = t("importExport");
+  var edit = document.getElementById("editTitle");
+  if (edit) edit.textContent = t("editTitle");
+  var call = document.getElementById("callNowLbl");
+  if (call) call.textContent = t("callNow");
+  var onMapDispo = document.getElementById("dispoOnMap");
+  if (onMapDispo) onMapDispo.textContent = t("onMap");
+  var dispoH = document.getElementById("dispoTitle");
+  if (dispoH) dispoH.textContent = t("dispoTitle");
+  var importLbl = document.getElementById("importLbl");
+  if (importLbl) importLbl.firstChild && (importLbl.childNodes[0].textContent = t("importBtn"));
+  // force text node for import label
+  if (importLbl) {
+    var file = importLbl.querySelector("input");
+    importLbl.textContent = t("importBtn");
+    if (file) importLbl.appendChild(file);
+  }
+  var cntLine = document.getElementById("cntLine");
+  if (cntLine) {
+    cntLine.innerHTML = t("storesCnt")+': <strong id="cnt">'+stores.length+'</strong> · '+t("favsCnt")+': <strong id="fcnt">'+favs.length+'</strong>';
+  }
+  if (current) {
+    var bf = document.getElementById("btnFav");
+    if (bf) bf.textContent = favs.indexOf(current.VST)>=0 ? t("favOn") : t("favOff");
+  } else {
+    set("btnFav","fav");
+  }
+  document.documentElement.lang = lang;
+}
+
 
 function load(){
   try {
@@ -495,24 +632,22 @@ function bindSplash(){
   var btn = document.getElementById("startBtn");
   var splash = document.getElementById("splash");
   if (btn) btn.onclick = function(e){ e.preventDefault(); e.stopPropagation(); enterApp(); };
-  if (splash) {
-    splash.onclick = function(){ enterApp(); };
-    splash.ontouchend = function(e){ e.preventDefault(); enterApp(); };
-  }
-  setTimeout(enterApp, 1200);
-  try {
-    if (sessionStorage.getItem("aldi_ok")==="1" || localStorage.getItem("aldi_seen")==="1") enterApp();
-  } catch(e){}
+  /* only Start button enters app */
+document.getElementById("startBtn").onclick = function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  enterApp();
+};
+
+  /* no auto-skip splash */
+  /* splash stays until Start */
 }
 function enterApp(){
   var splash = document.getElementById("splash");
   var app = document.getElementById("app");
   if (splash) splash.classList.add("hide");
   if (app) app.classList.add("show");
-  try {
-    sessionStorage.setItem("aldi_ok","1");
-    localStorage.setItem("aldi_seen","1");
-  } catch(e){}
+} catch(e){}
 }
 bindSplash();
 
@@ -546,7 +681,7 @@ function showResult(s){
   document.getElementById("rOrt").textContent = s.Ort || "—";
   document.getElementById("rStr").textContent = s.Strasse || "—";
   document.getElementById("rZeit").textContent = s.Zeitbeschraenkung || "—";
-  document.getElementById("btnFav").textContent = favs.indexOf(s.VST)>=0 ? "★ Ulubione" : "☆ Ulubione";
+  document.getElementById("btnFav").textContent = favs.indexOf(s.VST)>=0 ? t("favOn") : t("favOff");
 }
 
 function doSearch(){
@@ -597,13 +732,13 @@ document.getElementById("btnFav").onclick = function(){
   var i = favs.indexOf(current.VST);
   if (i>=0) favs.splice(i,1); else favs.push(current.VST);
   saveFavs();
-  document.getElementById("btnFav").textContent = favs.indexOf(current.VST)>=0 ? "★ Ulubione" : "☆ Ulubione";
+  document.getElementById("btnFav").textContent = favs.indexOf(current.VST)>=0 ? t("favOn") : t("favOff");
 };
 
 function renderFavs(){
   var el = document.getElementById("favList");
   var list = favs.map(function(v){ return stores.filter(function(s){ return s.VST===v; })[0]; }).filter(Boolean);
-  if (!list.length){ el.innerHTML = '<div class="item" style="cursor:default;opacity:.6">—</div>'; return; }
+  if (!list.length){ el.innerHTML = '<div class="item" style="cursor:default;opacity:.6">'+t("noFavs")+'</div>'; return; }
   el.innerHTML = list.map(itemHtml).join("");
   el.querySelectorAll(".item").forEach(function(node){
     node.onclick = function(){
@@ -650,16 +785,16 @@ document.getElementById("btnSave").onclick = function(){
   var idx = stores.findIndex(function(s){ return s.VST===vst; });
   if (idx>=0) stores[idx]=data; else stores.push(data);
   save(); renderAll();
-  status(t("save")+" VST "+vst);
+  status(t("saved")+" VST "+vst);
 };
 
 document.getElementById("btnDel").onclick = function(){
   var vst = parseInt(document.getElementById("eVst").value,10);
-  if (!vst || !confirm("VST "+vst+"?")) return;
+  if (!vst || !confirm(t("confirmDel")+" (VST "+vst+")")) return;
   stores = stores.filter(function(s){ return s.VST!==vst; });
   favs = favs.filter(function(v){ return v!==vst; });
   save(); saveFavs(); renderAll();
-  status(t("del")+" VST "+vst);
+  status(t("deleted")+" VST "+vst);
 };
 
 function status(m){
@@ -729,7 +864,7 @@ document.getElementById("btnCsv").onclick = function(){
   dl(new Blob(["\uFEFF"+h+"\n"+rows.join("\n")],{type:"text/csv"}), "aldi_vst.csv");
 };
 document.getElementById("btnXlsx").onclick = function(){
-  if (typeof XLSX === "undefined"){ status("XLSX niedostępne"); return; }
+  if (typeof XLSX === "undefined"){ status(t("errPdf").replace("PDF","XLSX")); return; }
   var ws = XLSX.utils.json_to_sheet(stores.map(function(s){
     return { VST:s.VST, PLZ:s.PLZ, Ort:s.Ort, Strasse:s.Strasse, Zeitbeschraenkung:s.Zeitbeschraenkung };
   }));
@@ -738,10 +873,10 @@ document.getElementById("btnXlsx").onclick = function(){
   XLSX.writeFile(wb, "aldi_vst.xlsx");
 };
 document.getElementById("btnPdf").onclick = function(){
-  if (!window.jspdf){ status("PDF niedostępne"); return; }
+  if (!window.jspdf){ status(t("errPdf")); return; }
   var doc = new window.jspdf.jsPDF({ orientation:"landscape", unit:"mm", format:"a4" });
   doc.setFontSize(14);
-  doc.text("ALDI VST Wilsdruff – Lista", 14, 14);
+  doc.text(t("pdfTitle"), 14, 14);
   doc.setFontSize(9);
   doc.text("Autor: Cichocki Tomasz", 14, 20);
   var body = stores.slice().sort(function(a,b){ return a.VST-b.VST; }).map(function(s){
@@ -755,7 +890,7 @@ document.getElementById("btnPdf").onclick = function(){
     headStyles:{ fillColor:[0,61,165] }
   });
   doc.save("aldi_vst.pdf");
-  status("PDF OK");
+  status(t("pdfOk"));
 };
 
 document.getElementById("fileIn").onchange = function(ev){
@@ -767,7 +902,7 @@ document.getElementById("fileIn").onchange = function(ev){
       try {
         var wb = XLSX.read(e.target.result,{type:"array"});
         applyImport(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
-      } catch(err){ status("Błąd XLSX"); }
+      } catch(err){ status(t("errXlsx")); }
     };
     r.readAsArrayBuffer(f);
   } else {
@@ -786,7 +921,7 @@ document.getElementById("fileIn").onchange = function(ev){
           });
           applyImport(arr);
         }
-      } catch(err){ status("Błąd importu"); }
+      } catch(err){ status(t("errImport")); }
     };
     r2.readAsText(f,"UTF-8");
   }
@@ -807,28 +942,21 @@ function applyImport(data){
     };
   }).filter(function(r){ return r.VST && !isNaN(r.VST); });
   save();
-  status("Import: "+stores.length);
+  status(t("importOk")+": "+stores.length);
 }
 
 document.getElementById("btnReset").onclick = function(){
-  if (!confirm("Reset?")) return;
+  if (!confirm(t("confirmReset"))) return;
   stores = JSON.parse(JSON.stringify(INITIAL));
   save();
-  status("Reset: "+stores.length);
+  status(t("resetOk")+": "+stores.length);
 };
 
 document.getElementById("langSelect").value = lang;
 document.getElementById("langSelect").onchange = function(){
   lang = this.value;
   localStorage.setItem("aldi_lang", lang);
-  document.getElementById("tabSearch").textContent = t("search");
-  document.getElementById("tabMap").textContent = t("map");
-  document.getElementById("tabFavs").textContent = t("favs");
-  document.getElementById("tabDispo").textContent = t("dispo");
-  document.getElementById("tabManage").textContent = t("manage");
-  document.getElementById("tabSettings").textContent = t("settings");
-  document.getElementById("btnSearch").textContent = t("search");
-  document.getElementById("btnNav").textContent = t("nav");
+  applyLang();
 };
 
 // SW for PWA
