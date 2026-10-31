@@ -138,9 +138,189 @@ input[type=text], input[type=number], select {
   .field { grid-template-columns: 1fr; }
   #map { height: 260px; }
 }
+
+/* —— 10 motivów wyglądu —— */
+body.theme-aero, body.theme-vista {
+  --bg: linear-gradient(160deg,#1a5fb4 0%,#3584e4 40%,#62a0ea 100%);
+  --card: rgba(255,255,255,0.88);
+  --text: #1a2a3a;
+  --accent: #0d47a1;
+  --border: #5a9fd4;
+  --radius: 10px;
+  --bar: linear-gradient(180deg,#4a9aea,#1a5fb4);
+  --btn: linear-gradient(180deg,#e8f4ff,#b8d4f0);
+  --btn-text: #0a3a6a;
+}
+body.theme-xp {
+  --bg: #3a6ea5;
+  --card: #ece9d8;
+  --text: #000;
+  --accent: #0a246a;
+  --border: #0054e3;
+  --radius: 3px;
+  --bar: linear-gradient(180deg,#0a5ad4,#003c9a);
+  --btn: linear-gradient(180deg,#fff,#d4d0c8);
+  --btn-text: #000;
+}
+body.theme-mac {
+  --bg: linear-gradient(180deg,#e8e8ed,#d1d1d6);
+  --card: rgba(255,255,255,0.92);
+  --text: #1d1d1f;
+  --accent: #007aff;
+  --border: #c7c7cc;
+  --radius: 14px;
+  --bar: linear-gradient(180deg,#5ac8fa,#007aff);
+  --btn: #f2f2f7;
+  --btn-text: #007aff;
+}
+body.theme-dark {
+  --bg: linear-gradient(160deg,#0d1117,#161b22 50%,#21262d);
+  --card: #21262d;
+  --text: #e6edf3;
+  --accent: #58a6ff;
+  --border: #30363d;
+  --radius: 10px;
+  --bar: linear-gradient(180deg,#21262d,#0d1117);
+  --btn: #30363d;
+  --btn-text: #e6edf3;
+}
+body.theme-solar {
+  --bg: linear-gradient(160deg,#f5a623,#f7c948 50%,#ffe08a);
+  --card: rgba(255,252,240,0.95);
+  --text: #3d2b00;
+  --accent: #c45c00;
+  --border: #e0a030;
+  --radius: 12px;
+  --bar: linear-gradient(180deg,#f5a623,#c45c00);
+  --btn: #fff3d0;
+  --btn-text: #8a4500;
+}
+body.theme-forest {
+  --bg: linear-gradient(160deg,#1b4332,#2d6a4f 50%,#40916c);
+  --card: rgba(236,250,240,0.95);
+  --text: #081c15;
+  --accent: #1b4332;
+  --border: #52b788;
+  --radius: 10px;
+  --bar: linear-gradient(180deg,#40916c,#1b4332);
+  --btn: #d8f3dc;
+  --btn-text: #1b4332;
+}
+body.theme-rose {
+  --bg: linear-gradient(160deg,#9b2226,#c9184a 50%,#ff4d6d);
+  --card: rgba(255,240,245,0.95);
+  --text: #4a0e1f;
+  --accent: #9b2226;
+  --border: #ff8fab;
+  --radius: 12px;
+  --bar: linear-gradient(180deg,#ff4d6d,#9b2226);
+  --btn: #ffe0e9;
+  --btn-text: #9b2226;
+}
+body.theme-ocean {
+  --bg: linear-gradient(160deg,#023e8a,#0077b6 50%,#00b4d8);
+  --card: rgba(230,248,255,0.95);
+  --text: #03045e;
+  --accent: #0077b6;
+  --border: #48cae4;
+  --radius: 10px;
+  --bar: linear-gradient(180deg,#00b4d8,#023e8a);
+  --btn: #caf0f8;
+  --btn-text: #023e8a;
+}
+body.theme-midnight {
+  --bg: linear-gradient(160deg,#10002b,#240046 50%,#3c096c);
+  --card: #240046;
+  --text: #e0aaff;
+  --accent: #c77dff;
+  --border: #5a189a;
+  --radius: 12px;
+  --bar: linear-gradient(180deg,#7b2cbf,#10002b);
+  --btn: #3c096c;
+  --btn-text: #e0aaff;
+}
+body.theme-classic {
+  --bg: #c0c0c0;
+  --card: #ffffff;
+  --text: #000000;
+  --accent: #000080;
+  --border: #808080;
+  --radius: 0;
+  --bar: linear-gradient(180deg,#000080,#0000a0);
+  --btn: #c0c0c0;
+  --btn-text: #000;
+}
+body {
+  background: var(--bg) !important;
+  color: var(--text);
+  transition: background 0.3s, color 0.2s;
+}
+body .win {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+body .bar {
+  background: var(--bar) !important;
+}
+body .btn {
+  background: var(--btn);
+  color: var(--btn-text);
+  border-color: var(--border);
+  border-radius: var(--radius);
+}
+body .btn-primary {
+  background: linear-gradient(180deg,#4a9aea,#003da5);
+  color: #fff;
+  border-color: #002a70;
+}
+body.theme-xp .btn-primary,
+body.theme-classic .btn-primary {
+  background: linear-gradient(180deg,#3c78d8,#0a246a);
+}
+body .btn-nav {
+  background: linear-gradient(180deg,#4aca6a,#1a9a3a);
+  color: #fff;
+}
+body h1, body .card h2, body .tab.active {
+  color: var(--accent);
+}
+body .tab.active { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+body input[type=text], body input[type=number], body select {
+  border-color: var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--text);
+}
+body .list, body .card, body #map {
+  border-color: var(--border);
+  border-radius: var(--radius);
+}
+body.theme-dark .list, body.theme-dark .card,
+body.theme-midnight .list, body.theme-midnight .card {
+  background: #1a1a2e;
+}
+body.theme-dark .item:hover, body.theme-midnight .item:hover {
+  background: #2a2a40;
+}
+body .footer { color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+body.theme-mac .footer, body.theme-xp .footer, body.theme-classic .footer, body.theme-solar .footer {
+  color: #222; text-shadow: none;
+}
+.theme-picker {
+  display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px;
+}
+.theme-picker label {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);
+  cursor: pointer; font-size: 0.85rem; font-weight: 600;
+  background: var(--card);
+}
+.theme-picker input { accent-color: var(--accent); }
+
 </style>
 </head>
-<body>
+<body class="theme-aero">
 
 <div id="splash">
   <div class="splash-aldi">ALDI</div>
@@ -234,7 +414,21 @@ input[type=text], input[type=number], select {
       </div>
 
       <div id="p-settings" class="panel">
-        <p class="sub" style="margin-bottom:10px">Import / Eksport danych</p>
+        
+        <p class="sub" style="margin-bottom:6px;font-weight:700">Motyw wyglądu / Theme</p>
+        <div class="theme-picker" id="themePicker">
+          <label><input type="radio" name="thm" value="aero" checked> Aero / Vista</label>
+          <label><input type="radio" name="thm" value="xp"> Windows XP</label>
+          <label><input type="radio" name="thm" value="mac"> macOS</label>
+          <label><input type="radio" name="thm" value="dark"> Dark</label>
+          <label><input type="radio" name="thm" value="solar"> Solar</label>
+          <label><input type="radio" name="thm" value="forest"> Forest</label>
+          <label><input type="radio" name="thm" value="rose"> Rose</label>
+          <label><input type="radio" name="thm" value="ocean"> Ocean</label>
+          <label><input type="radio" name="thm" value="midnight"> Midnight</label>
+          <label><input type="radio" name="thm" value="classic"> Classic Win</label>
+        </div>
+<p class="sub" style="margin-bottom:10px">Import / Eksport danych</p>
         <div class="row">
           <button type="button" class="btn" id="btnJson">JSON</button>
           <button type="button" class="btn" id="btnCsv">CSV</button>
@@ -643,6 +837,29 @@ if ("serviceWorker" in navigator){
     navigator.serviceWorker.register("sw.js").catch(function(){});
   });
 }
+
+
+// Themes
+function setTheme(name){
+  var allowed = ["aero","vista","xp","mac","dark","solar","forest","rose","ocean","midnight","classic"];
+  if (allowed.indexOf(name) < 0) name = "aero";
+  if (name === "vista") name = "aero";
+  document.body.className = "theme-" + name;
+  try { localStorage.setItem("aldi_theme", name); } catch(e){}
+  var radios = document.querySelectorAll('#themePicker input[name="thm"]');
+  radios.forEach(function(r){ r.checked = (r.value === name || (name==="aero" && r.value==="aero")); });
+}
+(function initTheme(){
+  var th = "aero";
+  try { th = localStorage.getItem("aldi_theme") || "aero"; } catch(e){}
+  setTheme(th);
+  var picker = document.getElementById("themePicker");
+  if (picker) {
+    picker.addEventListener("change", function(e){
+      if (e.target && e.target.name === "thm") setTheme(e.target.value);
+    });
+  }
+})();
 
 load();
 document.getElementById("langSelect").dispatchEvent(new Event("change"));
