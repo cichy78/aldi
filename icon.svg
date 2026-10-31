@@ -1,61 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0070e0"/>
-      <stop offset="55%" stop-color="#003da5"/>
-      <stop offset="100%" stop-color="#001a55"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6ec8ff"/>
+      <stop offset="40%" stop-color="#2a8ae0"/>
+      <stop offset="100%" stop-color="#063a8a"/>
     </linearGradient>
-    <linearGradient id="cab" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ff9a33"/>
-      <stop offset="100%" stop-color="#e65c00"/>
-    </linearGradient>
-    <linearGradient id="box" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#d0e4ff"/>
-    </linearGradient>
-    <filter id="sh" x="-15%" y="-15%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.35"/>
-    </filter>
   </defs>
-  <!-- Background -->
-  <rect width="512" height="512" rx="108" ry="108" fill="url(#bg)"/>
-  <rect x="22" y="22" width="468" height="468" rx="96" ry="96" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="5"/>
-
-  <!-- Truck group -->
-  <g filter="url(#sh)" transform="translate(56, 140)">
-    <!-- Cargo box -->
-    <rect x="0" y="40" width="230" height="150" rx="14" fill="url(#box)"/>
-    <rect x="14" y="54" width="202" height="122" rx="8" fill="none" stroke="#003da5" stroke-width="4" opacity="0.25"/>
-    <!-- ALDI on cargo -->
-    <text x="115" y="130" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="42" fill="#003da5" letter-spacing="3">ALDI</text>
-    <!-- Orange stripe on cargo -->
-    <rect x="0" y="40" width="230" height="16" rx="14" fill="#ff8800"/>
-    <rect x="0" y="48" width="230" height="8" fill="#ff8800"/>
-
-    <!-- Cab -->
-    <path d="M240 70 L340 70 Q360 70 360 95 L360 190 L240 190 Z" fill="url(#cab)"/>
-    <!-- Windshield -->
-    <path d="M255 85 L330 85 Q340 85 340 100 L340 130 L255 130 Z" fill="#7ec8ff"/>
-    <!-- Door line -->
-    <line x1="280" y1="130" x2="280" y2="190" stroke="rgba(0,0,0,0.15)" stroke-width="3"/>
-    <!-- Headlight -->
-    <ellipse cx="350" cy="160" rx="10" ry="14" fill="#ffe066"/>
-    <!-- Bumper -->
-    <rect x="340" y="175" width="28" height="15" rx="4" fill="#333"/>
-
-    <!-- Wheels -->
-    <circle cx="70" cy="195" r="42" fill="#1a1a1a"/>
-    <circle cx="70" cy="195" r="22" fill="#888"/>
-    <circle cx="70" cy="195" r="10" fill="#ccc"/>
-    <circle cx="190" cy="195" r="42" fill="#1a1a1a"/>
-    <circle cx="190" cy="195" r="22" fill="#888"/>
-    <circle cx="190" cy="195" r="10" fill="#ccc"/>
-    <circle cx="310" cy="195" r="42" fill="#1a1a1a"/>
-    <circle cx="310" cy="195" r="22" fill="#888"/>
-    <circle cx="310" cy="195" r="10" fill="#ccc"/>
-  </g>
-
-  <!-- Label -->
-  <rect x="120" y="400" width="272" height="52" rx="26" fill="rgba(0,0,0,0.28)"/>
-  <text x="256" y="435" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="30" fill="#ffffff" letter-spacing="5">VST</text>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <text x="256" y="230" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="92" fill="#fff">ALDI</text>
+  <rect x="131" y="255" width="250" height="12" rx="6" fill="#ff8c00"/>
+  <text x="256" y="350" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="68" fill="#fff">VST</text>
+  <text x="256" y="420" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="22" fill="rgba(255,255,255,0.7)">WILSDRUFF</text>
 </svg>
