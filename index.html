@@ -308,19 +308,6 @@ body.theme-dark .not-found, body.theme-midnight .not-found { background: #3d3420
   #mapContainer { height: 280px; }
 }
 
-/* Floating Dispo button */
-.fab-dispo {
-  position: fixed; bottom: 22px; right: 22px; z-index: 800;
-  width: 58px; height: 58px; border-radius: 50%;
-  background: linear-gradient(180deg, #4aca6a, #1a9a3a);
-  color: #fff; border: none; box-shadow: 0 6px 20px rgba(20,120,40,0.45);
-  font-size: 1.5rem; cursor: pointer; display: none;
-  align-items: center; justify-content: center;
-  transition: transform 0.15s, filter 0.15s;
-}
-#app.show ~ .fab-dispo, body:has(#app.show) .fab-dispo { display: flex; }
-.fab-dispo:hover { filter: brightness(1.1); transform: scale(1.06); }
-.fab-dispo:active { transform: scale(0.96); }
 
 /* PIN overlay */
 #pinScreen {
@@ -463,6 +450,12 @@ body.theme-dark .not-found, body.theme-midnight .not-found { background: #3d3420
           <div class="dispo-card">
             <h2 data-i18n="dispoTitle">Disposition / Dispo</h2>
             <p class="dispo-info" data-i18n="dispoInfo">Kontakt do dyspozytorni ALDI VST Wilsdruff. Dotknij numeru, aby zadzwonić.</p>
+            <div class="dispo-address" style="margin:12px 0;font-size:1.05rem;line-height:1.45;font-weight:600;">
+              ALDI<br>Hühndorfer Höhe 4<br>01723 Wilsdruff
+            </div>
+            <div style="margin-bottom:12px;">
+              <a class="btn btn-sm" href="https://www.google.com/maps/dir/?api=1&destination=H%C3%BChndorfer%20H%C3%B6he%204%2C%2001723%20Wilsdruff%2C%20Germany&travelmode=driving" target="_blank" rel="noopener" data-i18n="showOnMap">📍 Pokaż na mapie</a>
+            </div>
             <div class="phone">035204 769320</div>
             <a class="btn btn-call" href="tel:+4935204769320">📞 <span data-i18n="callNow">Zadzwoń teraz</span></a>
             <p class="hint" style="margin-top:18px;" data-i18n="dispoHint">Numer: 035204 769320 · ALDI VST Wilsdruff</p>
@@ -527,7 +520,7 @@ const I18N = {
     favsHint:'Kliknij gwiazdkę przy sklepie, aby dodać do ulubionych.',
     dispoTitle:'Disposition / Dispo',
     dispoInfo:'Kontakt do dyspozytorni ALDI VST Wilsdruff. Dotknij numeru, aby zadzwonić.',
-    callNow:'Zadzwoń teraz', dispoHint:'Numer: 035204 769320 · ALDI VST Wilsdruff',
+    callNow:'Zadzwoń teraz', dispoHint:'ALDI, Hühndorfer Höhe 4, 01723 Wilsdruff · Tel. 035204 769320',
     editTitle:'Dodaj / Edytuj sklep', save:'Zapisz', delete:'Usuń', clear:'Wyczyść',
     exportTitle:'Import / Eksport', exportHint:'JSON, CSV, XLSX (Excel) oraz PDF listy sklepów.',
     exportPdf:'📄 Eksport PDF', import:'Import', resetData:'Przywróć dane początkowe',
@@ -556,7 +549,7 @@ const I18N = {
     favsHint:'Stern bei der Filiale antippen, um zu Favoriten hinzuzufügen.',
     dispoTitle:'Disposition / Dispo',
     dispoInfo:'Kontakt zur Disposition ALDI VST Wilsdruff. Nummer antippen zum Anrufen.',
-    callNow:'Jetzt anrufen', dispoHint:'Nummer: 035204 769320 · ALDI VST Wilsdruff',
+    callNow:'Jetzt anrufen', dispoHint:'ALDI, Hühndorfer Höhe 4, 01723 Wilsdruff · Tel. 035204 769320',
     editTitle:'Filiale hinzufügen / bearbeiten', save:'Speichern', delete:'Löschen', clear:'Leeren',
     exportTitle:'Import / Export', exportHint:'JSON, CSV, XLSX (Excel) und PDF der Filialliste.',
     exportPdf:'📄 PDF exportieren', import:'Import', resetData:'Ausgangsdaten wiederherstellen',
@@ -883,7 +876,10 @@ function resetData() {
   saveData(); populateOrtFilter(); renderStoreList();
   showStatus(`${t('resetOk')} ${stores.length} ${t('stores')}.`);
 }
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
+if ('serviceWorker' in navigator) {
+  const swUrl = new URL('sw.js', window.location.href).href;
+  navigator.serviceWorker.register(swUrl, { scope: new URL('./', window.location.href).pathname }).catch(() => {});
+}
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault(); deferredInstallPrompt = e;
   document.getElementById('installBanner').classList.add('visible');
@@ -1030,13 +1026,8 @@ function afterPinOk() {
   if (sessionStorage.getItem('aldi_splash_done') === '1') {
     splash.classList.add('hide');
     document.getElementById('app').classList.add('show');
-    showFab(true);
+    /* showFab removed */
   }
-}
-
-function showFab(on) {
-  const fab = document.getElementById('fabDispo');
-  if (fab) fab.style.display = on ? 'flex' : 'none';
 }
 
 // Auto theme from system
@@ -1198,7 +1189,7 @@ switchTab = function(name) {
 const _splashBtn = document.getElementById('splashBtn');
 if (_splashBtn) {
   const prev = _splashBtn.onclick;
-  _splashBtn.addEventListener('click', () => showFab(true));
+  _splashBtn.addEventListener('click', () => /* showFab removed */);
 }
 
 // Boot: PIN gate before splash interaction
@@ -1224,7 +1215,7 @@ if (_splashBtn) {
     showPinScreen('unlock');
   }
   if (sessionStorage.getItem('aldi_splash_done') === '1' && (unlocked || !pinIsSet())) {
-    showFab(true);
+    /* showFab removed */
   }
 })();
 
@@ -1237,6 +1228,5 @@ if (localStorage.getItem('sklep_theme') === 'auto') {
 
 </script>
 
-  <a class="fab-dispo" id="fabDispo" href="tel:+4935204769320" title="Dispo" style="display:none;">📞</a>
 </body>
 </html>

@@ -1,8 +1,10 @@
 {
+  "id": "./",
   "name": "ALDI VST · Wilsdruff",
   "short_name": "ALDI VST",
   "description": "ALDI VST Wilsdruff – Filialnavigation, Karte und Disposition",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#003da5",
   "theme_color": "#003da5",
