@@ -153,10 +153,15 @@ body {
   border: none; border-radius: 40px; cursor: pointer;
   background: linear-gradient(180deg, #ff8800, #ff6600); color: #fff;
   box-shadow: 0 6px 24px rgba(255,102,0,0.45);
-  opacity: 0; transform: translateY(16px); transition: opacity 0.4s, transform 0.4s, filter 0.15s;
+  opacity: 1; transform: translateY(0); transition: filter 0.15s, transform 0.15s;
+  animation: fadeUp 0.6s 0.8s both;
 }
-#splashBtn.show { opacity: 1; transform: translateY(0); }
 #splashBtn:hover { filter: brightness(1.1); }
+#splashBtn:active { transform: scale(0.97); }
+.splash-tap-hint {
+  margin-top: 16px; font-size: 0.85rem; color: rgba(255,255,255,0.65);
+  animation: fadeUp 0.6s 1.2s both;
+}
 @keyframes logoIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
 @keyframes letterPop { from { opacity: 0; transform: translateY(30px) scale(0.5); } to { opacity: 1; transform: none; } }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
@@ -363,6 +368,7 @@ body.theme-dark .not-found, body.theme-midnight .not-found { background: #3d3420
       <div class="splash-loc">Wilsdruff</div>
       <div class="splash-ring" id="splashRing"></div>
       <button id="splashBtn" type="button">Start</button>
+      <p class="splash-tap-hint" id="splashHint">Kliknij Start</p>
     </div>
   </div>
   <div id="installBanner" class="install-banner">
@@ -897,15 +903,49 @@ document.getElementById('installBtn').addEventListener('click', promptInstall);
 (function initSplash() {
   const btn = document.getElementById('splashBtn');
   const ring = document.getElementById('splashRing');
-  setTimeout(() => { ring.style.display = 'none'; btn.classList.add('show'); }, 1800);
-  btn.addEventListener('click', () => {
-    document.getElementById('splash').classList.add('hide');
-    document.getElementById('app').classList.add('show');
+  const splash = document.getElementById('splash');
+  const app = document.getElementById('app');
+
+  function enterApp() {
+    if (sessionStorage.getItem('aldi_entering') === '1') return;
+    sessionStorage.setItem('aldi_entering', '1');
     sessionStorage.setItem('aldi_splash_done', '1');
+    splash.classList.add('hide');
+    app.classList.add('show');
+    // optional PIN setup only once, non-blocking after enter
+    if (!pinIsSet && typeof pinIsSet === 'function') { /* defined later */ }
+  }
+
+  window.__enterApp = function() {
+    sessionStorage.setItem('aldi_splash_done', '1');
+    splash.classList.add('hide');
+    app.classList.add('show');
+  };
+
+  setTimeout(() => { if (ring) ring.style.display = 'none'; }, 1500);
+
+  if (btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      window.__enterApp();
+    });
+  }
+  // whole splash tappable
+  splash.addEventListener('click', function(e) {
+    if (e.target.closest('#pinScreen')) return;
+    window.__enterApp();
   });
+
+  // auto-enter after 3s
+  setTimeout(function() {
+    if (!app.classList.contains('show') && !document.getElementById('pinScreen')?.classList.contains('show')) {
+      window.__enterApp();
+    }
+  }, 3000);
+
   if (sessionStorage.getItem('aldi_splash_done') === '1') {
-    document.getElementById('splash').classList.add('hide');
-    document.getElementById('app').classList.add('show');
+    window.__enterApp();
   }
 })();
 (function init() {
@@ -1021,13 +1061,12 @@ function showPinScreen(mode) {
 }
 
 function afterPinOk() {
-  // continue splash or app
+  sessionStorage.setItem('aldi_splash_done', '1');
+  sessionStorage.setItem('aldi_pin_ok', '1');
   const splash = document.getElementById('splash');
-  if (sessionStorage.getItem('aldi_splash_done') === '1') {
-    splash.classList.add('hide');
-    document.getElementById('app').classList.add('show');
-    /* showFab removed */
-  }
+  if (splash) splash.classList.add('hide');
+  const app = document.getElementById('app');
+  if (app) app.classList.add('show');
 }
 
 // Auto theme from system
@@ -1195,27 +1234,11 @@ if (_splashBtn) {
 // Boot: PIN gate before splash interaction
 (function pinBoot() {
   const unlocked = sessionStorage.getItem('aldi_pin_ok') === '1';
-  if (!pinIsSet()) {
-    // first run: optional setup after splash start - show setup once
-    if (!localStorage.getItem('aldi_pin_asked')) {
-      // ask after start button
-      const btn = document.getElementById('splashBtn');
-      if (btn) {
-        btn.addEventListener('click', () => {
-          if (!localStorage.getItem('aldi_pin_asked')) {
-            localStorage.setItem('aldi_pin_asked', '1');
-            setTimeout(() => showPinScreen('setup'), 600);
-          }
-        }, { once: true });
-      }
-    }
-  } else if (!unlocked) {
-    // must unlock
-    document.getElementById('splash').classList.add('hide');
+  if (pinIsSet() && !unlocked) {
+    // PIN ustawiony – wymagaj odblokowania, potem pełna app
+    const splash = document.getElementById('splash');
+    if (splash) splash.classList.add('hide');
     showPinScreen('unlock');
-  }
-  if (sessionStorage.getItem('aldi_splash_done') === '1' && (unlocked || !pinIsSet())) {
-    /* showFab removed */
   }
 })();
 
